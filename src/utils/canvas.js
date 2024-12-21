@@ -1,26 +1,26 @@
-// 定义函数
-export function createDynamicCanvasBackground(element) {
-    const canvas = document.createElement('canvas');
-    element.appendChild(canvas);  // 将canvas添加到传入的元素中
-    const ctx = canvas.getContext('2d');
+export function initBackgroundCanvas(canvasId) {
+    console.log(canvasId);
+    const canvas = document.getElementById(canvasId);
+    console.log(canvas);
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
 
-    // 自适应调整canvas大小
     function resizeCanvas() {
-        canvas.width = element.clientWidth;
-        canvas.height = element.clientHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
 
     const keys = [
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-        'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
-        'RShift','LShift', 'RCtrl', 'LCtrl', 'RAlt','LAlt', 'Tab', 'Esc', 'Enter', 'CapsLock', 'Space',
-        'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-        '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '\\', '|',
-        ';', ':', '\'', '"', ',', '.', '/', '<', '>', '?', '`', '~',
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+        "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+        "RShift", "LShift", "RCtrl", "LCtrl", "RAlt", "LAlt", "Tab", "Esc", "Enter", "CapsLock", "Space",
+        "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+        "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+",
+        "[", "]", "{", "}", "\\", "|", ";", ":", "'", '"', ",", ".", "/", "<", ">", "?", "`", "~"
     ];
 
     let combos = [];
@@ -45,7 +45,7 @@ export function createDynamicCanvasBackground(element) {
             this.dx = Math.cos(angle) * 0.5;
             this.dy = Math.sin(angle) * 0.5;
 
-            ctx.font = 'bold 16px Arial';
+            ctx.font = "bold 16px Arial";
             const key1Width = ctx.measureText(this.key1).width;
             const key2Width = ctx.measureText(this.key2).width;
             this.width = key1Width + key2Width + 50;
@@ -120,29 +120,24 @@ export function createDynamicCanvasBackground(element) {
             ctx.save();
             ctx.globalAlpha = this.opacity;
 
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
-            ctx.shadowBlur = 10;
-            ctx.shadowOffsetX = 2;
-            ctx.shadowOffsetY = 2;
-
             const drawKey = (text, x, y, width) => {
                 const gradient = ctx.createLinearGradient(x, y, x, y + 35);
-                gradient.addColorStop(0, '#ffffff');
-                gradient.addColorStop(1, '#f0f0f0');
+                gradient.addColorStop(0, "#ffffff");
+                gradient.addColorStop(1, "#f0f0f0");
 
                 ctx.fillStyle = gradient;
                 ctx.beginPath();
                 ctx.roundRect(x, y, width, 35, 8);
                 ctx.fill();
 
-                ctx.strokeStyle = '#ff3333';
+                ctx.strokeStyle = "#ff3333";
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                ctx.fillStyle = '#ff0000';
-                ctx.font = 'bold 16px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
+                ctx.fillStyle = "#ff0000";
+                ctx.font = "bold 16px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
                 ctx.fillText(text, x + width / 2, y + 35 / 2);
 
                 return width;
@@ -152,24 +147,24 @@ export function createDynamicCanvasBackground(element) {
             const key2Width = Math.max(ctx.measureText(this.key2).width + 30, 40);
 
             drawKey(this.key1, this.x, this.y, key1Width);
-
-            ctx.fillStyle = '#ff0000';
-            ctx.font = 'bold 20px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('+', this.x + key1Width + 15, this.y + 35 / 2);
-
+            ctx.fillStyle = "#ff0000";
+            ctx.font = "bold 20px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("+", this.x + key1Width + 15, this.y + 35 / 2);
             drawKey(this.key2, this.x + key1Width + 30, this.y, key2Width);
 
             ctx.restore();
         }
     }
 
-    combos = Array(6).fill().map((_, i) => new ShortcutCombo(i * 50));
+    combos = Array(6)
+        .fill()
+        .map((_, i) => new ShortcutCombo(i * 50));
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        combos.forEach(combo => {
+        combos.forEach((combo) => {
             combo.update();
             combo.draw();
         });

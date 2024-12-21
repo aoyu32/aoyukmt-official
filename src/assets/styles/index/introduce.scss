@@ -12,6 +12,7 @@
     color: white;
 
     .aoyukmt-ico {
+        z-index: 1;
         img {
             width: 150px;
             height: 150px;
@@ -26,7 +27,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1;
+        // z-index: -1;
         background: linear-gradient(135deg, rgba(255, 77, 77), rgba(255, 128, 128), rgba(255, 182, 193), rgba(255, 102, 102));
         background-size: 300% 300%;
         animation: vibrantGradient 8s ease infinite;
