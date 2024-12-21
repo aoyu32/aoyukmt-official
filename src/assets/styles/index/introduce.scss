@@ -1,0 +1,168 @@
+.introduce {
+    padding-top: 85px;
+    position: relative;
+    /* 相对定位以放置 canvas */
+    overflow: hidden;
+    /* 确保 canvas 不超出区域 */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    .aoyukmt-ico {
+        img {
+            width: 150px;
+            height: 150px;
+        }
+
+    }
+
+    /* 设置 canvas 全屏覆盖 */
+    #backgroundCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: linear-gradient(135deg, rgba(255, 77, 77), rgba(255, 128, 128), rgba(255, 182, 193), rgba(255, 102, 102));
+        background-size: 300% 300%;
+        animation: vibrantGradient 8s ease infinite;
+    }
+
+    /* 动态渐变动画 */
+    @keyframes vibrantGradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        25% {
+            background-position: 50% 0%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        75% {
+            background-position: 50% 100%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .introduce-content {
+        z-index: 1;
+        /* 保证内容显示在 canvas 之上 */
+        max-width: 1200px;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        animation: fadeInDown 1s;
+    }
+
+    h2 {
+        font-size: 3rem;
+        animation: fadeInDown 1s;
+    }
+
+    p {
+        font-size: 1.2rem;
+        margin-bottom: 3rem;
+        animation: fadeIn 1s 0.5s both;
+    }
+
+    .download-btn {
+        background: white;
+        color: $primary-color;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: inline-block;
+        animation: fadeInUp 1s 1s both;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .floating {
+        animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    /* 向下箭头样式 */
+    .scroll-down {
+        position: absolute;
+        bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 2s 1s both;
+
+        span {
+            font-size: 1rem;
+            color: white;
+            animation: floating 3s ease-in-out infinite;
+        }
+    }
+}

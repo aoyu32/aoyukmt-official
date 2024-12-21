@@ -1,0 +1,49 @@
+.features {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 3rem;
+        color: $primary-color;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        padding: 2rem;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+        color: $primary-color;
+        margin-bottom: 1rem;
+    }
+}
+
+.feature-details {
+    padding: 5rem 2rem;
+    background: #f8f8f8;
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 3rem;
+        color: $primary-color;
+    }
+}
