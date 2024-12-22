@@ -1,5 +1,3 @@
-@import 'constant.scss';
-
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +9,7 @@ body,
 html,
 #app {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background: #ffffff;
   display: flex;
   flex-direction: column;

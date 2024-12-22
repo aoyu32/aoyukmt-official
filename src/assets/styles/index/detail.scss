@@ -1,108 +1,61 @@
-.feature-details {
-    padding: 3rem 5rem 0rem 5rem;
-    // padding: 5rem 2rem;
-    background: #f8f8f8;
-
-    h2 {
-        text-align: center;
-        font-size: 2rem;
-        margin-bottom: 3rem;
-        color: $primary-color;
-    }
-
-    .detail-card {
-        max-width: 1200px;
-        margin: auto;
-        margin-top: 2rem;
-        margin-bottom: 0;
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        position: relative;
-        z-index: 2;  /* 设置较高的 z-index */
-
-        h3 {
-            color: $primary-color;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-
-            .icon {
-                font-size: 2rem;
-            }
-        }
-
-        .detail-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .detail-text {
-            line-height: 1.6;
-        }
-
-        .detail-image {
-            width: 100%;
-            height: 300px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            img {
-                max-width: 100%;
-                height: auto;
-                transition: transform 0.3s;
-
-                &:hover {
-                    transform: scale(1.05);
-                }
-            }
-        }
-    }
-}
-
-.scroll-up {
-    width: 100%;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn 2s 1s both;
-    background: #f8f8f8;
+@use "@/assets/styles/common/constant.scss" as *;
+.detail-card {
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 0;
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     position: relative;
-    z-index: 1;
+    z-index: 2;
+ 
     /* 设置较高的 z-index */
 
-    span {
-        width: 20px;
-        height: 20px;
+    h3 {
+        color: $primary-color;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .icon {
+            font-size: 2rem;
+        }
+    }
+
+    .detail-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .detail-text {
+        line-height: 1.6;
+    }
+
+    .detail-image {
+        width: 100%;
+        height: 300px;
+        background: #f0f0f0;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1rem;
-        color: rgb(241, 140, 140);
-        animation: floating 3s ease-in-out infinite;
-        border-radius: 50%;
-        background-color: transparent;
-        transition: width 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        overflow: hidden;
 
-        &:hover {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(244, 177, 177, 0.4);
-            cursor: pointer;
+        img {
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s;
+
+            &:hover {
+                transform: scale(1.05);
+            }
         }
     }
-
-
-
-
 }
+

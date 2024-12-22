@@ -47,7 +47,7 @@ const ANIMATIONS = {
 AOS.init({
     duration: 500, // 动画持续时间，单位为毫秒
     easing: 'ease-out', // 动画缓动效果
-    once: true, // 是否只执行一次动画
+    once: false, // 是否只执行一次动画
     offset: 120, // 动画触发的偏移量，值越大触发时机越迟
     delay: 0 // 动画延迟时间，单位为毫秒
 })

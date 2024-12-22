@@ -17,7 +17,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/assets/styles/common/constant.scss";`  // 确保这里引入全局样式变量
+        additionalData: `@use "@/assets/styles/common/constant.scss" as *;`, // 使用现代语法加载全局变量
       },
     },
   },

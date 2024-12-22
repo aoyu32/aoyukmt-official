@@ -21,50 +21,13 @@
         <section class="features" id="features">
             <h2>✨ 功能特点</h2>
             <div class="feature-grid">
-                <!-- 使用 v-for 渲染功能卡片 -->
-                <div class="feature-card" v-aos="{
-                    animation: 'zoom-in',
-                    easing: 'ease-in',
-                }" v-for="(feature, index) in features" :key="index">
-                    <div class="feature-icon">{{ feature.icon }}</div>
-                    <h3>{{ feature.title }}</h3>
-                    <p>{{ feature.description }}</p>
-                </div>
+                <FeatureCard v-for="(feature, index) in features" :key="index" :feature="feature" />
             </div>
         </section>
 
         <section class="feature-details" id="details">
             <h2>🔖 功能展示</h2>
-            <div class="detail-card" v-aos="{
-                // animation: index % 2 === 0 ? 'fade-up-right' : 'fade-up-left',
-                animation:'fade-up'
-            }" v-for="(detail, index) in details" :key="index">
-                <h3><span class="icon">{{ detail.icon }}</span>{{ detail.title }}</h3>
-                <div class="detail-content">
-                    <template v-if="index % 2 === 0">
-                        <div class="detail-image" v-aos="{
-                            animation: 'fade-right',
-                            offset:200
-                        }">
-                            <img :src="detail.image" :alt="detail.alt">
-                        </div>
-                        <div class="detail-text">
-                            <p>{{ detail.text }}</p>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="detail-text">
-                            <p>{{ detail.text }}</p>
-                        </div>
-                        <div class="detail-image" v-aos="{
-                            animation: 'fade-left',
-                            offset:200
-                        }">
-                            <img :src="detail.image" :alt="detail.alt">
-                        </div>
-                    </template>
-                </div>
-            </div>
+            <DetailCard v-for="(detail, index) in details" :key="index" :detail="detail" :index="index" />
         </section>
 
         <section>
@@ -84,7 +47,10 @@
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import FeatureCard from "@/components/index/FeatureCard.vue";
+import DetailCard from "@/components/index/DetailCard.vue";
+import { initLenis } from "@/router/lenis";
+import { ref, onMounted, onUnmounted } from "vue";
 //动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
 // 定义功能项的数据
@@ -149,7 +115,12 @@ const details = ref([
 
 onMounted(() => {
     initBackgroundCanvas("backgroundCanvas");
+    initLenis();
 });
+
+// onUnmounted(() => {
+//     destroyLenis(); // 销毁 Lenis 实例
+// });
 
 //平滑滚动到顶部
 const scrollToTop = () => {
@@ -175,8 +146,78 @@ const scrollToTop = () => {
 
 </script>
 <style lang="scss" scoped>
-@import "@/assets/styles/index/introduce.scss";
-@import "@/assets/styles/index/features.scss";
-@import "@/assets/styles/index/detail.scss";
-@import "@/assets/styles/index/footer.scss";
+@use "@/assets/styles/common/constant.scss";
+@use "@/assets/styles/index/introduce.scss";
+@use "@/assets/styles/index/footer.scss";
+
+//功能特点卡片盒子
+.features {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 3rem;
+        color: $primary-color;
+    }
+}
+
+//功能特点网格布局
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+//功能展示卡片盒子
+.feature-details {
+    padding: 3rem 2rem 0rem 2rem;
+    // padding: 5rem 2rem;
+    background: #f8f8f8;
+    overflow: hidden;
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 3rem;
+        color: $primary-color;
+    }
+}
+
+//前往顶部按钮
+.scroll-up {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 2s 1s both;
+    background: #f8f8f8;
+    position: relative;
+    z-index: 1;
+    /* 设置较高的 z-index */
+
+    span {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        color: rgb(241, 140, 140);
+        animation: floating 3s ease-in-out infinite;
+        border-radius: 50%;
+        background-color: transparent;
+        transition: width 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
+        &:hover {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(244, 177, 177, 0.4);
+            cursor: pointer;
+        }
+    }
+}
 </style>
