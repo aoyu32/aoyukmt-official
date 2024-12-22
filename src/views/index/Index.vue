@@ -22,7 +22,10 @@
             <h2>✨ 功能特点</h2>
             <div class="feature-grid">
                 <!-- 使用 v-for 渲染功能卡片 -->
-                <div class="feature-card" v-for="(feature, index) in features" :key="index">
+                <div class="feature-card" v-aos="{
+                    animation: 'zoom-in',
+                    easing: 'ease-in',
+                }" v-for="(feature, index) in features" :key="index">
                     <div class="feature-icon">{{ feature.icon }}</div>
                     <h3>{{ feature.title }}</h3>
                     <p>{{ feature.description }}</p>
@@ -32,11 +35,17 @@
 
         <section class="feature-details" id="details">
             <h2>🔖 功能展示</h2>
-            <div class="detail-card" v-for="(detail, index) in details" :key="index">
+            <div class="detail-card" v-aos="{
+                // animation: index % 2 === 0 ? 'fade-up-right' : 'fade-up-left',
+                animation:'fade-up'
+            }" v-for="(detail, index) in details" :key="index">
                 <h3><span class="icon">{{ detail.icon }}</span>{{ detail.title }}</h3>
                 <div class="detail-content">
                     <template v-if="index % 2 === 0">
-                        <div class="detail-image">
+                        <div class="detail-image" v-aos="{
+                            animation: 'fade-right',
+                            offset:200
+                        }">
                             <img :src="detail.image" :alt="detail.alt">
                         </div>
                         <div class="detail-text">
@@ -47,7 +56,10 @@
                         <div class="detail-text">
                             <p>{{ detail.text }}</p>
                         </div>
-                        <div class="detail-image">
+                        <div class="detail-image" v-aos="{
+                            animation: 'fade-left',
+                            offset:200
+                        }">
                             <img :src="detail.image" :alt="detail.alt">
                         </div>
                     </template>
@@ -55,6 +67,11 @@
             </div>
         </section>
 
+        <section>
+            <div class="scroll-up">
+                <span @click="scrollToTop">&#9650;</span>
+            </div>
+        </section>
         <footer>
             <div class="footer-waves"></div>
             <div class="footer-content">
@@ -68,6 +85,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
+//动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
 // 定义功能项的数据
 const features = ref([
@@ -132,6 +150,28 @@ const details = ref([
 onMounted(() => {
     initBackgroundCanvas("backgroundCanvas");
 });
+
+//平滑滚动到顶部
+const scrollToTop = () => {
+    const startPosition = window.pageYOffset;
+    const startTime = performance.now();
+
+    const duration = 500; // 设置滚动的持续时间（毫秒）
+
+    const scroll = (currentTime) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const distance = startPosition * (1 - progress);
+
+        window.scrollTo(0, distance);
+
+        if (progress < 1) {
+            requestAnimationFrame(scroll); // 如果还没有到顶部，继续滚动
+        }
+    };
+
+    requestAnimationFrame(scroll); // 开始滚动动画
+}
 
 </script>
 <style lang="scss" scoped>
