@@ -1,14 +1,14 @@
 <template>
   <header class="header">
     <nav class="nav">
-      <router-link to="/" class="logo">
+      <router-link to="/index" class="logo">
         <img src="@/assets/aoyukmt.png" />
         <span class="logo-text" ref="logoText">{{ pageText }}</span>
       </router-link>
-      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" @click="isActive = !isActive">
         &#9776;
       </button>
-      <div class="nav-links" id="nav-links">
+      <div id="nav-links" :class="['nav-links', isActive ? 'active' : '']">
         <router-link to="/download" @mouseover="changeText('download', '🫣 下载安装')"
           @mouseleave="resetText('download', '😎 下载安装')">
           {{ download }}
@@ -32,72 +32,56 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted } from "vue";
+import { ref, watchEffect, onMounted, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
+import TypeEffect from "@/utils/typing";
 
 let download = ref("😎 下载安装");
 let document = ref("🐋 使用文档");
 let feedback = ref("👎 意见反馈");
 let updatelog = ref("🐣 更新日志");
 let pageText = ref("AOYUKMT");
+let isActive = ref(false)
 const logoText = ref(null);
 const route = useRoute();
-
-let typingTimer = null;
-let index = 0;
-let isDeleting = false;
-
-const typeEffect = (text) => {
-  if (!logoText.value) return; // 添加空值检查
-
-  const typingSpeed = 150;
-  const deletingSpeed = 100;
-  const pauseTime = 500;
-  const cursor = "|";
-
-  if (typingTimer) {
-    clearTimeout(typingTimer);
-    typingTimer = null;
-  }
-
-  logoText.value.textContent = "";
-
-  const type = () => {
-    if (!logoText.value) return; // 添加空值检查
-
-    const displayText = text.slice(0, index) + cursor;
-    logoText.value.textContent = displayText;
-
-    if (!isDeleting && index < text.length) {
-      index++;
-      typingTimer = setTimeout(type, typingSpeed);
-    } else if (isDeleting && index > 0) {
-      index--;
-      typingTimer = setTimeout(type, deletingSpeed);
-    } else {
-      isDeleting = !isDeleting;
-      typingTimer = setTimeout(type, pauseTime);
-    }
-  };
-
-  type();
-};
+let typingInstance = null;  // 用来存储打字效果实例
+const initTypeEffect = {
+  typingSpeed: 150,  // 自定义输入速度
+  deletingSpeed: 80,  // 自定义删除速度
+  pauseTime: 300,  // 自定义暂停时间
+  cursor: "|",  // 自定义光标
+}
 
 // 在 onMounted 中设置监听
 onMounted(() => {
   watchEffect(() => {
     const currentRoute = route.path;
-    if (currentRoute === "/index") {
-      typeEffect("AOYUKMT");
-    } else if (currentRoute === "/download") {
-      typeEffect("DOWNLOAD");
-    } else if (currentRoute === "/document") {
-      typeEffect("DOCUMENT");
-    } else if (currentRoute === "/feedback") {
-      typeEffect("FEEDBACK");
-    } else if (currentRoute === "/updatelog") {
-      typeEffect("UPDATELOG");
+
+    // 如果有已有的打字实例，先停止
+    if (typingInstance) {
+      typingInstance.stop();
     }
+
+
+
+    // 根据当前路由创建新的打字实例
+    if (currentRoute === "/index") {
+      typingInstance = new TypeEffect("AOYUKMT", logoText.value, initTypeEffect);
+    } else if (currentRoute === "/download") {
+      typingInstance = new TypeEffect("DOWNLOAD", logoText.value, initTypeEffect);
+    } else if (currentRoute === "/document") {
+      typingInstance = new TypeEffect("DOCUMENT", logoText.value, initTypeEffect);
+    } else if (currentRoute === "/feedback") {
+      typingInstance = new TypeEffect("FEEDBACK", logoText.value, initTypeEffect);
+    } else if (currentRoute === "/updatelog") {
+      typingInstance = new TypeEffect("UPDATELOG", logoText.value, initTypeEffect);
+    }
+
+    // 启动打字效果
+    if (typingInstance) {
+      typingInstance.start();
+    }
+
   });
 });
 
@@ -130,6 +114,8 @@ const resetText = (link, originalText) => {
 
 
 <style lang="scss" scoped>
+@use "@/assets/styles/common/constant.scss" as *;
+
 .header {
   background: $primary-color;
   padding: 1rem;
@@ -231,18 +217,18 @@ const resetText = (link, originalText) => {
     top: calc(100% + 1px); // 距离导航栏顶部
     right: 2px; // 保持适当的边距
     background: rgba(255, 77, 77, 0.7); // 半透明背景
-    width: 200px; // 合适的宽度
+    width: 150px; // 合适的宽度
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
   }
 
-  .nav-links.active {
+  .active {
     display: flex;
   }
 
+
   .nav-links a {
-    padding: 0.5rem;
     text-align: center;
   }
 }

@@ -14,11 +14,11 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "@/assets/styles/common/constant.scss" as *;`, // 使用现代语法加载全局变量
-      },
-    },
-  },
+  // css: {
+  //   preprocessorOptions: {
+  //     scss: {
+  //       additionalData: `@import "@/assets/styles/common/constant.scss";`, // 使用现代语法加载全局变量
+  //     },
+  //   },
+  // },
 })

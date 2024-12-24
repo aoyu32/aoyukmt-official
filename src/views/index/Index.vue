@@ -1,9 +1,11 @@
 <template>
-    <router-view></router-view>
     <div>
         <section class="introduce">
             <canvas id="backgroundCanvas"></canvas> <!-- 将 canvas 放入 section 内 -->
-            <div class="aoyukmt-ico">
+            <div class="aoyukmt-ico" v-aos="{
+                animation:'slide-down',
+                duration: 450, 
+            }">
                 <img src="@/assets/aoyukmt.png">
             </div>
             <div class="introduce-content">
@@ -50,7 +52,7 @@
 import FeatureCard from "@/components/index/FeatureCard.vue";
 import DetailCard from "@/components/index/DetailCard.vue";
 import { initLenis } from "@/router/lenis";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted} from "vue";
 //动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
 // 定义功能项的数据
@@ -145,8 +147,8 @@ const scrollToTop = () => {
 }
 
 </script>
-<style lang="scss" scoped>
-@use "@/assets/styles/common/constant.scss";
+<style lang="scss" scoped>;
+@use "@/assets/styles/common/constant.scss" as *;
 @use "@/assets/styles/index/introduce.scss";
 @use "@/assets/styles/index/footer.scss";
 

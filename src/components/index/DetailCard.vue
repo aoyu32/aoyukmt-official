@@ -53,6 +53,6 @@ const isEven = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-@use "@/assets/styles/common/constant.scss";
+// @use "@/assets/styles/common/constant.scss";
 @use "@/assets/styles/index/detail.scss";
 </style>
