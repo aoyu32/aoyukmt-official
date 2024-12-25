@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <nav class="nav">
+    <nav class="nav" ref="navLinks" :style="{maxWidth:navWidth}">
       <router-link to="/index" class="logo">
         <img src="@/assets/aoyukmt.png" />
         <span class="logo-text" ref="logoText">{{ pageText }}</span>
@@ -36,6 +36,7 @@ import { ref, watchEffect, onMounted, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
 import TypeEffect from "@/utils/typing";
 
+const navLinks = ref(null)
 let download = ref("😎 下载安装");
 let document = ref("🐋 使用文档");
 let feedback = ref("👎 意见反馈");
@@ -45,6 +46,7 @@ let isActive = ref(false)
 const logoText = ref(null);
 const route = useRoute();
 let typingInstance = null;  // 用来存储打字效果实例
+let navWidth = ref('1200px')
 const initTypeEffect = {
   typingSpeed: 150,  // 自定义输入速度
   deletingSpeed: 80,  // 自定义删除速度
@@ -62,19 +64,24 @@ onMounted(() => {
       typingInstance.stop();
     }
 
-
-
     // 根据当前路由创建新的打字实例
     if (currentRoute === "/index") {
       typingInstance = new TypeEffect("AOYUKMT", logoText.value, initTypeEffect);
+      console.log(navWidth.value);
+      navWidth.value = '1200px'
     } else if (currentRoute === "/download") {
       typingInstance = new TypeEffect("DOWNLOAD", logoText.value, initTypeEffect);
+      navWidth.value = '1200px'
     } else if (currentRoute === "/document") {
       typingInstance = new TypeEffect("DOCUMENT", logoText.value, initTypeEffect);
+      navWidth.value = '95%'
+      console.log(navWidth.value);
     } else if (currentRoute === "/feedback") {
       typingInstance = new TypeEffect("FEEDBACK", logoText.value, initTypeEffect);
+      navWidth.value = '1200px'
     } else if (currentRoute === "/updatelog") {
       typingInstance = new TypeEffect("UPDATELOG", logoText.value, initTypeEffect);
+      navWidth.value = '1200px'
     }
 
     // 启动打字效果

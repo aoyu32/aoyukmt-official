@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="download">
         <section class="download-section dynamic-background">
             <!-- 动态背景的 Canvas -->
             <canvas ref="backgroundCanvas" class="canvas-background"></canvas>
@@ -30,7 +30,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import DownloadCard from "@/components/download/DownloadCard.vue";
-import createCanvasBackground from '@/utils/canvasbackground';
 import TypeEffect from "@/utils/typing";
 import AOS from 'aos';
 import 'aos/dist/aos.css';  // 必须引入CSS
@@ -38,7 +37,6 @@ const downloadText = ref(null)
 let typingInstance = null;  // 用来存储打字效果实例
 
 const backgroundCanvas = ref(null);
-let canvasBackground;
 
 
 const initTypeEffect = {
@@ -51,41 +49,27 @@ const initTypeEffect = {
 onMounted(() => {
     typingInstance = new TypeEffect("下载AOYUKMT到你的WINDOWS", downloadText.value, initTypeEffect);
     typingInstance.start();  // 启动打字效果
-
-    const canvasElement = backgroundCanvas.value;
-    canvasBackground = createCanvasBackground(canvasElement, {
-        particleCount: 20,
-        speed: 1,
-        keys: "QWERTYUIOPASDFGHJKLZXCVBNM0123456789!@#$%",
-        styles: {
-            particleColor: "rgba(255, 255, 255, 0.8)",
-            fontColor: "#ff4d4d",
-            connectionLineColor: "rgba(255, 255, 255, 0.3)",
-            connectionLineWidth: 2,
-        },
-    });
-    canvasBackground.start();;
 });
 // 组件销毁时清除打字机效果
 onBeforeUnmount(() => {
     if (typingInstance) {
         typingInstance.stop();  // 停止当前的打字机效果
     }
-    if (canvasBackground) canvasBackground.stop();
 });
 const downloadOptions = ref([
-    {
-        title: '便携版',
-        description: '📦 灵活：ZIP压缩包解压即用，绿色便携',
-        downloadLink: './downloads/aoyukmt_portable.zip',
-        animation: 'slide-right', // 这里的动画可以根据需要更改
-    },
     {
         title: '安装版',
         description: '🔧 安装程序，适用于更复杂的安装需求',
         downloadLink: './downloads/aoyukmt_full.zip',
-        animation: 'slide-left', // 这里的动画可以根据需要更改
+        animation: 'slide-right', // 这里的动画可以根据需要更改
     },
+    {
+        title: '便携版',
+        description: '📦 灵活：ZIP压缩包解压即用，绿色便携',
+        downloadLink: './downloads/aoyukmt_portable.zip',
+        animation: 'slide-left', // 这里的动画可以根据需要更改
+    }
+
 ]);
 
 AOS.init(

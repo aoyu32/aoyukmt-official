@@ -1,16 +1,17 @@
 <template>
-    <div>
+    <div class="index">
         <section class="introduce">
             <canvas id="backgroundCanvas"></canvas> <!-- 将 canvas 放入 section 内 -->
             <div class="aoyukmt-ico" v-aos="{
-                animation:'slide-down',
-                duration: 450, 
+                animation: 'slide-down',
+                duration: 450,
             }">
                 <img src="@/assets/aoyukmt.png">
             </div>
             <div class="introduce-content">
                 <h2>AOYUKMT</h2>
-                <h1>自定义“真快捷”键工具</h1>
+                <!-- <h1>自定义“真快捷”键工具</h1> -->
+                <h1>一个能重新定义快捷键的工具</h1>
                 <p>自由支配你的按键，让你拥有一套属于自己的快捷键，独特的键盘操作</p>
                 <a href="https://github.com/aoyu32/aoyukmt_pro/releases" class="download-btn floating">
                     立即下载
@@ -51,8 +52,8 @@
 <script setup>
 import FeatureCard from "@/components/index/FeatureCard.vue";
 import DetailCard from "@/components/index/DetailCard.vue";
-import { initLenis } from "@/router/lenis";
-import { ref, onMounted} from "vue";
+import { initLenis, destroyLenis } from "@/utils/lenis";
+import { ref, onMounted, onUnmounted } from "vue";
 //动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
 // 定义功能项的数据
@@ -120,10 +121,9 @@ onMounted(() => {
     initLenis();
 });
 
-// onUnmounted(() => {
-//     destroyLenis(); // 销毁 Lenis 实例
-// });
-
+onUnmounted(() => {
+    destroyLenis(); // 销毁 Lenis 实例
+});
 //平滑滚动到顶部
 const scrollToTop = () => {
     const startPosition = window.pageYOffset;
@@ -147,7 +147,8 @@ const scrollToTop = () => {
 }
 
 </script>
-<style lang="scss" scoped>;
+<style lang="scss" scoped>
+;
 @use "@/assets/styles/common/constant.scss" as *;
 @use "@/assets/styles/index/introduce.scss";
 @use "@/assets/styles/index/footer.scss";

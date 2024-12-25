@@ -34,8 +34,8 @@ export const initLenis = () => {
     requestAnimationFrame(animate);
 };
 
-// export const destroyLenis = () => {
-//     if (lenis) {
-//         lenis.destroy();
-//     }
-// };
+export const destroyLenis = () => {
+    if (lenis) {
+        lenis.destroy();
+    }
+};

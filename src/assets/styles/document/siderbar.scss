@@ -1,0 +1,125 @@
+@use "@/assets/styles/common/constant.scss" as *;
+
+/* 侧边栏容器 */
+.sidebar {
+    height: calc(100vh - 72px);
+    width: 250px;
+    overflow-y: auto;
+    z-index: 10;
+    position: fixed;
+    transition: all 0.1s ease;
+    background: #fff;
+
+    .sidebar-nav {
+        padding: 20px;
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            color: $primary-color;
+            border-bottom: 2px solid $primary-color;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            /* 一级菜单样式 */
+            li {
+                margin-bottom: 5px;
+
+                a {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 12px 15px;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    font-size: 16px;
+                    position: relative;
+
+                    .iconfont {
+                        margin-left: auto;
+                        font-size: 14px;
+                        transition: transform 0.3s ease;
+
+                        &.rotate {
+                            transform: rotate(90deg);
+                        }
+                    }
+
+                    &:hover {
+                        background-color: #f1aaa165;
+                        color: #e74c3c;
+                    }
+
+                    &.active {
+                        color: #e74c3c;
+                        font-weight: bold;
+                        background-color: #fff;
+                    }
+
+                    &::after {
+                        font-size: 12px;
+                        color: #aaa;
+                        transition: transform 0.3s ease;
+                    }
+
+                    &.open::after {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                /* 展开状态 */
+                &.open>.nav-submenu {
+                    display: block;
+                }
+
+
+            }
+
+            /* 二级菜单样式 */
+            .nav-submenu {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                padding-left: 20px;
+                display: none;
+
+                li {
+                    a {
+                        display: block;
+                        padding: 8px 15px;
+                        color: #666;
+                        text-decoration: none;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        transition: all 0.3s ease;
+                        position: relative;
+
+                        &:hover {
+                            background-color: #ffefef;
+                            color: #e74c3c;
+                        }
+
+                        &.active {
+                            color: #e74c3c;
+                            font-weight: bold;
+                            border-left: 2px solid #e74c3c;
+                            padding-left: 11px;
+                            border-radius: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
