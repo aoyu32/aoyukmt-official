@@ -2,13 +2,11 @@
 
 /* 侧边栏容器 */
 .sidebar {
-    height: calc(100vh - 72px);
-    width: 250px;
     overflow-y: auto;
     z-index: 10;
-    position: fixed;
     transition: all 0.1s ease;
-    background: #fff;
+    position: relative;
+    
 
     .sidebar-nav {
         padding: 20px;

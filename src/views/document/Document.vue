@@ -10,10 +10,8 @@
             <div class="document-content">
                 <div class="document-markdown">
                     <!-- 文档内容 -->
-                    <div class="markdown-body" id="document-content">
-                        <!-- 传递Markdown文本或文件路径 -->
-                        <MarkdownViewer :filePath="filePath" />
-                    </div>
+                    <!-- 传递Markdown文本或文件路径 -->
+                    <MarkdownViewer :filePath="filePath" />
 
                     <nav class="markdown-page">
                         <a class="pre-page" id="pre-page">
@@ -31,9 +29,25 @@
                     </nav>
                 </div>
                 <div class="markdown-outline">
+                    <ul>
+                        <li>AOYUKMT是什么？</li>
+                        <li>如何下载使用</li>
+                        <li>模块功能简介</li>
+                        <li>配置说明</li>
+                        <li>AOYUKMT是什么？</li>
+                        <li>如何下载使用</li>
+                        <li>模块功能简介</li>
+                        <li>配置说明</li>
+                        <li>AOYUKMT是什么？</li>
+                        <li>如何下载使用</li>
+                        <li>模块功能简介</li>
+                        <li>配置说明</li>
+                        <li>AOYUKMT是什么？</li>
 
+                    </ul>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -51,10 +65,11 @@ const filePath = ref('/docs/start.md')
 @use "@/assets/styles/document/siderbar.scss";
 
 .document {
-    width: 100%;
-    height: 100%;
-    padding-top: 72px;
     display: flex;
+    justify-content: center; // 居中子元素（水平）
+    align-items: center; // 居中子元素（垂直）
+    width: 100%;
+    
 }
 
 .sidebar-toggle {
@@ -79,38 +94,120 @@ const filePath = ref('/docs/start.md')
 
 .main-content {
     display: flex;
-    position: relative;
+    justify-content: space-between;
+    height: 100%;
     width: 95%;
-  
-    margin: 0 auto;
+    position: relative;
+    top: 72px;
+   
+
+    .document-sidebar {
+        width: 250px;
+        overflow-y: auto;
+        position: fixed;
+        height: calc(100vh - 72px);
+        z-index: 10;
+        background: #f3f1f171;
+    }
 
     .document-content {
-        width: 100%;
-        height: 100%;
-        margin-left: 250px;
-        display: flex;
+
+        width: calc(100% - 500px);
+        margin-left: 250px; // 留出左侧边栏空间
+        padding: 1rem 5rem;
+        position: relative;
+        
 
         .document-markdown {
-            width: 80%;
-            padding: 1rem 5rem;
-
-            .markdown-body {
-                width: 100%;
-            }
+            width: 100%;
+            height: 100%;
+            
 
             .markdown-page {
+                height: 65px;
                 width: 100%;
-                height: 40px;
+                display: flex;
+                justify-content: space-between;
+                margin: 40px 0 20px 0;
+                .pre-page,
+                .next-page {
+                    width: 500px;
+                    border: 1px solid rgba(145, 142, 142, 0.676);
+                    border-radius: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 15px;
+                    transition: border-color 0.3s ease;
+                }
+
+                .pre-page {
+                    margin-right: 10px;
+                }
+
+                .next-page {
+                    margin-left: 10px;
+                }
+
+                /* 子元素样式调整 */
+                .pre {
+                    color: $primary-color;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    /* 垂直居中 */
+                    justify-content: flex-start;
+                    /* 水平靠左 */
+                    width: 100%;
+                    /* 占满父容器宽度 */
+                }
+
+                .next {
+                    color: $primary-color;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    /* 垂直居中 */
+                    justify-content: flex-end;
+                    /* 水平靠右 */
+                    width: 100%;
+                    /* 占满父容器宽度 */
+                }
+
             }
 
         }
 
         .markdown-outline {
-            background-color: antiquewhite;
-        }
+            width: 250px;
+            overflow-y: auto;
+            position: fixed;
+            height: calc(100vh - 72px);
+            right: 2.5%;
+            top: 72px;
+            z-index: 10;
+            padding: 2rem 2rem 2rem 0rem;
 
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                border-left: 1px solid $primary-color;
+                padding: 0rem 1rem;
+                color: rgb(87, 83, 83);
+                font-size: 13px;
+
+                li {
+                    padding: 0.3rem;
+                }
+            }
+        }
     }
+
+
 }
+
 
 @media (max-width: 768px) {
 
