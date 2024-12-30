@@ -5,47 +5,18 @@
         </button>
         <div class="main-content">
             <div class="document-sidebar">
-                <DocumentSideBar :menu-data="menuData" />
+                <DocumentSideBar :menuData="menuData" />
             </div>
             <div class="document-content">
                 <div class="document-markdown">
                     <!-- 文档内容 -->
                     <!-- 传递Markdown文本或文件路径 -->
-                    <MarkdownViewer :filePath="filePath" />
+                    <MarkdownViewer/>
 
-                    <nav class="markdown-page">
-                        <a class="pre-page" id="pre-page">
-                            <p class="pre">
-                                <i class="iconfont icon-shangyiye"></i>
-                                <span>快速开始</span>
-                            </p>
-                        </a>
-                        <a class="next-page" id="next-page">
-                            <p class="next">
-                                <span>字符输入映射</span>
-                                <i class="iconfont icon-xiayiye"></i>
-                            </p>
-                        </a>
-                    </nav>
-                </div>
-                <div class="markdown-outline">
-                    <ul>
-                        <li>AOYUKMT是什么？</li>
-                        <li>如何下载使用</li>
-                        <li>模块功能简介</li>
-                        <li>配置说明</li>
-                        <li>AOYUKMT是什么？</li>
-                        <li>如何下载使用</li>
-                        <li>模块功能简介</li>
-                        <li>配置说明</li>
-                        <li>AOYUKMT是什么？</li>
-                        <li>如何下载使用</li>
-                        <li>模块功能简介</li>
-                        <li>配置说明</li>
-                        <li>AOYUKMT是什么？</li>
+                    <PageControl />
 
-                    </ul>
                 </div>
+                <MarkdownOutline />
             </div>
 
         </div>
@@ -54,10 +25,15 @@
 <script setup>
 import DocumentSideBar from '@/components/document/DocumentSideBar.vue';
 import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
-import { menuData } from '@/utils/sidebar';
-import { ref } from 'vue'
-const filePath = ref('/docs/start.md')
-
+import PageControl from '@/components/document/PageControl.vue';
+import MarkdownOutline from '@/components/document/MarkdownOutline.vue';
+import { menuData } from '@/data/sidebar';
+import { ref, onMounted } from 'vue'
+import { useDocumentStore } from '@/stores/document'
+// const filePath = ref('/docs/start2.md')
+const store = useDocumentStore();
+store.setMenuData(menuData)
+// 确保在组件挂载时设置数据
 
 </script>
 <style lang="scss" scoped>
@@ -69,7 +45,7 @@ const filePath = ref('/docs/start.md')
     justify-content: center; // 居中子元素（水平）
     align-items: center; // 居中子元素（垂直）
     width: 100%;
-    
+
 }
 
 .sidebar-toggle {
@@ -99,7 +75,7 @@ const filePath = ref('/docs/start.md')
     width: 95%;
     position: relative;
     top: 72px;
-   
+
 
     .document-sidebar {
         width: 250px;
@@ -116,92 +92,11 @@ const filePath = ref('/docs/start.md')
         margin-left: 250px; // 留出左侧边栏空间
         padding: 1rem 5rem;
         position: relative;
-        
+
 
         .document-markdown {
             width: 100%;
             height: 100%;
-            
-
-            .markdown-page {
-                height: 65px;
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                margin: 40px 0 20px 0;
-                .pre-page,
-                .next-page {
-                    width: 500px;
-                    border: 1px solid rgba(145, 142, 142, 0.676);
-                    border-radius: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 0 15px;
-                    transition: border-color 0.3s ease;
-                }
-
-                .pre-page {
-                    margin-right: 10px;
-                }
-
-                .next-page {
-                    margin-left: 10px;
-                }
-
-                /* 子元素样式调整 */
-                .pre {
-                    color: $primary-color;
-                    font-weight: 600;
-                    display: flex;
-                    align-items: center;
-                    /* 垂直居中 */
-                    justify-content: flex-start;
-                    /* 水平靠左 */
-                    width: 100%;
-                    /* 占满父容器宽度 */
-                }
-
-                .next {
-                    color: $primary-color;
-                    font-weight: 600;
-                    display: flex;
-                    align-items: center;
-                    /* 垂直居中 */
-                    justify-content: flex-end;
-                    /* 水平靠右 */
-                    width: 100%;
-                    /* 占满父容器宽度 */
-                }
-
-            }
-
-        }
-
-        .markdown-outline {
-            width: 250px;
-            overflow-y: auto;
-            position: fixed;
-            height: calc(100vh - 72px);
-            right: 2.5%;
-            top: 72px;
-            z-index: 10;
-            padding: 2rem 2rem 2rem 0rem;
-
-            ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                border-left: 1px solid $primary-color;
-                padding: 0rem 1rem;
-                color: rgb(87, 83, 83);
-                font-size: 13px;
-
-                li {
-                    padding: 0.3rem;
-                }
-            }
         }
     }
 
@@ -228,6 +123,10 @@ const filePath = ref('/docs/start.md')
 
         .document-content {
             margin-left: 0;
+
+            .document-outline {
+                display: none;
+            }
         }
     }
 

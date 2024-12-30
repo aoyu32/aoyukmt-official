@@ -3,8 +3,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { marked } from 'marked';
+import { useDocumentStore } from '@/stores/document';
+
+const store = useDocumentStore()
 
 const props = defineProps({
   markdownData: {
@@ -37,16 +40,30 @@ const renderMarkdown = (filePath) => {
     });
 };
 
-// 在组件挂载时根据传入的属性加载 Markdown
+// 监听 activeFilePath 的变化
+watch(
+  () => store.activeFilePath,
+  (newFilePath) => {
+    renderMarkdown(newFilePath);
+  },
+  { immediate: true }
+);
+
+// // 在组件挂载时根据传入的属性加载 Markdown
+// onMounted(() => {
+//   if (props.filePath) {
+//     // 如果传入了文件路径，加载文件
+//     renderMarkdown(props.filePath);
+//   } else if (props.markdownData) {
+//     // 否则直接解析传递的 Markdown 内容
+//     htmlContent.value = marked(props.markdownData);
+//   }
+// });
+
 onMounted(() => {
-  if (props.filePath) {
-    // 如果传入了文件路径，加载文件
-    renderMarkdown(props.filePath);
-  } else if (props.markdownData) {
-    // 否则直接解析传递的 Markdown 内容
-    htmlContent.value = marked(props.markdownData);
-  }
-});
+  renderMarkdown(store.activeFilePath)
+})
+
 </script>
 <style lang="scss">
 @use "@/assets/styles/document/markdown.scss";

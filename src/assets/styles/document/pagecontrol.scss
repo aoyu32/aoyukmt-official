@@ -1,0 +1,68 @@
+@use "@/assets/styles/common/constant.scss" as *;
+
+.markdown-page {
+    height: 65px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 40px 0 20px 0;
+
+    .pre-page,
+    .next-page {
+        width: 350px;
+        border: 1px solid rgba(145, 142, 142, 0.676);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        user-select: none;
+        justify-content: center;
+        padding: 0 15px;
+        transition: border-color 0.3s ease;
+
+        &:hover {
+            border: 1px solid $primary-color;
+            cursor: pointer;
+        }
+    }
+
+    .pre-page {
+        margin-right: 10px;
+    }
+
+    .next-page {
+        margin-left: 10px;
+    }
+
+    /* 子元素样式调整 */
+    .pre {
+        color: $primary-color;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        /* 垂直居中 */
+        justify-content: flex-start;
+        /* 水平靠左 */
+        width: 100%;
+        /* 占满父容器宽度 */
+    }
+
+    .next {
+        color: $primary-color;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        /* 垂直居中 */
+        justify-content: flex-end;
+        /* 水平靠右 */
+        width: 100%;
+        /* 占满父容器宽度 */
+    }
+
+}
+
+/* 隐藏状态（保持布局一致） */
+.hidden {
+    visibility: hidden;
+    pointer-events: none;
+}

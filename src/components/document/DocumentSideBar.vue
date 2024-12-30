@@ -18,7 +18,7 @@
                             <li v-for="(subItem, subIndex) in menuItem.submenu" :key="subIndex">
                                 <a href="#" :data-md="subItem.id"
                                     :class="{ 'active': activeParentIndex === index && activeChildIndex === subIndex }"
-                                    @click.prevent="handleSubmenuClick(index, subIndex)">
+                                    @click.prevent="handleSubmenuClick(index, subIndex, subItem.src)">
                                     {{ subItem.label }}
                                 </a>
                             </li>
@@ -31,37 +31,23 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useDocumentStore } from '@/stores/document';
+const store = useDocumentStore();
 
-const props = defineProps({
-    menuData: {
-        type: Array,
-        required: true
-    }
-});
-
+// const props = defineProps({
+//     menuData: {
+//         type: Array,
+//         required: true
+//     }
+// });
 // 创建本地响应式数据
-const localMenuData = ref(props.menuData);
-
+const localMenuData = store.menuData
+console.log(localMenuData);
 // 跟踪激活的菜单项
 const activeParentIndex = ref(null);
 const activeChildIndex = ref(null);
 
-// 切换菜单展开状态 - 只负责展开/收起，不处理高亮
-const toggleMenu = (index) => {
-    localMenuData.value[index].isOpen = !localMenuData.value[index].isOpen;
-    activeParentIndex.value = index
-};
-
-// 处理二级菜单点击 - 处理高亮状态
-const handleSubmenuClick = (parentIndex, childIndex) => {
-    // 更新激活状态
-    activeParentIndex.value = parentIndex;
-    activeChildIndex.value = childIndex;
-
-    // 确保父菜单保持展开
-    localMenuData.value[parentIndex].isOpen = true;
-};
 
 // 在组件挂载后设置默认状态
 onMounted(() => {
@@ -72,6 +58,41 @@ onMounted(() => {
     activeChildIndex.value = 0;
 
 });
+
+
+// 切换菜单展开状态 - 只负责展开/收起，不处理高亮
+const toggleMenu = (index) => {
+    localMenuData[index].isOpen = !localMenuData[index].isOpen;
+    activeParentIndex.value = index
+};
+
+// 处理二级菜单点击 - 处理高亮状态
+const handleSubmenuClick = (parentIndex, childIndex) => {
+    store.setActiveMenu(parentIndex, childIndex);
+    // 更新激活状态
+    activeParentIndex.value = parentIndex;
+    activeChildIndex.value = childIndex;
+    // 确保父菜单保持展开
+    localMenuData[parentIndex].isOpen = true;
+    const filePath = localMenuData[parentIndex].submenu[childIndex].src;
+    store.setFilePath(filePath); // 更新文件路径
+
+};
+
+watch(() => store.activeParentIndex, (newValue) => {
+    activeParentIndex.value = newValue
+})
+watch(() => store.activeChildIndex, (newValue) => {
+    activeChildIndex.value = newValue
+    const filePath = localMenuData[store.activeParentIndex].submenu[store.activeChildIndex].src;
+    store.setFilePath(filePath); // 更新文件路径
+})
+
+
+
+
+
+
 </script>
 
 

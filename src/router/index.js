@@ -16,8 +16,10 @@ const router = createRouter({
           component: () => import('@/views/download/Download.vue')
         },
         {
-          path: '/document',
-          component: () => import('@/views/document/Document.vue')
+          path: '/document', // 添加动态路由参数 :id
+          name: 'Document', // 路由名称
+          component: () => import('@/views/document/Document.vue'),
+          props: true, // 让路由参数作为 props 传递给组件
         },
         {
           path: '/feedback',

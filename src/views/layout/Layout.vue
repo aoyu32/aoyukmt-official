@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted, onBeforeUnmount } from "vue";
+import { ref, watchEffect, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import TypeEffect from "@/utils/typing";
 
@@ -72,7 +72,7 @@ onMounted(() => {
     } else if (currentRoute === "/download") {
       typingInstance = new TypeEffect("DOWNLOAD", logoText.value, initTypeEffect);
       navWidth.value = '1200px'
-    } else if (currentRoute === "/document") {
+    } else if (currentRoute.startsWith("/document")) {
       typingInstance = new TypeEffect("DOCUMENT", logoText.value, initTypeEffect);
       navWidth.value = '95%'
       console.log(navWidth.value);
