@@ -79,19 +79,16 @@ const handleSubmenuClick = (parentIndex, childIndex) => {
 
 };
 
+
 watch(() => store.activeParentIndex, (newValue) => {
     activeParentIndex.value = newValue
 })
+
 watch(() => store.activeChildIndex, (newValue) => {
     activeChildIndex.value = newValue
     const filePath = localMenuData[store.activeParentIndex].submenu[store.activeChildIndex].src;
     store.setFilePath(filePath); // 更新文件路径
 })
-
-
-
-
-
 
 </script>
 

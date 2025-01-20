@@ -11,10 +11,9 @@
                 <div class="document-markdown">
                     <!-- 文档内容 -->
                     <!-- 传递Markdown文本或文件路径 -->
-                    <MarkdownViewer/>
-
+                    <MarkdownViewer />
+                    <!-- 上一页/下一页 -->
                     <PageControl />
-
                 </div>
                 <MarkdownOutline />
             </div>
@@ -28,13 +27,9 @@ import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
 import PageControl from '@/components/document/PageControl.vue';
 import MarkdownOutline from '@/components/document/MarkdownOutline.vue';
 import { menuData } from '@/data/sidebar';
-import { ref, onMounted } from 'vue'
 import { useDocumentStore } from '@/stores/document'
-// const filePath = ref('/docs/start2.md')
 const store = useDocumentStore();
 store.setMenuData(menuData)
-// 确保在组件挂载时设置数据
-
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/constant.scss" as *;
@@ -45,7 +40,6 @@ store.setMenuData(menuData)
     justify-content: center; // 居中子元素（水平）
     align-items: center; // 居中子元素（垂直）
     width: 100%;
-
 }
 
 .sidebar-toggle {

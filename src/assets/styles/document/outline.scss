@@ -21,13 +21,18 @@
         li {
             padding: 0.3rem;
             color: rgb(87, 83, 83);
-            transition:color 0.3s ease-in-out;
+            transition: color 0.3s ease-in-out;
 
-            &:hover{
+            &:hover {
                 color: $primary-color;
                 cursor: pointer;
             }
+
+            &.active {
+                color: $primary-color;
+            }
         }
+
 
 
     }

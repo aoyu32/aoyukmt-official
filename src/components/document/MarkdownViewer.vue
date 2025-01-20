@@ -1,14 +1,14 @@
 <template>
-  <div class="markdown-body" v-html="htmlContent"></div>
+  <div ref="markdownDiv" class="markdown-body" v-html="htmlContent"></div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch,nextTick } from 'vue';
 import { marked } from 'marked';
 import { useDocumentStore } from '@/stores/document';
 
+const markdownDiv = ref(null)
 const store = useDocumentStore()
-
 const props = defineProps({
   markdownData: {
     type: String, // 只接受 Markdown 内容
@@ -19,25 +19,25 @@ const props = defineProps({
     default: ''
   }
 });
-
 const htmlContent = ref('');
-
 // 渲染 Markdown 文件内容
-const renderMarkdown = (filePath) => {
-  console.log(filePath);
-  fetch(filePath)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error loading document: ${response.statusText}`);
-      }
-      return response.text();
-    })
-    .then(markdown => {
-      htmlContent.value = marked(markdown); // 使用 marked 解析 Markdown
-    })
-    .catch(error => {
-      htmlContent.value = `<p>无法加载文档内容：${error.message}</p>`;
-    });
+const renderMarkdown = async (filePath) => {
+  try {
+    const response = await fetch(filePath);
+    if (!response.ok) {
+      throw new Error(`Error loading document: ${response.statusText}`);
+    }
+
+    const markdown = await response.text();
+    htmlContent.value = marked(markdown);
+
+    await nextTick();
+    extractHeadings();
+
+  } catch (error) {
+    console.error('Error rendering markdown:', error);
+    htmlContent.value = `<p>Unable to load document: ${error.message}</p>`;
+  }
 };
 
 // 监听 activeFilePath 的变化
@@ -49,16 +49,23 @@ watch(
   { immediate: true }
 );
 
-// // 在组件挂载时根据传入的属性加载 Markdown
-// onMounted(() => {
-//   if (props.filePath) {
-//     // 如果传入了文件路径，加载文件
-//     renderMarkdown(props.filePath);
-//   } else if (props.markdownData) {
-//     // 否则直接解析传递的 Markdown 内容
-//     htmlContent.value = marked(props.markdownData);
-//   }
-// });
+const extractHeadings = () => {
+  if (!markdownDiv.value) return [];
+
+  const h2Elements = markdownDiv.value.querySelectorAll('h2');
+  const headingsData = Array.from(h2Elements).map((h2, index) => {
+    const headingId = `heading-${index}`;
+    h2.id = headingId;
+    return {
+      id: headingId,
+      text: h2.textContent,
+      element: h2
+    };
+  });
+
+  store.setHeadings(headingsData);
+};
+
 
 onMounted(() => {
   renderMarkdown(store.activeFilePath)

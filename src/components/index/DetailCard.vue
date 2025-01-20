@@ -9,7 +9,6 @@
                 <div class="detail-image" v-aos="{
                     animation: 'slide-right',
                     offset: 30
-
                 }">
                     <img :src="detail.image" :alt="detail.alt" />
                 </div>
@@ -25,7 +24,6 @@
                 <div class="detail-image" v-aos="{
                     animation: 'slide-left',
                     offset: 20
-
                 }">
                     <img :src="detail.image" :alt="detail.alt" />
                 </div>

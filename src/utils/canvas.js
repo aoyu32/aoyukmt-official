@@ -157,7 +157,7 @@ export function initBackgroundCanvas(canvasId) {
         }
     }
 
-    combos = Array(6)
+    combos = Array(7)
         .fill()
         .map((_, i) => new ShortcutCombo(i * 50));
 
