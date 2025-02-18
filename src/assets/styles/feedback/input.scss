@@ -1,0 +1,132 @@
+.input-box {
+    width: 100%;
+    max-height: 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 20px 20px;
+
+
+    .preview-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+
+        .image-wrapper {
+            position: relative;
+            width: 100px;
+            height: 60px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                filter: grayscale(100%);
+                mask-image: linear-gradient(to bottom, rgb(90, 88, 88) 0%, rgba(93, 90, 90, 0) 100%);
+                -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+                transition: mask-image 1s ease-out, filter 1s ease-out;
+            }
+
+            .delete-btn {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgba(69, 67, 67, 0.7);
+                }
+            }
+        }
+    }
+
+    .chat-input-area {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px 15px 5px 10px;
+        position: relative;
+        border: 1px solid #ff6666;
+        max-height: 500px;
+        border-radius: 15px;
+        width: 100%;
+        transition: box-shadow 0.2s ease;
+
+        &.focused {
+            box-shadow: 0 0 7px rgba(255, 102, 102, 0.7);
+        }
+
+        textarea {
+            width: 100%;
+            max-height: 200px;
+            min-height: 40px;
+            overflow-y: auto;
+            overflow: hidden;
+            resize: none;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            border: none;
+            font-size: 15px;
+            outline: none;
+            border-radius: 5px;
+            position: relative;
+
+            &:focus::placeholder {
+                color: transparent;
+            }
+        }
+    }
+
+    .upload {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2px;
+        font-size: 22px;
+
+        button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #ff6666;
+            transition: 0.2s ease-in-out;
+
+            &:hover {
+                background-color: #ff6666;
+            }
+        }
+
+        .upload-icon {
+            cursor: pointer;
+        }
+    }
+
+
+}
+
+@media (max-width: 768px) {
+    .chat-container {
+        width: 95%;
+    }
+
+    .chat-message .message-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 70%;
+    }
+}

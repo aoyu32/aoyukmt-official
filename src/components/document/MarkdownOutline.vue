@@ -17,11 +17,11 @@ import { storeToRefs } from 'pinia';
 const store = useDocumentStore();
 const { headings } = storeToRefs(store);
 const activeHeadingId = ref(null);
-const scrollToHeading = (headingId) => {
 
+//点击跳转到标题
+const scrollToHeading = (headingId) => {
     const container = document.querySelector('.document');  // 获取滚动容器
     const element = document.getElementById(headingId);     // 获取目标元素
-
     if (container && element) {
         // 获取目标元素相对于容器的偏移位置
         const rect = element.getBoundingClientRect();
@@ -36,8 +36,6 @@ const scrollToHeading = (headingId) => {
         });
     }
 };
-
-
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/document/outline.scss" as *;

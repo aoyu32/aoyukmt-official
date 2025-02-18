@@ -148,7 +148,6 @@ const scrollToTop = () => {
 
 </script>
 <style lang="scss" scoped>
-;
 @use "@/assets/styles/common/constant.scss" as *;
 @use "@/assets/styles/index/introduce.scss";
 @use "@/assets/styles/index/footer.scss";
