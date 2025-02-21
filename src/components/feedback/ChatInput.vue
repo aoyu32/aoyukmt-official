@@ -3,13 +3,14 @@
         <div id="preview-container" class="preview-container" ref="previewContainer"></div>
         <div class="chat-input-area" id="chat-input-area" ref="chatInputBox">
             <textarea id="chat-input" :placeholder="placeholderValue" rows="1" @focus="textareaFocus"
-                @blur="textareaBlur" @input="handleInput" @paste="handleImagePaste" ref="chatTextarea"></textarea>
+                @blur="textareaBlur" @input="handleInput" @paste="handleImagePaste" ref="chatTextarea"
+                v-model="message"></textarea>
             <div class="upload">
                 <input type="file" id="image-upload" multiple accept="image/*" hidden ref="imageUploadInput"
                     v-on:change="handleImageSelection" />
                 <label for="image-upload" class="upload-icon" @mouseenter="handleHover(1)"
                     @mouseleave="handleHover(0)">{{ lableText }}</label>
-                <button id="send-button" @mouseenter="handleHover(2)" @mouseleave="handleHover(0)">
+                <button id="send-button" @mouseenter="handleHover(2)" @mouseleave="handleHover(0)" @click="sendMessage">
                     {{ buttonText }}
                 </button>
             </div>
@@ -18,6 +19,9 @@
 </template>
 <script setup>
 import { ref, defineProps, watch } from 'vue'
+import { useFeedbackStore } from '@/stores/feedback'
+
+const feedbackStore = useFeedbackStore()
 
 //接收拖动到父组件的图片
 const props = defineProps({
@@ -134,12 +138,23 @@ const createImageWrapper = (file) => {
             img.style.webkitMaskImage = 'none';
         };
 
+        // 添加图片到store
+        const imageIndex = feedbackStore.addImage({
+            src: e.target.result,
+            type: file.type,
+            size: file.size
+        });
+        imageWrapper.dataset.storeIndex = imageIndex;
         // 创建删除按钮
         const deleteBtn = document.createElement('button');
         deleteBtn.classList.add('delete-btn');
         deleteBtn.textContent = '×'; // 删除按钮的内容
         deleteBtn.addEventListener('click', () => {
+
+            feedbackStore.removeImage(imageIndex)
             imageWrapper.remove(); // 删除整个图片和按钮的容器
+
+
         });
 
         // 将图片和删除按钮添加到容器
@@ -149,9 +164,44 @@ const createImageWrapper = (file) => {
         // 将图片容器添加到预览区
         previewContainer.value.appendChild(imageWrapper);
     };
+
+
     reader.readAsDataURL(file); // 读取文件并生成预览
 }
 
+//发送消息
+const message = ref('')//用户输入
+
+const sendMessage = () => {
+    console.log("用户发送的消息：", message.value);
+
+    if (feedbackStore.isEmpty(message.value)) {
+        feedbackStore.SetShowTip()
+        return
+    }
+
+    feedbackStore.addUserMessage({
+        img: feedbackStore.images,
+        text: message.value,
+        date: getDate()
+    })
+
+    //清空输入的数据 
+    message.value = ''
+    previewContainer.value.innerHTML = ''
+    feedbackStore.clearAll()
+}
+
+//获取当前时间
+const getDate = () => {
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    console.log(day);
+    
+    return `${year}-${month}-${day}` 
+}
 
 </script>
 <style lang="scss">

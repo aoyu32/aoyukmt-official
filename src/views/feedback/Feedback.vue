@@ -2,7 +2,7 @@
     <div class="feedback">
         <div class="main-content" id="main-content" @dragover="handleImageDragover" @drop="handleImageDrop">
             <div class="chat-container active">
-                <ChatWindow />
+                <ChatWindow/>
                 <ChatInput :files="files"/>
             </div>
         </div>
@@ -27,10 +27,8 @@ const handleImageDrop = (event) => {
     const droppedFiles = event.dataTransfer.files;
     if (droppedFiles.length > 0) {
         files.value = Array.from(droppedFiles);  // 将文件存储在 files 中
-        console.log('拖动的文件:', files.value);
     }
 }
-
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/constant.scss" as *;

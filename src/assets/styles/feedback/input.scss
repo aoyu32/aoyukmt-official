@@ -112,8 +112,76 @@
         }
 
         .upload-icon {
+            position: relative;
+            display: inline-block;
             cursor: pointer;
+
+
+            /* 上传按钮的提示气泡 */
+            &::after {
+                content: "请上传图片，可以拖拽和复制上传哦.😏";
+                /* 提示文本 */
+                position: absolute;
+                bottom: -20px;
+                left: 120%;
+                transform: translateX(-50%);
+                background-color: #ff4d4da1;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 5px;
+                font-size: 14px;
+                display: none;
+                /* 默认隐藏 */
+                opacity: 1;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                white-space: nowrap;
+                z-index: 1000;
+
+
+            }
+
+            &:hover::after {
+                display: block;
+                opacity: 1;
+                transform: translateX(-50%) translateY(-10px);
+                animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1.2s forwards;
+            }
+
         }
+
+        /* 为发送按钮添加提示气泡样式 */
+        #send-button {
+            position: relative;
+            display: inline-block;
+
+            &::after {
+                content: "点击发送消息或按下Shift+Enter发送.🤪";
+                /* 提示文本 */
+                position: absolute;
+                bottom: -20px;
+                right: 120%;
+                transform: translateX(-50%);
+                background-color: #ff4d4d88;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 5px;
+                font-size: 14px;
+                display: none;
+                /* 默认隐藏 */
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                white-space: nowrap;
+                z-index: 1000;
+            }
+
+            &:hover::after {
+                display: block;
+                opacity: 1;
+                transform: translateX(-50%) translateY(-10px);
+                animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1s forwards;
+            }
+        }
+
     }
 
 
@@ -128,5 +196,44 @@
         display: flex;
         flex-direction: column;
         max-width: 70%;
+    }
+}
+
+/* 提示气泡显示动画 */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 提示气泡隐藏动画 */
+@keyframes slideOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* 提示气泡隐藏动画 */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
     }
 }
