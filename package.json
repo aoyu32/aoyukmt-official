@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@coze/api": "^1.0.20",
     "aos": "^2.3.4",
+    "axios": "^1.7.9",
     "lenis": "^1.1.18",
     "marked": "^15.0.4",
     "pinia": "^2.2.6",

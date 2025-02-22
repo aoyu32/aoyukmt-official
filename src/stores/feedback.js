@@ -2,9 +2,12 @@ import { defineStore } from "pinia";
 
 export const useFeedbackStore = defineStore('feedback', {
     state: () => ({
+        officialReplay: '',
+        currentOfficialMessageIndex: -1, // 当前正在流式接收的官方消息的索引
         images: [],//预览图片
-        userMessages: [],//用户发发送德消息
-        officialMessage: [],//官方回复德消息
+        chatMessages: [],//所有聊天消息
+        userMessages: [],//用户发发送的消息
+        officialMessage: [],//官方回复的消息
         showTip: false//是否显示提示文字
     }),
     getters: {
@@ -13,6 +16,10 @@ export const useFeedbackStore = defineStore('feedback', {
         officialMessageCount: (state) => state.officialMessage.length
     },
     actions: {
+
+        setOfficialReplay(msg) {
+            this.officialReplay = msg
+        },
         setTextMessage(message) {
             this.textMessage = message
         },
@@ -50,19 +57,39 @@ export const useFeedbackStore = defineStore('feedback', {
         },
         //判断消息和图片是否为空
         isEmpty(msg) {
-            console.log("用户输入的：", msg);
-
             return ((!msg || !msg.trim()) && this.images.length === 0)
         },
-        //添加用户消息
+        // 添加用户消息
         addUserMessage(msg) {
-            this.userMessages.push(msg)
+            const userMsg = { ...msg, isUser: true };
+            this.userMessages.push(userMsg);
+            this.chatMessages.push(userMsg); // 添加到对话序列
         },
-        //添加官方消息
+
+        // 添加官方消息
         addOfficialMessage(msg) {
-            this.officialMessage.push(msg)
+            const officialMsg = { ...msg, isUser: false };
+            this.officialMessage.push(officialMsg);
+            this.chatMessages.push(officialMsg); // 添加到对话序列
+        },
+
+        // 开始流式接收官方消息
+        startStreamingOfficialMessage() {
+            const officialMsg = { text: '思考中...', img: [], date: new Date().toLocaleString(), isUser: false };
+            this.officialMessage.push(officialMsg);
+            this.chatMessages.push(officialMsg);
+            this.currentOfficialMessageIndex = this.chatMessages.length - 1; // 记录当前消息的索引
+        },
+
+        // 更新当前流式消息
+        updateCurrentOfficialMessage(text) {
+            if (this.currentOfficialMessageIndex !== -1) {
+                this.chatMessages[this.currentOfficialMessageIndex].text = text;
+            }
+        },
+        // 完成当前流式消息
+        completeCurrentOfficialMessage() {
+            this.currentOfficialMessageIndex = -1; // 重置索引
         }
-
-
     }
 })

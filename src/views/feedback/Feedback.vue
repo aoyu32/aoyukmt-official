@@ -2,8 +2,8 @@
     <div class="feedback">
         <div class="main-content" id="main-content" @dragover="handleImageDragover" @drop="handleImageDrop">
             <div class="chat-container active">
-                <ChatWindow/>
-                <ChatInput :files="files"/>
+                <ChatWindow />
+                <ChatInput :files="files" @receiveUserMessage="handleUserMessage" />
             </div>
         </div>
     </div>
@@ -13,6 +13,10 @@ import { ref } from "vue"
 
 import ChatWindow from '@/components/feedback/ChatWindow.vue';
 import ChatInput from '@/components/feedback/ChatInput.vue';
+import { fetchChatStream } from "@/utils/coze";
+import { useFeedbackStore } from "@/stores/feedback";
+
+const feedbackStore = useFeedbackStore()
 
 //监听文件拖动，将拖动到聊天窗口的图片传递给聊天输入框组件
 //存储拖动的文件
@@ -29,6 +33,38 @@ const handleImageDrop = (event) => {
         files.value = Array.from(droppedFiles);  // 将文件存储在 files 中
     }
 }
+//接收用户发生的消息
+const handleUserMessage = (msg) => {
+
+    // 开始流式接收官方消息
+
+    setTimeout(() => {
+        feedbackStore.startStreamingOfficialMessage();
+    }, 1000)
+
+    // 请求 coze 获取流式回复
+    const stream = fetchChatStream(msg);
+    const reader = stream.getReader();
+    readStream(reader);
+
+};
+
+async function readStream(reader) {
+    let fullMessage = '';
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+            // 流式接收完成
+            feedbackStore.completeCurrentOfficialMessage();
+            break;
+        }
+        fullMessage += value;
+        // 更新当前流式消息
+        feedbackStore.updateCurrentOfficialMessage(fullMessage);
+    }
+}
+
+
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/constant.scss" as *;
