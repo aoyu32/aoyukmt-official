@@ -10,8 +10,9 @@
                     v-on:change="handleImageSelection" />
                 <label for="image-upload" class="upload-icon" @mouseenter="handleHover(1)"
                     @mouseleave="handleHover(0)">{{ lableText }}</label>
-                <button id="send-button" @mouseenter="handleHover(2)" @mouseleave="handleHover(0)" @click="sendMessage"
-                    ref="sendButton">
+                <button id="send-button" @mouseenter="handleHover(2)" @mouseleave="handleHover(0)"
+                    @click="feedbackStore.replying ? stopReplyingMessage() : sendMessage()" ref="sendButton"
+                    :class="{ 'breathing-border': feedbackStore.replying }" :data-tooltip="tooltipText">
                     {{ buttonText }}
                 </button>
             </div>
@@ -19,11 +20,9 @@
     </div>
 </template>
 <script setup>
-import { ref, defineProps, defineEmits, watch, onMounted, onUnmounted } from 'vue'
+import { ref, defineProps, defineEmits, watch, onMounted, onUnmounted,computed } from 'vue'
 import { useFeedbackStore } from '@/stores/feedback'
-
 const feedbackStore = useFeedbackStore()
-
 //接收拖动到父组件的图片
 const props = defineProps({
     files: {
@@ -32,7 +31,14 @@ const props = defineProps({
     }
 })
 
+//输入框内文本
 const placeholderValue = "请输入您的反馈或意见..."
+
+//动态控制发送按钮的hover效果
+const tooltipText = computed(()=>{
+    return feedbackStore.replying ? '点击停止回答!🙃' : '点击发送消息或按下Shift+Enter发送!😊'
+})
+
 
 //输入框获取焦点改变给输入框添加红色盒子阴影
 const chatInputBox = ref(null)
@@ -82,7 +88,9 @@ const buttonText = ref("🍥")
 //鼠标悬浮在上传图标或发送按钮改变图标
 const handleHover = (isHover) => {
     lableText.value = isHover === 1 ? "🖼️" : "🔗"
-    buttonText.value = isHover === 2 ? "👍" : "🍥"
+    if (!feedbackStore.replying) {
+        buttonText.value = isHover === 2 ? "👻" : "🍥"
+    }
 }
 
 //图片预览
@@ -180,14 +188,12 @@ const message = ref('')//用户输入
 const sendButton = ref(null)
 const emit = defineEmits(['receiveUserMessage'])
 const sendMessage = () => {
-    console.log("用户发送的消息：", message.value);
+    console.log("send");
 
     if (feedbackStore.isEmpty(message.value)) {
         feedbackStore.SetShowTip()
         return
     }
-
-
     // 发送消息并自动触发官方回复
     feedbackStore.addUserMessage({
         img: feedbackStore.images,
@@ -198,6 +204,8 @@ const sendMessage = () => {
     //将发送的消息传递给父组件
     emit('receiveUserMessage', message.value)
 
+    feedbackStore.isReplaying(true)
+
     //清空输入的数据 
     message.value = ''
     previewContainer.value.innerHTML = ''
@@ -206,6 +214,22 @@ const sendMessage = () => {
     resetHeight()
 
 }
+
+const stopReplyingMessage = () => {
+
+    feedbackStore.isReplaying(false)
+    feedbackStore.currentOfficialMessageIndex = -1
+
+}
+
+//监听官方消息是否回复完成
+watch(() => feedbackStore.replying, (newValue) => {
+    if (newValue) {
+        buttonText.value = '🤖'
+    } else {
+        buttonText.value = '🍥'
+    }
+})
 
 
 //发送消息快捷键注册

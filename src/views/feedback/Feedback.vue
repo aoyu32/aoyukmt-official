@@ -44,6 +44,7 @@ const handleUserMessage = (msg) => {
 
     // 请求 coze 获取流式回复
     const stream = fetchChatStream(msg);
+
     const reader = stream.getReader();
     readStream(reader);
 
@@ -53,14 +54,19 @@ async function readStream(reader) {
     let fullMessage = '';
     while (true) {
         const { done, value } = await reader.read();
+        console.log("完成：", done);
+
         if (done) {
             // 流式接收完成
             feedbackStore.completeCurrentOfficialMessage();
+            feedbackStore.isReplaying(false)
             break;
         }
         fullMessage += value;
         // 更新当前流式消息
-        feedbackStore.updateCurrentOfficialMessage(fullMessage);
+        if (feedbackStore.replying) {
+            feedbackStore.updateCurrentOfficialMessage(fullMessage);
+        }
     }
 }
 

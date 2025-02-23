@@ -4,14 +4,15 @@
       <img src="@/assets/avatar/aoyukmt-avatar.svg" alt="">
     </div>
     <div class="message-wrapper">
-      <div class="name">{{ messageData.isUser ? 'You' : 'Official' }}</div>
+      <div class="name">{{ messageData.isUser ? '用户' : 'AOYUKMT官方' }}</div>
       <div class="message-content">
         <!-- 显示图片 -->
-        <div v-if="hasImages" class="message-content-img">
+        <div v-if="hasImages" class="message-content-img" :style="messageTextStyle">
           <img v-for="(item, index) in messageData.img" :src="item.src" :key="index" alt="">
         </div>
         <!-- 显示文本，动态计算 padding -->
-        <span v-if="hasText" :style="messageTextStyle">{{ messageData.text === '' ? '思考中' : messageData.text}}</span>
+        <div class="content" v-if="hasText" ref="messageContainer"
+          v-html="messageData.text === '' ? '思考中' : messageContent"></div>
       </div>
       <div class="time">{{ messageData.date }}</div>
     </div>
@@ -20,6 +21,7 @@
 
 <script setup>
 import { defineProps, computed } from "vue";
+import { marked } from "marked";
 
 // 接收父组件传递的 messageData
 const props = defineProps({
@@ -29,6 +31,14 @@ const props = defineProps({
   }
 });
 
+//将markdown语法的消息解析为html
+const messageContent = computed(() => {
+  console.log(props.messageData.text);
+  
+  return props.messageData.isUser ? props.messageData.text : marked(props.messageData.text)
+})
+
+
 // 计算是否有图片
 const hasImages = computed(() => props.messageData.img.length > 0);
 //计算是否有文本
@@ -37,13 +47,15 @@ const hasText = computed(() => props.messageData.text.trim())
 // 计算 messageText 的 padding 样式
 const messageTextStyle = computed(() => {
   return {
-    padding: hasImages.value && props.messageData.text.trim()
-      ? '0 10px 10px 10px'
-      : '10px'
+    paddingBottom: hasImages.value && props.messageData.text.trim() && props.messageData.isUser
+      ? '0.6rem'
+      : '0'
   };
 });
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/feedback/markdown.scss" as *;
 @use "@/assets/styles/feedback/message.scss" as *;
+
 </style>

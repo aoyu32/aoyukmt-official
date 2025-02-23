@@ -1,0 +1,166 @@
+@use "@/assets/styles/common/constant.scss" as *;
+
+/* Headings */
+.content :deep(h1),
+.content :deep(h2),
+.content :deep(h3),
+.content :deep(h4),
+.content :deep(h5),
+.content :deep(h6) {
+    margin-top: 1rem; // 调整标题间距，使内容更紧凑
+    margin-bottom: 0.5rem; // 调整标题间距，使内容更紧凑
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.content :deep(h1) {
+    font-size: 1.75rem; // 调整标题字体大小
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+.content :deep(h2) {
+    font-size: 1.5rem; // 调整标题字体大小
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+.content :deep(h3) {
+    font-size: 1.25rem; // 调整标题字体大小
+}
+
+.content :deep(h4) {
+    font-size: 1.125rem; // 调整标题字体大小
+}
+
+.content :deep(h5) {
+    font-size: 1rem; // 调整标题字体大小
+}
+
+.content :deep(h6) {
+    font-size: 0.875rem; // 调整标题字体大小
+    font-weight: 500;
+}
+
+/* Paragraphs */
+.content :deep(p) {
+    margin-bottom: 0.6rem; // 调整段落间距，使内容更紧凑
+    margin-top: 0.6rem; // 调整段落间距，使内容更紧凑
+    color: #ffffff;
+    line-height: 2; // 调整行高，使内容更紧凑
+}
+
+/* Links */
+.content :deep(a) {
+    color: $primary-color;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.content :deep(a):hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+.content :deep(ul),
+.content :deep(ol) {
+    margin-bottom: 0.75rem; // 调整列表间距，使内容更紧凑
+    padding-left: 1.25rem; // 调整列表内边距，使内容更紧凑
+}
+
+.content :deep(ul li),
+.content :deep(ol li) {
+    margin-bottom: 0.5rem; // 调整列表项间距，使内容更紧凑
+    line-height: 1.5;
+}
+
+/* Blockquotes */
+.content :deep(blockquote) {
+    border-left: 4px solid $primary-color;
+    margin: 0.75rem 0; // 调整引用间距，使内容更紧凑
+    padding-left: 1rem;
+    font-style: italic;
+    color: #555;
+    background-color: #f8f8f8;
+}
+
+/* Code Blocks */
+.content :deep(pre) {
+    background-color: #f4f4f4;
+    padding: 0.75rem; // 调整代码块内边距，使内容更紧凑
+    border-radius: 8px;
+    font-size: 0.875rem; // 调整代码字体大小
+    overflow-x: auto;
+    margin-bottom: 0.75rem; // 调整代码块间距，使内容更紧凑
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.content :deep(code) {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: "Courier New", Courier, monospace;
+    color: $primary-color;
+}
+
+/* Images */
+.content :deep(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0.75rem 0; // 调整图片间距，使内容更紧凑
+}
+
+/* Tables */
+.content :deep(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0; // 调整表格间距，使内容更紧凑
+}
+
+.content :deep(table th),
+.content :deep(table td) {
+    padding: 0.5rem; // 调整表格单元格内边距，使内容更紧凑
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.content :deep(table th) {
+    background-color: #f4f4f4;
+    font-weight: 600;
+}
+
+/* Horizontal Rules */
+.content :deep(hr) {
+    border: none;
+    border-top: 2px solid #ddd;
+    margin: 1rem 0; // 调整水平线间距，使内容更紧凑
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .content {
+        padding: 0.75rem; // 调整移动端内边距，使内容更紧凑
+    }
+
+    .content :deep(h1) {
+        font-size: 1.5rem; // 调整移动端标题字体大小
+    }
+
+    .content :deep(h2) {
+        font-size: 1.25rem; // 调整移动端标题字体大小
+    }
+
+    .content :deep(h3) {
+        font-size: 1.125rem; // 调整移动端标题字体大小
+    }
+
+    .content :deep(code) {
+        font-size: 0.8rem; // 调整移动端代码字体大小
+    }
+
+    .content :deep(pre) {
+        font-size: 0.8rem; // 调整移动端代码块字体大小
+        padding: 0.5rem; // 调整移动端代码块内边距
+    }
+}

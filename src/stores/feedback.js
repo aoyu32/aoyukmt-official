@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 
 export const useFeedbackStore = defineStore('feedback', {
     state: () => ({
-        officialReplay: '',
         currentOfficialMessageIndex: -1, // 当前正在流式接收的官方消息的索引
+        replying: false,
         images: [],//预览图片
         chatMessages: [],//所有聊天消息
         userMessages: [],//用户发发送的消息
@@ -16,12 +16,9 @@ export const useFeedbackStore = defineStore('feedback', {
         officialMessageCount: (state) => state.officialMessage.length
     },
     actions: {
-
-        setOfficialReplay(msg) {
-            this.officialReplay = msg
-        },
-        setTextMessage(message) {
-            this.textMessage = message
+        //是否在回复中
+        isReplaying(isReplying) {
+            this.replying = isReplying
         },
         //添加图片
         addImage(img) {

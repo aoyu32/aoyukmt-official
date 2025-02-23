@@ -14,7 +14,7 @@ export const fetchChatStream = (userMessage) => {
         async start(controller) {
             try {
                 console.log("请求聊天流...");
-                
+
                 const stream = await client.chat.stream({
                     bot_id: botId,
                     additional_messages: [
@@ -25,17 +25,18 @@ export const fetchChatStream = (userMessage) => {
                         },
                     ],
                 });
-                
+
                 for await (const part of stream) {
                     if (part.event === ChatEventType.CONVERSATION_MESSAGE_DELTA) {
                         const text = part.data.content;
                         controller.enqueue(text); // 发送数据到流
                     }
                 }
-                controller.close(); // 关闭流
             } catch (error) {
                 console.error('聊天流处理出错:', error);
                 controller.error(error);
+            } finally {
+                controller.close(); // 确保流最终关闭
             }
         }
     });

@@ -1,0 +1,148 @@
+.chat-message {
+    display: flex;
+    margin-bottom: 20px;
+    max-width: 70%;
+    position: relative;
+}
+
+/* 用户消息：头像在左侧，气泡在右侧 */
+.chat-message.user {
+    margin-right: auto;
+    justify-content: flex-start;
+}
+
+/* 官方消息：头像在右侧，气泡在左侧 */
+.chat-message.official {
+    margin-left: auto;
+    justify-content: flex-end;
+}
+
+/* 头像样式 */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0; /* 防止头像被压缩 */
+}
+
+/* 用户消息的头像在左侧 */
+.chat-message.user .avatar {
+    margin-right: 10px;
+}
+
+/* 官方消息的头像在右侧 */
+.chat-message.official .avatar {
+    margin-left: 10px;
+    order: 1; /* 将头像放到右侧 */
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 消息内容容器 */
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: calc(100% - 50px); /* 限制宽度，避免溢出 */
+}
+
+/* 用户消息的名称在左侧 */
+.chat-message.user .name {
+    text-align: left;
+}
+
+/* 官方消息的名称在右侧 */
+.chat-message.official .name {
+    text-align: right;
+}
+
+.name {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+/* 消息气泡样式 */
+.message-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* 用户消息气泡样式 */
+.chat-message.user .message-content {
+    background-color: #ff4444;
+    color: white;
+    border-top-left-radius: 0; /* 气泡尖角效果 */
+}
+
+/* 官方消息气泡样式 */
+.chat-message.official .message-content {
+    background-color: white;
+    color: #333;
+    border-top-right-radius: 0; /* 气泡尖角效果 */
+}
+
+/* 图片展示 */
+.message-content-img {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.message-content-img img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+/* 文本内容 */
+.content {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Markdown 解析后的样式 */
+.content >>> pre {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.content >>> code {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f5f5f5;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.content >>> blockquote {
+    border-left: 4px solid #ff4444;
+    padding-left: 10px;
+    margin: 10px 0;
+    color: #666;
+}
+
+/* 时间戳 */
+.time {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* 用户消息时间戳在右侧 */
+.chat-message.user .time {
+    text-align: right;
+}
+
+/* 官方消息时间戳在左侧 */
+.chat-message.official .time {
+    text-align: left;
+}
