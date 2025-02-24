@@ -1,92 +1,142 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 
-export const useFeedbackStore = defineStore('feedback', {
-    state: () => ({
-        currentOfficialMessageIndex: -1, // 当前正在流式接收的官方消息的索引
-        replying: false,
-        images: [],//预览图片
-        chatMessages: [],//所有聊天消息
-        userMessages: [],//用户发发送的消息
-        officialMessage: [],//官方回复的消息
-        showTip: false//是否显示提示文字
-    }),
-    getters: {
-        imagesCount: (state) => state.images.length,
-        userMessagesCount: (state) => state.userMessages.length,
-        officialMessageCount: (state) => state.officialMessage.length
-    },
-    actions: {
-        //是否在回复中
-        isReplaying(isReplying) {
-            this.replying = isReplying
-        },
-        //添加图片
-        addImage(img) {
-            //生成唯一id
-            const imageId = Date.now() + Math.random().toString(36).substr(2, 9)
-            const imageWithId = {
-                ...img,
-                id: imageId
-            }
-            this.images.push(imageWithId)
-            return imageId
-        },
-        //移除图片
-        removeImage(imageId) {
-            // 通过ID查找索引并删除
-            const index = this.images.findIndex(img => img.id === imageId);
-            if (index !== -1) {
-                this.images.splice(index, 1);
-            }
-        },
-        //清除用户输入的消息和图片
-        clearAll() {
-            this.textMessage = ''
-            this.images = []
-        },
-        //显示隐藏提示
-        SetShowTip() {
-            this.showTip = true
-            //1.5s后隐藏
-            setTimeout(() => {
-                this.showTip = false
-            }, 1500);
-        },
-        //判断消息和图片是否为空
-        isEmpty(msg) {
-            return ((!msg || !msg.trim()) && this.images.length === 0)
-        },
-        // 添加用户消息
-        addUserMessage(msg) {
-            const userMsg = { ...msg, isUser: true };
-            this.userMessages.push(userMsg);
-            this.chatMessages.push(userMsg); // 添加到对话序列
-        },
+export const useFeedbackStore = defineStore('feedback', () => {
+    // State
+    const user = ref({}); // 用户信息
+    const currentOfficialMessageIndex = ref(-1); // 当前正在流式接收的官方消息的索引
+    const replying = ref(false); // 是否在回复中
+    const images = ref([]); // 预览图片
+    const chatMessages = ref([]); // 所有聊天消息
+    const userMessages = ref([]); // 用户发送的消息
+    const officialMessage = ref([]); // 官方回复的消息
+    const showTip = ref(false); // 是否显示提示文字
 
-        // 添加官方消息
-        addOfficialMessage(msg) {
-            const officialMsg = { ...msg, isUser: false };
-            this.officialMessage.push(officialMsg);
-            this.chatMessages.push(officialMsg); // 添加到对话序列
-        },
+    // Getters
+    const imagesCount = computed(() => images.value.length); // 图片数量
+    const userMessagesCount = computed(() => userMessages.value.length); // 用户消息数量
+    const officialMessageCount = computed(() => officialMessage.value.length); // 官方消息数量
 
-        // 开始流式接收官方消息
-        startStreamingOfficialMessage() {
-            const officialMsg = { text: '思考中...', img: [], date: new Date().toLocaleString(), isUser: false };
-            this.officialMessage.push(officialMsg);
-            this.chatMessages.push(officialMsg);
-            this.currentOfficialMessageIndex = this.chatMessages.length - 1; // 记录当前消息的索引
-        },
+    // Actions
+    // 设置用户信息
+    const setUser = (newUser) => {
+        user.value = newUser;
+    };
 
-        // 更新当前流式消息
-        updateCurrentOfficialMessage(text) {
-            if (this.currentOfficialMessageIndex !== -1) {
-                this.chatMessages[this.currentOfficialMessageIndex].text = text;
-            }
-        },
-        // 完成当前流式消息
-        completeCurrentOfficialMessage() {
-            this.currentOfficialMessageIndex = -1; // 重置索引
+    // 设置是否在回复中
+    const isReplaying = (isReplying) => {
+        replying.value = isReplying;
+    };
+
+    // 添加图片
+    const addImage = (img) => {
+        // 生成唯一id
+        const imageId = Date.now() + Math.random().toString(36).substr(2, 9);
+        const imageWithId = {
+            ...img,
+            id: imageId
+        };
+        images.value.push(imageWithId);
+        return imageId;
+    };
+
+    // 移除图片
+    const removeImage = (imageId) => {
+        // 通过ID查找索引并删除
+        const index = images.value.findIndex(img => img.id === imageId);
+        if (index !== -1) {
+            images.value.splice(index, 1);
+        }
+    };
+
+    // 清除用户输入的消息和图片
+    const clearAll = () => {
+        images.value = [];
+    };
+
+    // 显示隐藏提示
+    const SetShowTip = () => {
+        showTip.value = true;
+        // 1.5秒后隐藏
+        setTimeout(() => {
+            showTip.value = false;
+        }, 1500);
+    };
+
+    // 判断消息和图片是否为空
+    const isEmpty = (msg) => {
+        return ((!msg || !msg.trim()) && images.value.length === 0);
+    };
+
+    // 添加用户消息
+    const addUserMessage = (msg) => {
+        const userMsg = { ...msg, isUser: true };
+        userMessages.value.push(userMsg);
+        chatMessages.value.push(userMsg); // 添加到对话序列
+    };
+
+    // 添加官方消息
+    const addOfficialMessage = (msg) => {
+        const officialMsg = { ...msg, isUser: false };
+        officialMessage.value.push(officialMsg);
+        chatMessages.value.push(officialMsg); // 添加到对话序列
+    };
+
+    // 开始流式接收官方消息
+    const startStreamingOfficialMessage = () => {
+        const officialMsg = { text: '思考中...', img: [], date: new Date().toLocaleString(), isUser: false };
+        officialMessage.value.push(officialMsg);
+        chatMessages.value.push(officialMsg);
+        currentOfficialMessageIndex.value = chatMessages.value.length - 1; // 记录当前消息的索引
+    };
+
+    // 更新当前流式消息
+    const updateCurrentOfficialMessage = (text) => {
+        if (currentOfficialMessageIndex.value !== -1) {
+            chatMessages.value[currentOfficialMessageIndex.value].text = text;
+        }
+    };
+
+    // 完成当前流式消息
+    const completeCurrentOfficialMessage = () => {
+        currentOfficialMessageIndex.value = -1; // 重置索引
+    };
+
+    return {
+        // State
+        currentOfficialMessageIndex,
+        user,
+        replying,
+        images,
+        chatMessages,
+        userMessages,
+        officialMessage,
+        showTip,
+
+        // Getters
+        imagesCount,
+        userMessagesCount,
+        officialMessageCount,
+
+        // Actions
+        setUser,
+        isReplaying,
+        addImage,
+        removeImage,
+        clearAll,
+        SetShowTip,
+        isEmpty,
+        addUserMessage,
+        addOfficialMessage,
+        startStreamingOfficialMessage,
+        updateCurrentOfficialMessage,
+        completeCurrentOfficialMessage
+    }
+},
+    {
+        persist: {
+            key: 'user',
+            pick:['user']
         }
     }
-})
+);

@@ -20,8 +20,9 @@
     </div>
 </template>
 <script setup>
-import { ref, defineProps, defineEmits, watch, onMounted, onUnmounted,computed } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { useFeedbackStore } from '@/stores/feedback'
+import Tools from '@/utils/tools'
 const feedbackStore = useFeedbackStore()
 //接收拖动到父组件的图片
 const props = defineProps({
@@ -35,7 +36,7 @@ const props = defineProps({
 const placeholderValue = "请输入您的反馈或意见..."
 
 //动态控制发送按钮的hover效果
-const tooltipText = computed(()=>{
+const tooltipText = computed(() => {
     return feedbackStore.replying ? '点击停止回答!🙃' : '点击发送消息或按下Shift+Enter发送!😊'
 })
 
@@ -188,7 +189,7 @@ const message = ref('')//用户输入
 const sendButton = ref(null)
 const emit = defineEmits(['receiveUserMessage'])
 const sendMessage = () => {
-    console.log("send");
+    console.log(Tools.getRandomAvatar());
 
     if (feedbackStore.isEmpty(message.value)) {
         feedbackStore.SetShowTip()
@@ -198,14 +199,13 @@ const sendMessage = () => {
     feedbackStore.addUserMessage({
         img: feedbackStore.images,
         text: message.value,
-        date: getDate()
+        date: Tools.getFormatDate('yyyy-mm-dd')
     });
 
     //将发送的消息传递给父组件
     emit('receiveUserMessage', message.value)
 
     feedbackStore.isReplaying(true)
-
     //清空输入的数据 
     message.value = ''
     previewContainer.value.innerHTML = ''
@@ -247,19 +247,6 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown)
 })
-
-
-//获取当前时间
-const getDate = () => {
-    const date = new Date()
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    console.log(day);
-
-    return `${year}-${month}-${day}`
-
-}
 
 </script>
 <style lang="scss">

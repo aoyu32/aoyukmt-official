@@ -139,10 +139,6 @@
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .content {
-        padding: 0.75rem; // 调整移动端内边距，使内容更紧凑
-    }
-
     .content :deep(h1) {
         font-size: 1.5rem; // 调整移动端标题字体大小
     }
@@ -154,6 +150,28 @@
     .content :deep(h3) {
         font-size: 1.125rem; // 调整移动端标题字体大小
     }
+
+    .content :deep(p) {
+        margin-bottom: 0.6rem; // 调整段落间距，使内容更紧凑
+        margin-top: 0.6rem; // 调整段落间距，使内容更紧凑
+        color: #ffffff;
+        line-height: 2; // 调整行高，使内容更紧凑
+    }
+
+
+    /* Lists */
+    .content :deep(ul),
+    .content :deep(ol) {
+        margin-bottom: 0.75rem; // 调整列表间距，使内容更紧凑
+        padding-left: 1.25rem; // 调整列表内边距，使内容更紧凑
+    }
+
+    .content :deep(ul li),
+    .content :deep(ol li) {
+        margin-bottom: 0.5rem; // 调整列表项间距，使内容更紧凑
+        line-height: 1.5;
+    }
+
 
     .content :deep(code) {
         font-size: 0.8rem; // 调整移动端代码字体大小

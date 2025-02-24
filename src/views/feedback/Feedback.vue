@@ -9,12 +9,13 @@
     </div>
 </template>
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 
 import ChatWindow from '@/components/feedback/ChatWindow.vue';
 import ChatInput from '@/components/feedback/ChatInput.vue';
 import { fetchChatStream } from "@/utils/coze";
 import { useFeedbackStore } from "@/stores/feedback";
+import Tools from "@/utils/tools";
 
 const feedbackStore = useFeedbackStore()
 
@@ -54,7 +55,6 @@ async function readStream(reader) {
     let fullMessage = '';
     while (true) {
         const { done, value } = await reader.read();
-        console.log("完成：", done);
 
         if (done) {
             // 流式接收完成
@@ -70,6 +70,20 @@ async function readStream(reader) {
     }
 }
 
+//随机生成用户信息
+const initUser = () => {
+    feedbackStore.setUser({
+        id: Tools.getRandomId(),
+        name: Tools.getRandomName('user-'),
+        avatar: Tools.getRandomAvatar()
+    })
+}
+
+onMounted(() => {
+    if (localStorage.getItem('user')===null) {
+        initUser()
+    }
+})
 
 </script>
 <style lang="scss" scoped>
@@ -99,7 +113,16 @@ async function readStream(reader) {
         animation: breathing-border 5s infinite alternate;
     }
 
+    @media (max-width: 1250px) {
+        .chat-container {
+            width: 95%;
+        }
+
+    }
+
 }
+
+
 
 @keyframes breathing-border {
     0% {

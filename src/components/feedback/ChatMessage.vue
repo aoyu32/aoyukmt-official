@@ -1,10 +1,10 @@
 <template>
   <div class="chat-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
     <div class="avatar">
-      <img src="@/assets/avatar/aoyukmt-avatar.svg" alt="">
+      <img :src="messageData.isUser ? feedbackStore.user.avatar : aoyukmtAvatar" alt="">
     </div>
     <div class="message-wrapper">
-      <div class="name">{{ messageData.isUser ? '用户' : 'AOYUKMT官方' }}</div>
+      <div class="name">{{ messageData.isUser ? feedbackStore.user.name : 'AOYUKMT官方' }}</div>
       <div class="message-content">
         <!-- 显示图片 -->
         <div v-if="hasImages" class="message-content-img" :style="messageTextStyle">
@@ -20,9 +20,13 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from "vue";
+import { computed } from "vue";
 import { marked } from "marked";
+import { useFeedbackStore } from "@/stores/feedback";
+import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
 
+
+const feedbackStore = useFeedbackStore()
 // 接收父组件传递的 messageData
 const props = defineProps({
   messageData: {
