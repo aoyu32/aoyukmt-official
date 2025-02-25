@@ -11,6 +11,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
     const userMessages = ref([]); // 用户发送的消息
     const officialMessage = ref([]); // 官方回复的消息
     const showTip = ref(false); // 是否显示提示文字
+    const showDialog = ref(false) //是否显示修改信息弹窗
 
     // Getters
     const imagesCount = computed(() => images.value.length); // 图片数量
@@ -84,7 +85,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
 
     // 开始流式接收官方消息
     const startStreamingOfficialMessage = () => {
-        const officialMsg = { text: '思考中...', img: [], date: new Date().toLocaleString(), isUser: false };
+        const officialMsg = { text: '让我想想怎么回答...', img: [], date: new Date().toLocaleString(), isUser: false };
         officialMessage.value.push(officialMsg);
         chatMessages.value.push(officialMsg);
         currentOfficialMessageIndex.value = chatMessages.value.length - 1; // 记录当前消息的索引
@@ -102,6 +103,11 @@ export const useFeedbackStore = defineStore('feedback', () => {
         currentOfficialMessageIndex.value = -1; // 重置索引
     };
 
+    //显示修改用户信息弹窗
+    const setShowDialog = (isShow) => {
+        showDialog.value = isShow
+    }
+
     return {
         // State
         currentOfficialMessageIndex,
@@ -112,6 +118,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
         userMessages,
         officialMessage,
         showTip,
+        showDialog,
 
         // Getters
         imagesCount,
@@ -130,13 +137,14 @@ export const useFeedbackStore = defineStore('feedback', () => {
         addOfficialMessage,
         startStreamingOfficialMessage,
         updateCurrentOfficialMessage,
-        completeCurrentOfficialMessage
+        completeCurrentOfficialMessage,
+        setShowDialog
     }
 },
     {
         persist: {
             key: 'user',
-            pick:['user']
+            pick: ['user']
         }
     }
 );

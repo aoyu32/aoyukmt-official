@@ -86,7 +86,8 @@
 
 /* Code Blocks */
 .content :deep(pre) {
-    background-color: #f4f4f4;
+    background-color: #f9f7f744;
+    margin-top: 5px;
     padding: 0.75rem; // 调整代码块内边距，使内容更紧凑
     border-radius: 8px;
     font-size: 0.875rem; // 调整代码字体大小
@@ -95,12 +96,18 @@
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.content :deep(pre code) {
+    background-color: transparent;
+    line-height: 1.7;
+    color: #ffffff;
+}
+
 .content :deep(code) {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(255, 141, 116, 0.913);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-family: "Courier New", Courier, monospace;
-    color: $primary-color;
+    color: #fef3f3;
 }
 
 /* Images */

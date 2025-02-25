@@ -1,6 +1,6 @@
 <template>
   <div class="chat-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
-    <div class="avatar">
+    <div class="avatar" @click="ModifyUserInfo">
       <img :src="messageData.isUser ? feedbackStore.user.avatar : aoyukmtAvatar" alt="">
     </div>
     <div class="message-wrapper">
@@ -38,7 +38,7 @@ const props = defineProps({
 //将markdown语法的消息解析为html
 const messageContent = computed(() => {
   console.log(props.messageData.text);
-  
+
   return props.messageData.isUser ? props.messageData.text : marked(props.messageData.text)
 })
 
@@ -56,10 +56,16 @@ const messageTextStyle = computed(() => {
       : '0'
   };
 });
+
+//修改用户信息
+const ModifyUserInfo = () => {
+  if (props.messageData.isUser) {
+    feedbackStore.setShowDialog(true)
+  }
+}
 </script>
 
 <style scoped lang="scss">
 @use "@/assets/styles/feedback/markdown.scss" as *;
 @use "@/assets/styles/feedback/message.scss" as *;
-
 </style>

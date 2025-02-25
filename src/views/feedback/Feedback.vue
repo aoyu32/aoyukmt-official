@@ -4,6 +4,7 @@
             <div class="chat-container active">
                 <ChatWindow />
                 <ChatInput :files="files" @receiveUserMessage="handleUserMessage" />
+                <ModalDialog/>
             </div>
         </div>
     </div>
@@ -16,6 +17,7 @@ import ChatInput from '@/components/feedback/ChatInput.vue';
 import { fetchChatStream } from "@/utils/coze";
 import { useFeedbackStore } from "@/stores/feedback";
 import Tools from "@/utils/tools";
+import ModalDialog from "@/components/feedback/ModalDialog.vue";
 
 const feedbackStore = useFeedbackStore()
 
