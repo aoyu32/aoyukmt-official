@@ -3,7 +3,7 @@
         <div class="chat-tip" ref="chatTip" :class="{ 'show': feedbackStore.showTip, 'hide': !feedbackStore.showTip }">
             {{ tipContext }}
         </div>
-        <ChatMessage v-for="(item, index) in feedbackStore.chatMessages" :key="index" :messageData="item" />
+        <ChatMessage v-for="(item, index) in feedbackStore.chatMessages" :key="index" :messageData="item"/>
     </div>
 </template>
 <script setup>

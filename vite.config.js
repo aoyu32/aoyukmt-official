@@ -21,4 +21,13 @@ export default defineConfig({
   //     },
   //   },
   // },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://spark-api-open.xf-yun.com/v1/chat/completions',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })

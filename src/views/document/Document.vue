@@ -5,7 +5,7 @@
         </button>
         <div class="main-content">
             <div class="document-sidebar">
-                <DocumentSideBar :menuData="menuData" />
+                <DocumentSidebar :menuData="menuData" />
             </div>
             <div class="document-content">
                 <div class="document-markdown">
@@ -22,7 +22,7 @@
     </div>
 </template>
 <script setup>
-import DocumentSideBar from '@/components/document/DocumentSideBar.vue';
+import DocumentSidebar from '@/components/document/DocumentSidebar.vue'
 import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
 import PageControl from '@/components/document/PageControl.vue';
 import MarkdownOutline from '@/components/document/MarkdownOutline.vue';

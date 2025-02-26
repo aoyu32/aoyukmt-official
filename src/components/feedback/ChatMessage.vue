@@ -1,6 +1,6 @@
 <template>
   <div class="chat-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
-    <div class="avatar" @click="ModifyUserInfo">
+    <div class=" avatar" @click="ModifyUserInfo">
       <img :src="messageData.isUser ? feedbackStore.user.avatar : aoyukmtAvatar" alt="">
     </div>
     <div class="message-wrapper">
@@ -26,6 +26,7 @@ import { useFeedbackStore } from "@/stores/feedback";
 import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
 
 
+
 const feedbackStore = useFeedbackStore()
 // 接收父组件传递的 messageData
 const props = defineProps({
@@ -41,7 +42,6 @@ const messageContent = computed(() => {
 
   return props.messageData.isUser ? props.messageData.text : marked(props.messageData.text)
 })
-
 
 // 计算是否有图片
 const hasImages = computed(() => props.messageData.img.length > 0);

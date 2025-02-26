@@ -23,6 +23,7 @@
 import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { useFeedbackStore } from '@/stores/feedback'
 import Tools from '@/utils/tools'
+// import SparkAIService from '../../api/spark'
 const feedbackStore = useFeedbackStore()
 //接收拖动到父组件的图片
 const props = defineProps({
@@ -184,12 +185,36 @@ const createImageWrapper = (file) => {
     reader.readAsDataURL(file); // 读取文件并生成预览
 }
 
+// // 初始化星火API服务
+// const sparkService = new SparkAIService({
+//     appId: 'fb918983',
+//     apiKey: '18138a8d8a482d9e4fbb9cca2c5218a7',
+//     apiSecret: 'Mjg3Mjk5Njc2Y2U4MWE5ODA2ZDQxMzdi',
+//     domain: '4.0Ultra',  // 使用Max版本
+//     url: 'wss://spark-api.xf-yun.com/v4.0/chat'
+// });
+
 //发送消息
 const message = ref('')//用户输入
 const sendButton = ref(null)
 const emit = defineEmits(['receiveUserMessage'])
-const sendMessage = () => {
-    console.log(Tools.getRandomAvatar());
+const sendMessage = async () => {
+
+    // try {
+    //     // 发送请求并获取回复
+    //     const response = await sparkService.chat(
+    //         "你都有哪些功能",
+    //         { temperature: 0.7, maxTokens: 2048 }
+    //     );
+    //     console.log(response);
+        
+    //     console.log('Token使用情况:', response.usage);
+    // } catch (error) {
+    //     console.error('请求失败:', error);
+    // } finally {
+        
+    // }
+
 
     if (feedbackStore.isEmpty(message.value)) {
         feedbackStore.SetShowTip()

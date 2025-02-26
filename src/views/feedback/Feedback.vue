@@ -3,8 +3,11 @@
         <div class="main-content" id="main-content" @dragover="handleImageDragover" @drop="handleImageDrop">
             <div class="chat-container active">
                 <ChatWindow />
-                <ChatInput :files="files" @receiveUserMessage="handleUserMessage" />
-                <ModalDialog/>
+                <ChatInput :files="files" @receiveUserMessage="handleUserMessage" v-aos="{
+                    duration:400,
+                    animation: 'fade-up',
+                }" />
+                <ModalDialog />
             </div>
         </div>
     </div>
@@ -82,7 +85,7 @@ const initUser = () => {
 }
 
 onMounted(() => {
-    if (localStorage.getItem('user')===null) {
+    if (localStorage.getItem('user') === null) {
         initUser()
     }
 })
