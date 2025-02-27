@@ -2,17 +2,20 @@
     <div class="updatelog">
         <div class="main-content">
             <div class="sidebar">
-                <UpdatelogSidebar/>
+                <UpdatelogSidebar />
             </div>
             <div class="container">
                 <div class="content">
-                    <div class="latest">
-                        <h2>🪁 NEW版本更新日志</h2>
+                    <div class="latest" v-aos="{
+                        animation: 'zoom-in',
+                        duration: 300,
+                    }">
+                        <h2 id="latest">🪁 NEW版本更新日志</h2>
                         <UpdatelogCard :versionData="latestData" />
                     </div>
                     <div class="history">
                         <h2>🥏 历史版本</h2>
-                        <UpdatelogCard v-for="(item, index) in historyData" :key="index" :versionData="item" />
+                        <UpdatelogCard v-for="(item, index) in historyData" :key="index" :versionData="item"  :id="`version${item.id}`"/>
                     </div>
                 </div>
             </div>
@@ -23,7 +26,7 @@
 
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import UpdatelogCard from '@/components/updatelog/UpdatelogCard.vue';
 import UpdatelogSidebar from '@/components/updatelog/UpdatelogSidebar.vue';
 import { initLenis, destroyLenis } from "@/utils/lenis";
@@ -36,6 +39,7 @@ onMounted(() => {
     initLenis();
     updatelogStore.setLatest(latestData)
     updatelogStore.setHistory(historyData)
+
 });
 
 onUnmounted(() => {
@@ -63,8 +67,8 @@ onUnmounted(() => {
         position: relative;
 
         .container {
-            width: 100%;
             height: 100vh;
+            width: 100%;
 
             .content {
                 flex: 1;

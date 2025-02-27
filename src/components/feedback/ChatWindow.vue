@@ -3,13 +3,14 @@
         <div class="chat-tip" ref="chatTip" :class="{ 'show': feedbackStore.showTip, 'hide': !feedbackStore.showTip }">
             {{ tipContext }}
         </div>
-        <ChatMessage v-for="(item, index) in feedbackStore.chatMessages" :key="index" :messageData="item"/>
+        <ChatMessage v-for="(item, index) in feedbackStore.chatMessages" :key="index" :messageData="item" />
     </div>
 </template>
 <script setup>
 import { ref, onMounted, watch, nextTick } from 'vue';
 import ChatMessage from './ChatMessage.vue';
 import { useFeedbackStore } from "@/stores/feedback";
+import { scrollTo } from '@/utils/scroll';
 
 const chatWindow = ref(null)
 const feedbackStore = useFeedbackStore()
@@ -34,34 +35,10 @@ watch(
     { deep: true } // 深度监听，确保消息内容更新时也能触发
 );
 
-const scrollToBottom = (duration = 200) => {
-    setTimeout(() => {
-        if (chatWindow.value) {
-            const start = chatWindow.value.scrollTop;
-            const end = chatWindow.value.scrollHeight - chatWindow.value.clientHeight;
-            const change = end - start;
-            const startTime = performance.now();
-
-            const animateScroll = (currentTime) => {
-                const elapsedTime = currentTime - startTime;
-                const progress = Math.min(elapsedTime / duration, 1); // 确保进度不超过1
-                const amountScrolled = easeInOutQuad(progress) * change;
-
-                chatWindow.value.scrollTop = start + amountScrolled;
-
-                if (progress < 1) {
-                    requestAnimationFrame(animateScroll);
-                }
-            };
-
-            // 缓动函数，用于平滑滚动
-            const easeInOutQuad = (t) => {
-                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-            };
-
-            requestAnimationFrame(animateScroll);
-        }
-    }, 50); // 短暂延迟确保 DOM 已更新
+const scrollToBottom = () => {
+    // setTimeout(() => {
+    scrollTo('bottom', 150, chatWindow.value)
+    // }, 50); // 短暂延迟确保 DOM 已更新
 };
 
 </script>

@@ -11,7 +11,10 @@
                 <div class="document-markdown">
                     <!-- 文档内容 -->
                     <!-- 传递Markdown文本或文件路径 -->
-                    <MarkdownViewer :filePath="store.activeFilePath" @getHeadings="handleHeadings" />
+                    <MarkdownViewer :filePath="store.activeFilePath" @getHeadings="handleHeadings" v-aos="{
+                        animation: 'fade-down',
+                        duration: 250
+                    }" />
                     <!-- 上一页/下一页 -->
                     <PageControl />
                 </div>

@@ -7,10 +7,15 @@ export const useUpdatelogStore = defineStore('updatelog', () => {
 
     //最新版本
     const setLatest = (latestVerison) => {
-        latest.value = latestVerison
+        const version = {
+            ...latestVerison,
+            id: 'latest'
+        }
+        latest.value = version
     }
     //历史版本
     const setHistory = (historyVersion) => {
+
         history.value = historyVersion
     }
 

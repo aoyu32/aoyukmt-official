@@ -1,7 +1,5 @@
 <template>
-    <div v-aos="{
-        animation: 'fade-right',
-    }">
+    <div>
         <aside class="sidebar" id="sidebar">
             <nav class="sidebar-nav">
                 <h3>文档导航</h3>

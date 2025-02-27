@@ -1,8 +1,5 @@
 <template>
-    <div class="updatelog-card" v-aos="{
-        animation: 'flip-left',
-        offset:10
-    }">
+    <div class="updatelog-card">
         <div class="log">
             <div class="log-header">
                 <span class="version-title">v{{ versionData.version }}</span>
@@ -10,9 +7,9 @@
             </div>
             <div class="log-content">
                 <h3>{{ versionData.description }}</h3>
-                <div class="content-markdown">
-                    <MarkdownViewer :filePath="versionData.notes" />
-                </div>
+                <!-- <div class="content-markdown"> -->
+                <MarkdownViewer :filePath="versionData.notes" />
+                <!-- </div> -->
             </div>
             <div class="log-download">
                 <h4>下载该版本:</h4>
@@ -29,8 +26,9 @@
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
+
 
 //版本日志数据
 const props = defineProps({
@@ -39,7 +37,6 @@ const props = defineProps({
         required: true
     }
 })
-
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/updatelog/card.scss" as *;

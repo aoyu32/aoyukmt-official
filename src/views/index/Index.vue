@@ -35,7 +35,7 @@
 
         <section>
             <div class="scroll-up">
-                <span @click="scrollToTop">&#9650;</span>
+                <span @click="scrollTo('top',400)">&#9650;</span>
             </div>
         </section>
         <footer>
@@ -54,6 +54,7 @@ import FeatureCard from "@/components/index/FeatureCard.vue";
 import DetailCard from "@/components/index/DetailCard.vue";
 import { initLenis, destroyLenis } from "@/utils/lenis";
 import { ref, onMounted, onUnmounted } from "vue";
+import { scrollTo } from "@/utils/scroll";
 //动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
 // 定义功能项的数据
@@ -124,27 +125,6 @@ onMounted(() => {
 onUnmounted(() => {
     destroyLenis(); // 销毁 Lenis 实例
 });
-//平滑滚动到顶部
-const scrollToTop = () => {
-    const startPosition = window.pageYOffset;
-    const startTime = performance.now();
-
-    const duration = 500; // 设置滚动的持续时间（毫秒）
-
-    const scroll = (currentTime) => {
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / duration, 1);
-        const distance = startPosition * (1 - progress);
-
-        window.scrollTo(0, distance);
-
-        if (progress < 1) {
-            requestAnimationFrame(scroll); // 如果还没有到顶部，继续滚动
-        }
-    };
-
-    requestAnimationFrame(scroll); // 开始滚动动画
-}
 
 </script>
 <style lang="scss" scoped>
