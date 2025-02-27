@@ -3,12 +3,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch,nextTick } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 import { marked } from 'marked';
-import { useDocumentStore } from '@/stores/document';
 
 const markdownDiv = ref(null)
-const store = useDocumentStore()
 const props = defineProps({
   markdownData: {
     type: String, // 只接受 Markdown 内容
@@ -40,15 +38,17 @@ const renderMarkdown = async (filePath) => {
   }
 };
 
-// 监听 activeFilePath 的变化
+// 监听 filePath 的变化
 watch(
-  () => store.activeFilePath,
+  () => props.filePath,
   (newFilePath) => {
     renderMarkdown(newFilePath);
   },
   { immediate: true }
 );
 
+//提取h2标题
+const emit = defineEmits(['getHeadings'])
 const extractHeadings = () => {
   if (!markdownDiv.value) return [];
 
@@ -63,12 +63,14 @@ const extractHeadings = () => {
     };
   });
 
-  store.setHeadings(headingsData);
+  emit('getHeadings', headingsData)
 };
 
 
 onMounted(() => {
-  renderMarkdown(store.activeFilePath)
+  console.log(props.filePath);
+  
+  renderMarkdown(props.filePath)
 })
 
 </script>

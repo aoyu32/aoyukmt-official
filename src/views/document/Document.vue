@@ -11,7 +11,7 @@
                 <div class="document-markdown">
                     <!-- 文档内容 -->
                     <!-- 传递Markdown文本或文件路径 -->
-                    <MarkdownViewer />
+                    <MarkdownViewer :filePath="store.activeFilePath" @getHeadings="handleHeadings" />
                     <!-- 上一页/下一页 -->
                     <PageControl />
                 </div>
@@ -22,14 +22,23 @@
     </div>
 </template>
 <script setup>
+import { onMounted } from 'vue'
 import DocumentSidebar from '@/components/document/DocumentSidebar.vue'
 import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
 import PageControl from '@/components/document/PageControl.vue';
 import MarkdownOutline from '@/components/document/MarkdownOutline.vue';
 import { menuData } from '@/data/sidebar';
 import { useDocumentStore } from '@/stores/document'
+// import { initLenis } from '@/utils/lenis';
 const store = useDocumentStore();
 store.setMenuData(menuData)
+onMounted(() => {
+    // initLenis();
+});
+//获取标题
+const handleHeadings = (headingsData) => {
+    store.setHeadings(headingsData)
+}
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/constant.scss" as *;

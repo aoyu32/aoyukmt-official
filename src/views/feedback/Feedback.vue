@@ -5,6 +5,7 @@
                 <ChatWindow />
                 <ChatInput :files="files" @receiveUserMessage="handleUserMessage" v-aos="{
                     duration:400,
+                    once:true,
                     animation: 'fade-up',
                 }" />
                 <ModalDialog />

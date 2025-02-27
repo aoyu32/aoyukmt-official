@@ -2,22 +2,17 @@
     <div class="updatelog">
         <div class="main-content">
             <div class="sidebar">
-                <UpdatelogSidebar v-aos="{
-                    animation: 'slide-right',
-                }" />
+                <UpdatelogSidebar/>
             </div>
             <div class="container">
                 <div class="content">
                     <div class="latest">
                         <h2>🪁 NEW版本更新日志</h2>
-                        <UpdatelogCard />
+                        <UpdatelogCard :versionData="latestData" />
                     </div>
                     <div class="history">
                         <h2>🥏 历史版本</h2>
-                        <UpdatelogCard />
-                        <UpdatelogCard />
-                        <UpdatelogCard />
-                        <UpdatelogCard />
+                        <UpdatelogCard v-for="(item, index) in historyData" :key="index" :versionData="item" />
                     </div>
                 </div>
             </div>
@@ -26,12 +21,26 @@
     </div>
 
 
-
-
 </template>
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 import UpdatelogCard from '@/components/updatelog/UpdatelogCard.vue';
 import UpdatelogSidebar from '@/components/updatelog/UpdatelogSidebar.vue';
+import { initLenis, destroyLenis } from "@/utils/lenis";
+import { useUpdatelogStore } from '@/stores/updatelog';
+import { latestData, historyData } from '@/data/version'
+
+const updatelogStore = useUpdatelogStore()
+
+onMounted(() => {
+    initLenis();
+    updatelogStore.setLatest(latestData)
+    updatelogStore.setHistory(historyData)
+});
+
+onUnmounted(() => {
+    destroyLenis()
+})
 
 </script>
 

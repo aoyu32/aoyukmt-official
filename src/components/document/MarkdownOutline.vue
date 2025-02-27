@@ -1,5 +1,7 @@
 <template>
-    <div class="markdown-outline">
+    <div class="markdown-outline" v-aos="{
+        animation: 'fade-down',
+    }">
         <ul>
             <li v-for="heading in headings" :key="heading.id" :class="{ active: activeHeadingId === heading.id }"
                 @click="scrollToHeading(heading.id)">
