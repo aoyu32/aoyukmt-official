@@ -4,8 +4,8 @@
             <div class="chat-container active">
                 <ChatWindow />
                 <ChatInput :files="files" @receiveUserMessage="handleUserMessage" v-aos="{
-                    duration:400,
-                    once:true,
+                    duration: 400,
+                    once: true,
                     animation: 'fade-up',
                 }" />
                 <ModalDialog />
@@ -18,10 +18,12 @@ import { ref, onMounted } from "vue"
 
 import ChatWindow from '@/components/feedback/ChatWindow.vue';
 import ChatInput from '@/components/feedback/ChatInput.vue';
-import { fetchChatStream } from "@/utils/coze";
+import { fetchChatStream } from "@/api/coze";
 import { useFeedbackStore } from "@/stores/feedback";
 import Tools from "@/utils/tools";
 import ModalDialog from "@/components/feedback/ModalDialog.vue";
+import { callDashScopeStream } from "@/api/aliyun";
+import SparkAIService from '@/api/spark'
 
 const feedbackStore = useFeedbackStore()
 
@@ -51,9 +53,14 @@ const handleUserMessage = (msg) => {
 
     // 请求 coze 获取流式回复
     const stream = fetchChatStream(msg);
+    // const stream = callDashScopeStream(msg)
 
+    // const stream = new SparkAIService().sendMessageStream(msg)
     const reader = stream.getReader();
+    console.log(reader);
+
     readStream(reader);
+
 
 };
 
@@ -69,6 +76,7 @@ async function readStream(reader) {
             break;
         }
         fullMessage += value;
+
         // 更新当前流式消息
         if (feedbackStore.replying) {
             feedbackStore.updateCurrentOfficialMessage(fullMessage);

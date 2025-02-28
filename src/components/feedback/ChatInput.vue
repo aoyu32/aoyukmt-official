@@ -23,6 +23,7 @@
 import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { useFeedbackStore } from '@/stores/feedback'
 import Tools from '@/utils/tools'
+// import { callDashScope } from '@/api/aliyun'
 // import SparkAIService from '../../api/spark'
 const feedbackStore = useFeedbackStore()
 //接收拖动到父组件的图片
@@ -200,6 +201,7 @@ const sendButton = ref(null)
 const emit = defineEmits(['receiveUserMessage'])
 const sendMessage = async () => {
 
+    // callDashScope()
     // try {
     //     // 发送请求并获取回复
     //     const response = await sparkService.chat(
@@ -207,12 +209,12 @@ const sendMessage = async () => {
     //         { temperature: 0.7, maxTokens: 2048 }
     //     );
     //     console.log(response);
-        
+
     //     console.log('Token使用情况:', response.usage);
     // } catch (error) {
     //     console.error('请求失败:', error);
     // } finally {
-        
+
     // }
 
 

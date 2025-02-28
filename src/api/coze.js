@@ -1,7 +1,7 @@
 import { CozeAPI, ChatEventType, RoleType, COZE_COM_BASE_URL } from '@coze/api';
 
-const token = "pat_qktNGG20QIbqPAVkRAlZYERzNQIEpG8fk0hj0tlVZiYYCP9pstn9z9v7v0qSwqJV";
-const botId = "7475227947491131410";
+const token = "pat_v82eBTLzPH5U1p5ehdfyNC68QQkFLMhUnGeNhW2xnkFKCEHc2K5QGNfPFsNLYlkE";
+const botId = "7476479152497983489";
 const baseURL = COZE_COM_BASE_URL;
 const client = new CozeAPI({
     baseURL,
