@@ -1,16 +1,17 @@
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
 
 .markdown-page {
-    height: 65px;
+    height: $document-page-height;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: 40px 0 20px 0;
+    margin: $document-page-margin;
 
     .pre-page,
     .next-page {
         width: 350px;
-        border: 1px solid rgba(145, 142, 142, 0.676);
+        border: 1px solid $theme-font-light-gray;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -21,23 +22,23 @@
         transition: border-color 0.3s ease;
 
         &:hover {
-            border: 1px solid $primary-color;
+            border: 1px solid $theme-primary;
             cursor: pointer;
         }
     }
 
     .pre-page {
-        margin-right: 10px;
+        margin-right: $document-page-lr-margin;
     }
 
     .next-page {
-        margin-left: 10px;
+        margin-left: $document-page-lr-margin;
     }
 
     /* 子元素样式调整 */
     .pre {
-        color: $primary-color;
-        font-weight: 600;
+        color: $theme-primary;
+        font-weight: $font-weight;
         display: flex;
         align-items: center;
         /* 垂直居中 */
@@ -48,8 +49,8 @@
     }
 
     .next {
-        color: $primary-color;
-        font-weight: 600;
+        color: $theme-primary;
+        font-weight: $font-weight;
         display: flex;
         align-items: center;
         /* 垂直居中 */

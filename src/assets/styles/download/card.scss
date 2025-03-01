@@ -1,45 +1,47 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
 @use "@/assets/styles/common/constant.scss" as *;
 
 .download-card {
-    background-color: white;
-    border: 2px solid $border-color;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    background-color: $theme-card-background;
+    color: $theme-font-dark;
+    border: 2px solid $theme-primary;
+    border-radius: $download-card-radius;
+    box-shadow: 0 4px 6px $theme-shallow-shadow;
+    padding: $download-card-padding;
     width: 400px;
     text-align: center;
     // transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 12px $theme-deep-shadow;
     }
 
     h3 {
         font-size: 1.5rem;
-        margin-bottom: 10px;
-        color: $border-color;
-
+        margin-bottom: $download-card-h3-margin;
+        color: $theme-primary;
     }
 
     p {
         font-size: 1rem;
-        margin-bottom: 15px;
-        color: #5c5b5b;
+        margin-bottom: $download-card-p-margin;
     }
 
     .btn {
         display: inline-block;
-        background-color: #ff4d4d;
-        color: white;
-        padding: 10px 20px;
+        background-color: $theme-primary;
+        color: $theme-font-light;
+        padding: $download-button-padding;
         text-decoration: none;
-        border-radius: 4px;
+        border-radius: $download-button-radius;
         font-size: 1rem;
         transition: background-color 0.3s ease;
 
-        &:hover{
-            background-color: #e63939;
+        &:hover {
+            background-color: $theme-primary-dark;
         }
 
     }

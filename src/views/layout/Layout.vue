@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <nav class="nav" ref="navLinks" :style="{maxWidth:navWidth}">
+    <nav class="nav" ref="navLinks" :style="{ maxWidth: navWidth }">
       <router-link to="/index" class="logo">
         <img src="@/assets/aoyukmt.png" />
         <span class="logo-text" ref="logoText">{{ pageText }}</span>
@@ -28,7 +28,9 @@
       </div>
     </nav>
   </header>
-  <router-view></router-view>
+  <main>
+    <router-view></router-view>
+  </main>
 </template>
 
 <script setup>
@@ -64,10 +66,11 @@ onMounted(() => {
       typingInstance.stop();
     }
 
+    isActive.value = false
+
     // 根据当前路由创建新的打字实例
     if (currentRoute === "/index") {
       typingInstance = new TypeEffect("AOYUKMT", logoText.value, initTypeEffect);
-      console.log(navWidth.value);
       navWidth.value = '1200px'
     } else if (currentRoute === "/download") {
       typingInstance = new TypeEffect("DOWNLOAD", logoText.value, initTypeEffect);
@@ -75,7 +78,6 @@ onMounted(() => {
     } else if (currentRoute.startsWith("/document")) {
       typingInstance = new TypeEffect("DOCUMENT", logoText.value, initTypeEffect);
       navWidth.value = '95%'
-      console.log(navWidth.value);
     } else if (currentRoute === "/feedback") {
       typingInstance = new TypeEffect("FEEDBACK", logoText.value, initTypeEffect);
       navWidth.value = '1200px'
@@ -121,81 +123,91 @@ const resetText = (link, originalText) => {
 
 
 <style lang="scss" scoped>
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
 
 .header {
-  background: $primary-color;
+  background: $theme-primary;
   padding: 1rem;
   position: fixed;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+  box-shadow: 0 2px 10px $theme-shallow-shadow;
 
-.nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .nav {
+    max-width: $max-width;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: white;
-  text-decoration: none;
-  font-size: 1.5rem;
-  font-weight: bold;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: $theme-font-light;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: $font-weight;
 
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-  }
-}
+      img {
+        width: $img-size-small;
+        height: $img-size-small;
+        border-radius: 8px;
+      }
 
-.logo-text {
-  font-family: 'Courier New', monospace;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-}
+      .logo-text {
+        font-family: $logo-font-family;
+        font-size: 1.5rem;
+        font-weight: $font-weight;
+      }
 
-.nav-links {
-  display: flex;
-  gap: 2rem;
-
-  a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    position: relative;
-    padding-bottom: 4px;
-    transition: color 0.3s;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background: rgb(255, 253, 253);
-      transition: width 0.3s ease, left 0.3s ease;
     }
 
-    &:hover {
-      color: $secondary-color;
 
-      &::after {
-        width: 100%;
-        left: 0;
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+
+      a {
+        color: $theme-font-light;
+        text-decoration: none;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 4px;
+        transition: color 0.3s;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          height: 2px;
+          background: $theme-primary-hover;
+          transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        &:hover {
+          color: $theme-secondary;
+
+          &::after {
+            width: 100%;
+            left: 0;
+          }
+        }
       }
     }
+
   }
 }
+
+main {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 
 // 响应式处理
 .menu-toggle {
@@ -203,40 +215,46 @@ const resetText = (link, originalText) => {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: white;
+  color: $theme-font-light;
   cursor: pointer;
   transition: color 0.3s;
 
   &:hover {
-    color: $secondary-color;
+    color: $theme-secondary;
   }
 }
 
 @media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
+  .header {
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 1px); // 距离导航栏顶部
+        right: 2px; // 保持适当的边距
+        background: $theme-primary-dt; // 半透明背景
+        width: 150px; // 合适的宽度
+        padding: 1rem;
+        box-shadow: 0 4px 6px $theme-shallow-shadow;
+        border-radius: 8px;
+
+        a {
+          text-align: center;
+        }
+      }
+
+      .active {
+        display: flex;
+      }
+
+
+    }
   }
 
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: calc(100% + 1px); // 距离导航栏顶部
-    right: 2px; // 保持适当的边距
-    background: rgba(255, 77, 77, 0.7); // 半透明背景
-    width: 150px; // 合适的宽度
-    padding: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-
-  .active {
-    display: flex;
-  }
-
-
-  .nav-links a {
-    text-align: center;
-  }
 }
 </style>

@@ -1,0 +1,194 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+// 动画变量
+// ================================
+
+/* 动态渐变动画 */
+@keyframes vibrantGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 50% 0%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    75% {
+        background-position: 50% 100%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* 透明过渡 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 按钮上下缓动动画 */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 箭头上下浮动动画 */
+@keyframes floating {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/*波浪线动画*/
+@keyframes waveMove {
+    from {
+        background-position-x: 0;
+    }
+
+    to {
+        background-position-x: 1200px;
+    }
+}
+
+/* download背景动画 */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+// 颜色循环过渡
+@keyframes colorCycle {
+
+    0%,
+    100% {
+        color: $theme-font-light-gray; // 初始颜色
+    }
+
+    25% {
+        color: $theme-primary; // 变为红色
+    }
+
+    75% {
+        color: $theme-font-light-gray; // 恢复原始颜色
+    }
+}
+
+// 下划线动画效果
+@keyframes underline {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+//向下移动
+@keyframes moveUpDown {
+
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+//白光晕
+@keyframes glowEffectWhite {
+    0% {
+        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
+        /* 无光晕 */
+    }
+
+    25% {
+        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
+        /* 光晕开始出现 */
+    }
+
+    50% {
+        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);
+        /* 光晕达到最大 */
+    }
+
+    75% {
+        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
+        /* 光晕开始消退 */
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
+        /* 光晕完全消失 */
+    }
+}
+
+//红光晕
+@keyframes glowEffectRed {
+    0% {
+        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
+        /* 无光晕 */
+    }
+
+    25% {
+        box-shadow: 0 0 10px 5px rgba(255, 146, 146, 0.313);
+        /* 光晕开始出现，浅红色 */
+    }
+
+    50% {
+        box-shadow: 0 0 20px 10px rgba(244, 164, 164, 0.406);
+        /* 光晕达到最大，浅红色 */
+    }
+
+    75% {
+        box-shadow: 0 0 10px 5px rgba(255, 146, 146, 0.313);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
+        /* 光晕完全消失 */
+    }
+}

@@ -1,10 +1,13 @@
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+
 .feature-card {
-    padding: 2rem;
+    padding: $feature-card-padding;
     border-radius: 10px;
-    background: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background: $theme-card-background;
+    box-shadow: 0 5px 15px $theme-shallow-shadow;
     transition: transform 0.3s;
+    color: $theme-font-dark;
     cursor: pointer;
 
     &:hover {
@@ -14,6 +17,6 @@
 
 .feature-icon {
     font-size: 2rem;
-    color: $primary-color;
+    color: $theme-primary;
     margin-bottom: 1rem;
 }

@@ -2,7 +2,7 @@
     <div class="download">
         <section class="download-section dynamic-background">
             <!-- 动态背景的 Canvas -->
-            <canvas ref="backgroundCanvas" class="canvas-background"></canvas>
+            <!-- <canvas ref="backgroundCanvas" class="canvas-background"></canvas> -->
             <img src="@/assets/aoyukmt.png" v-aos="{
                 animation: 'slide-down'
             }" class="img-animation">
@@ -82,10 +82,14 @@ AOS.refresh();
 
 </script>
 <style lang="scss" scoped>
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
 .download-section {
-    padding-top: 72px;
+    padding-top: $distance-top;
     text-align: center;
-    background-color: #fff5f5;
+    background-color: $theme-background;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -96,12 +100,12 @@ AOS.refresh();
     .download-options {
         display: flex;
         justify-content: center;
-        gap: 20px;
+        gap: $download-card-gap;
     }
 
     img {
-        width: 190px;
-        height: 190px;
+        width: $img-size-large;
+        height: $img-size-large;
         border-radius: 35px;
         /* 圆角设置，与实际icon一致 */
         margin-bottom: 40px;
@@ -109,10 +113,8 @@ AOS.refresh();
         animation: moveUpDown 3s infinite ease-in-out, glowEffectWhite 3s infinite alternate;
 
         &:hover {
-            /* 停止白色光晕动画 */
-            box-shadow: 0 0 20px 12px rgba(255, 100, 100, 0.8);
+            box-shadow: 0 0 20px 12px $download-card-hover-shadow;
             animation: moveUpDown 3s infinite ease-in-out, glowEffectRed 3s infinite;
-            /* 激活浅红色光晕动画 */
         }
 
     }
@@ -129,7 +131,7 @@ AOS.refresh();
         height: 40px;
         width: 528px;
         font-size: 2rem;
-        color: #ff4d4d;
+        color: $theme-primary;
         display: inline-block;
         text-align: left;
         margin-bottom: 30px;
@@ -142,31 +144,21 @@ AOS.refresh();
 
 }
 
-.canvas-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
 /* 动态背景基础样式 */
 .dynamic-background {
     position: relative;
     text-align: center;
-    color: #fff;
+    color: $theme-font-light;
     overflow: hidden;
-    background: linear-gradient(120deg, #ff7b7b, #ffd1d1, #ffe8e8, #ffbc80);
-
+    background: $dynamic-background;
     background-size: 400% 400%;
     animation: gradientShift 10s ease infinite;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .latest-version {
     display: flex;
     gap: 10px; // 调整间距
-    color: #726d6da1;
+    color: $theme-font-light-gray;
     margin-top: 20px;
     margin-bottom: 0;
 
@@ -180,7 +172,7 @@ AOS.refresh();
         transition: color 0.3s ease;
 
         &:hover {
-            color: #ff4d4d;
+            color: $theme-primary;
             cursor: pointer;
 
             &::after {
@@ -191,7 +183,7 @@ AOS.refresh();
                 width: 95%;
                 height: 1px;
                 /* 下划线的厚度 */
-                background-color: #ff4d4d;
+                background-color: $theme-primary;
                 transform: scaleX(0);
                 transform-origin: left center;
                 animation: underline 0.3s forwards;
@@ -218,53 +210,15 @@ AOS.refresh();
     }
 }
 
-// 每3秒切换颜色
-@keyframes colorCycle {
-
-    0%,
-    100% {
-        color: #726d6da1; // 初始颜色
-    }
-
-    25% {
-        color: #ff4d4d; // 变为红色
-    }
-
-    75% {
-        color: #726d6da1; // 恢复原始颜色
-    }
-}
-
-// 下划线动画效果
-@keyframes underline {
-    to {
-        transform: scaleX(1);
-    }
-}
-
 footer {
     text-align: center;
-    padding: 5px;
-    background-color: #ff4d4d;
-    color: white;
+    padding: $download-footer-padding;
+    background-color: $theme-primary;
+    color: $theme-font-light;
     font-size: 0.875rem;
 }
 
 
-/* 背景动画 */
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
 
 /* 响应式处理 */
 @media (max-width: 800px) {
@@ -284,7 +238,7 @@ footer {
 
         h2 {
             font-size: 1.8rem;
-            color: #ff4d4d;
+            color: $theme-primary;
             width: 475px;
             margin-bottom: 20px;
         }
@@ -300,69 +254,5 @@ footer {
 
     }
 
-}
-
-@keyframes moveUpDown {
-
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-@keyframes glowEffectWhite {
-    0% {
-        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
-        /* 无光晕 */
-    }
-
-    25% {
-        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
-        /* 光晕开始出现 */
-    }
-
-    50% {
-        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);
-        /* 光晕达到最大 */
-    }
-
-    75% {
-        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
-        /* 光晕开始消退 */
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
-        /* 光晕完全消失 */
-    }
-}
-
-@keyframes glowEffectRed {
-    0% {
-        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
-        /* 无光晕 */
-    }
-
-    25% {
-        box-shadow: 0 0 10px 5px rgba(255, 146, 146, 0.313);
-        /* 光晕开始出现，浅红色 */
-    }
-
-    50% {
-        box-shadow: 0 0 20px 10px rgba(244, 164, 164, 0.406);
-        /* 光晕达到最大，浅红色 */
-    }
-
-    75% {
-        box-shadow: 0 0 10px 5px rgba(255, 146, 146, 0.313);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(71, 70, 70, 0);
-        /* 光晕完全消失 */
-    }
 }
 </style>

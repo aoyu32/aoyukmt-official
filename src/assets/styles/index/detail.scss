@@ -1,20 +1,24 @@
 @use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+
 .detail-card {
-    max-width: 1200px;
-    margin: auto;
-    margin-top: 2rem;
-    margin-bottom: 0;
-    background: white;
+    max-width: $max-width;
+    margin: 0 auto;
+    margin-top: $detail-card-margin-top;
+    margin-bottom: $detail-card-margin-bottom;
+    background: $theme-card-background;
     border-radius: 15px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px $theme-shallow-shadow;
     position: relative;
+    color: $theme-font-dark;
     z-index: 2;
- 
+
     /* 设置较高的 z-index */
 
     h3 {
-        color: $primary-color;
+        color: $theme-primary;
         font-size: 1.8rem;
         margin-bottom: 1rem;
         display: flex;
@@ -40,7 +44,7 @@
     .detail-image {
         width: 100%;
         height: 300px;
-        background: #f0f0f0;
+        background: $theme-img-background;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -58,4 +62,3 @@
         }
     }
 }
-

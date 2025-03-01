@@ -1,4 +1,5 @@
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
 
 * {
   margin: 0;
@@ -12,23 +13,25 @@ html,
 #app {
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background: $theme-background;
   display: flex;
   position: relative;
   flex-direction: column;
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: $scroll-size;
+  height: $scroll-size; // 设置横向滚动条的高度，使其与纵向滚动条一致
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: hsl(0, 100%, 70%);
+  background-color: $theme-secondary;
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: $theme-font-light;
 }
 
 ::-webkit-scrollbar-track-piece {
@@ -36,18 +39,13 @@ html,
   -webkit-border-radius: 6px;
 }
 
-::-webkit-scrollbar-thumb:vertical {
-  background-color: #f37171;
-  -webkit-border-radius: 6px;
-}
-
+::-webkit-scrollbar-thumb:vertical,
 ::-webkit-scrollbar-thumb:horizontal {
-  background-color: #f37171;
+  background-color: $theme-secondary-light;
   -webkit-border-radius: 6px;
-
 }
 
 /* 设置滚动条在hover状态下的样式 */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #ea2828;
+  background-color: $theme-primary-dark;
 }

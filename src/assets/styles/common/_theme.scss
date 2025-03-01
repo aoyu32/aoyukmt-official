@@ -1,0 +1,146 @@
+// 主色调变量（可随主题切换）
+$theme-primary: #ff4d4d; // 主要主题色
+$theme-primary-light: #ff0808; //比主要颜色再鲜艳一些亮一些的颜色
+$theme-primary-dark: #e63939; //比主要颜色再暗淡一些暗一些的颜色
+$theme-primary-lt: #ff20202a; //比主要颜色再鲜艳一些透明一些的颜色
+$theme-primary-dt: #ef4a4a4f; //比主要颜色暗一些透明一些的颜色
+$theme-secondary: #f37171; // 次要主题色
+$theme-secondary-light: #ff8484;
+$theme-primary-hover: #ff4d4d20; // 比主色调浅些透明些的hover颜色
+$theme-shallow-shadow: rgba(0, 0, 0, 0.1); //浅阴影颜色
+$theme-deep-shadow: rgba(0, 0, 0, 0.2); //浅阴影颜色
+
+$theme-background: #ffffff; //全局背景颜色
+$theme-background-gt: #bcbcbc1f; //有一定灰度透明的背景
+
+
+// 文字颜色
+$theme-font-light: rgb(255, 255, 255); // 文字主色
+$theme-font-dark: rgb(45, 45, 45); // 黑色
+$theme-font-light-gray: #726d6da1; //亮灰透明
+$theme-font-lgt: #9c9c9c38; //亮灰更透明
+
+
+//主页渐变背景颜色
+$theme-gradient-background-first: rgba(255, 77, 77);
+$theme-gradient-background-second: rgba(255, 128, 128);
+$theme-gradient-background-third: rgba(255, 182, 193);
+$theme-gradient-background-fourth: rgba(255, 102, 102);
+
+//功能展示背景
+$theme-detail-background: #f8f8f8; //功能展示区域背景
+$theme-img-background: #f0f0f0; //图片背景
+
+//展示卡片颜色
+$theme-card-background: white;
+
+//下载渐变背景
+$dynamic-background-first: #ff7b7b; // 第一个颜色
+$dynamic-background-second: #ffd1d1; // 第二个颜色
+$dynamic-background-third: #ffe8e8; // 第三个颜色
+$dynamic-background-fourth: #ffbc80; // 第四个颜色
+
+//下载卡片hover阴影
+$download-card-hover-shadow: rgba(255, 100, 100, 0.8);
+
+//使用文档界面侧边栏背景
+$document-sidebar-background: hsl(0, 0%, 100%);
+
+
+
+
+//浅绿色
+
+// // 主色调变量（可随主题切换）
+// $theme-primary: #4acf7c; // 主要主题色
+// $theme-primary-light: #5ce08d; // 比主要颜色再鲜艳一些亮一些的颜色
+// $theme-primary-dark: #3ab968; // 比主要颜色再暗淡一些暗一些的颜色
+// $theme-primary-lt: #4acf7c2a; // 比主要颜色再鲜艳一些透明一些的颜色
+// $theme-primary-dt: #3ab9684f; // 比主要颜色暗一些透明一些的颜色
+// $theme-secondary: #7adea2; // 次要主题色
+// $theme-secondary-light: #93eab4; // 次要主题色亮色
+// $theme-primary-hover: #4acf7c20; // 比主色调浅些透明些的hover颜色
+// $theme-shallow-shadow: rgba(0, 0, 0, 0.1); // 浅阴影颜色
+// $theme-deep-shadow: rgba(0, 0, 0, 0.2); // 深阴影颜色
+
+// $theme-background: #ffffff; // 全局背景颜色
+// $theme-background-gt: #bcbcbc1f; // 有一定灰度透明的背景
+
+// // 文字颜色
+// $theme-font-light: rgb(255, 255, 255); // 文字主色
+// $theme-font-dark: rgb(45, 45, 45); // 黑色
+// $theme-font-light-gray: #726d6da1; // 亮灰透明
+// $theme-font-lgt: #9c9c9c38; // 亮灰更透明
+
+// // 主页渐变背景颜色
+// $theme-gradient-background-first: rgba(74, 207, 124, 1);
+// $theme-gradient-background-second: rgba(122, 222, 162, 1);
+// $theme-gradient-background-third: rgba(170, 236, 197, 1);
+// $theme-gradient-background-fourth: rgba(95, 224, 143, 1);
+
+// // 功能展示背景
+// $theme-detail-background: #f8f8f8; // 功能展示区域背景
+// $theme-img-background: #f0f0f0; // 图片背景
+
+// // 展示卡片颜色
+// $theme-card-background: white;
+
+// // 下载渐变背景
+// $dynamic-background-first: #5ede8c; // 第一个颜色
+// $dynamic-background-second: #c1f2d7; // 第二个颜色
+// $dynamic-background-third: #e4f7ed; // 第三个颜色
+// $dynamic-background-fourth: #aae9c8; // 第四个颜色
+
+// // 下载卡片hover阴影
+// $download-card-hover-shadow: rgba(74, 207, 124, 0.8);
+
+// // 使用文档界面侧边栏背景
+// $document-sidebar-background: hsl(0, 0%, 100%);
+
+//浅蓝色
+// 主色调变量（可随主题切换）
+// 主色调变量（可随主题切换）
+$theme-primary: #5b86e5; // 主要主题色 (蓝色)
+$theme-primary-light: #79a0ff; // 比主要颜色再鲜艳一些亮一些的颜色
+$theme-primary-dark: #4a6dc7; // 比主要颜色再暗淡一些暗一些的颜色
+$theme-primary-lt: #5b86e52a; // 比主要颜色再鲜艳一些透明一些的颜色
+$theme-primary-dt: #4a6dc74f; // 比主要颜色暗一些透明一些的颜色
+$theme-secondary: #36d1dc; // 次要主题色 (青色)
+$theme-secondary-light: #65e9f3; // 次要主题色亮色
+$theme-primary-hover: #5b86e520; // 比主色调浅些透明些的hover颜色
+$theme-shallow-shadow: rgba(0, 0, 0, 0.1); // 浅阴影颜色
+$theme-deep-shadow: rgba(0, 0, 0, 0.2); // 深阴影颜色
+
+$theme-background: #ffffff; // 全局背景颜色
+$theme-background-gt: #bcbcbc1f; // 有一定灰度透明的背景
+
+// 文字颜色
+$theme-font-light: rgb(255, 255, 255); // 文字主色
+$theme-font-dark: rgb(45, 45, 45); // 黑色
+$theme-font-light-gray: #726d6da1; // 亮灰透明
+$theme-font-lgt: #9c9c9c38; // 亮灰更透明
+
+// 主页渐变背景颜色
+$theme-gradient-background-first: rgba(91, 134, 229, 1); // 蓝色
+$theme-gradient-background-second: rgba(54, 209, 220, 1); // 青色
+$theme-gradient-background-third: rgba(97, 224, 180, 1); // 薄荷绿
+$theme-gradient-background-fourth: rgba(162, 155, 254, 1); // 淡紫色
+
+// 功能展示背景
+$theme-detail-background: #f8f8f8; // 功能展示区域背景
+$theme-img-background: #f0f0f0; // 图片背景
+
+// 展示卡片颜色
+$theme-card-background: white;
+
+// 下载渐变背景
+$dynamic-background-first: #61e0b4; // 薄荷绿
+$dynamic-background-second: #a29bfe; // 淡紫色
+$dynamic-background-third: #81ecec; // 亮青色
+$dynamic-background-fourth: #74b9ff; // 天蓝色
+
+// 下载卡片hover阴影
+$download-card-hover-shadow: rgba(91, 134, 229, 0.8);
+
+// 使用文档界面侧边栏背景
+$document-sidebar-background: hsl(0, 0%, 100%);

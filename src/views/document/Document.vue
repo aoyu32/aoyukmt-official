@@ -1,10 +1,13 @@
 <template>
     <div class="document">
-        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle Sidebar">
+        <button class="sidebar-toggle" @click="toggleSidebar">
+            <i class="iconfont icon-a-1you_right" id="sidebar-button" style="font-size: 24px;"></i>
+        </button>
+        <button class="outline-toggle" @click="toggleOutline">
             <i class="iconfont icon-a-1you_right" id="sidebar-button" style="font-size: 24px;"></i>
         </button>
         <div class="main-content">
-            <div class="document-sidebar">
+            <div class="document-sidebar" :class="{ 'show': !isShowSidebar }">
                 <DocumentSidebar :menuData="menuData" />
             </div>
             <div class="document-content">
@@ -18,6 +21,8 @@
                     <!-- 上一页/下一页 -->
                     <PageControl />
                 </div>
+            </div>
+            <div class="document-outline" :class="{ 'show': !isShowOutline }">
                 <MarkdownOutline />
             </div>
 
@@ -25,26 +30,72 @@
     </div>
 </template>
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import DocumentSidebar from '@/components/document/DocumentSidebar.vue'
 import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
 import PageControl from '@/components/document/PageControl.vue';
 import MarkdownOutline from '@/components/document/MarkdownOutline.vue';
 import { menuData } from '@/data/sidebar';
 import { useDocumentStore } from '@/stores/document'
-// import { initLenis } from '@/utils/lenis';
+
 const store = useDocumentStore();
 store.setMenuData(menuData)
+
+// 控制侧边栏和标题侧边栏的显示状态
+const isShowSidebar = ref(true); // 默认不显示
+const isShowOutline = ref(true); // 默认不显示
+
+// 检查窗口大小并设置状态
+const checkWindowSize = () => {
+    if (window.innerWidth >= 1000) {
+        // 如果窗口宽度大于等于 1000px，隐藏侧边栏
+        isShowSidebar.value = false;
+        isShowOutline.value = false;
+    } else {
+        // 如果窗口宽度小于 1000px，保持当前状态
+        // 用户需要通过点击按钮来展开侧边栏
+        isShowSidebar.value = true;
+        isShowOutline.value = true;
+    }
+}
+
 onMounted(() => {
-    // initLenis();
+    // 初始检查窗口大小
+    checkWindowSize();
+    // 监听窗口大小变化
+    window.addEventListener('resize', checkWindowSize);
 });
-//获取标题
+
+// 获取标题
 const handleHeadings = (headingsData) => {
     store.setHeadings(headingsData)
 }
+
+// 切换左侧边栏
+const toggleSidebar = () => {
+    if (!isShowOutline.value) {
+        isShowOutline.value = true; // 如果左侧边栏展开，关闭右侧边栏
+        isShowSidebar.value = !isShowSidebar.value
+    } else {
+        isShowSidebar.value = !isShowSidebar.value
+    }
+}
+
+// 切换右侧标题侧边栏
+const toggleOutline = () => {
+
+    if (!isShowSidebar.value) {
+        isShowSidebar.value = true
+        isShowOutline.value = !isShowOutline.value
+    } else {
+        isShowOutline.value = !isShowOutline.value
+    }
+}
 </script>
 <style lang="scss" scoped>
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
 @use "@/assets/styles/document/siderbar.scss";
 
 .document {
@@ -57,48 +108,67 @@ const handleHeadings = (headingsData) => {
 .sidebar-toggle {
     display: none;
     position: fixed;
-    top: 72px;
+    top: $distance-top;
     z-index: 20;
-    color: $primary-color;
+    color: $theme-primary;
     border: none;
+    left: 0;
     cursor: pointer;
-    background-color: white;
+    background-color: $theme-background;
     transition: background-color 0.3s ease;
+
+    span {
+        font-size: 1rem;
+    }
+
+    &:hover {
+        color: $theme-primary-light;
+    }
 }
 
-.sidebar-toggle span {
-    font-size: 1rem;
-}
+.outline-toggle {
+    display: none;
+    position: fixed;
+    top: $distance-top;
+    z-index: 20;
+    color: $theme-primary;
+    border: none;
+    right: 0;
+    cursor: pointer;
+    background-color: $theme-background;
+    transition: background-color 0.3s ease;
 
-.sidebar-toggle:hover {
-    color: rgb(188, 190, 191);
+    span {
+        font-size: 1rem;
+    }
+
+    &:hover {
+        color: $theme-primary-light;
+    }
 }
 
 .main-content {
-    display: flex;
-    justify-content: space-between;
-    height: 100%;
-    width: 95%;
+    width: $percentage-width;
     position: relative;
-    top: 72px;
+    top: $distance-top;
+    display: flex;
 
 
     .document-sidebar {
-        width: 250px;
+        width: $document-sidebar-lw;
         overflow-y: auto;
         position: fixed;
-        height: calc(100vh - 72px);
+        height: calc(100vh - $distance-top);
         z-index: 10;
-        background: #f3f1f171;
+        background: $document-sidebar-background;
     }
 
     .document-content {
 
-        width: calc(100% - 500px);
-        margin-left: 250px; // 留出左侧边栏空间
+        width: $document-content-width;
+        margin-left: $document-sidebar-lw; // 留出左侧边栏空间
+        margin-right: $document-sidebar-rw; // 留出左侧边栏空间
         padding: 1rem 5rem;
-        position: relative;
-
 
         .document-markdown {
             width: 100%;
@@ -106,41 +176,63 @@ const handleHeadings = (headingsData) => {
         }
     }
 
+    .document-outline {
+        width: $document-sidebar-rw;
+        position: fixed;
+        overflow-y: auto;
+        position: fixed;
+        height: calc(100vh - $distance-top);
+        right: 2.5%;
+        top: $distance-top;
+        z-index: 10;
+        padding: $document-sidebar-padding;
+    }
+
 
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
 
     .document-sidebar {
-        position: fixed;
-        top: 72px;
         left: 0;
-        width: 250px;
-        height: calc(100vh - 72px);
-        background-color: white;
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        z-index: 15;
+        transition: transform 0.1s ease;
+
+
+        &.show {
+            transform: translateX(0);
+            box-shadow: 2px 0 5px $theme-deep-shadow;
+        }
     }
 
     .main-content {
 
         .document-content {
+            width: 100%;
+            padding: 0;
             margin-left: 0;
+            margin-right: 0;
+        }
 
-            .document-outline {
-                display: none;
+        .document-outline {
+            right: 0;
+            transform: translateX(100%);
+            transition: transform 0.1s ease;
+            background: $document-sidebar-background;
+
+            &.show {
+                transform: translateX(0);
+                box-shadow: 2px 0 5px $theme-deep-shadow;
             }
         }
     }
 
-    .document-sidebar.show {
-        transform: translateX(0);
+    .sidebar-toggle {
+        display: block;
     }
 
-    .sidebar-toggle {
+    .outline-toggle {
         display: block;
     }
 

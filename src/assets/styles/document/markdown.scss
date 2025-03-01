@@ -1,8 +1,12 @@
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+
+
+
 .markdown-body {
-    font-family: 'Arial', sans-serif;
+    font-family: $font-family;
     line-height: 1.6;
-    color: #333;
+    color: $theme-font-dark;
 }
 
 /* Headings */
@@ -15,18 +19,18 @@
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: $primary-color;
+    color: $theme-primary;
 }
 
 .markdown-body h1 {
     font-size: 2.5rem;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid $theme-font-lgt;
     padding-bottom: 0.5rem;
 }
 
 .markdown-body h2 {
     font-size: 2rem;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid $theme-font-lgt;
     padding-bottom: 0.5rem;
 }
 
@@ -50,19 +54,18 @@
 /* Paragraphs */
 .markdown-body p {
     margin-bottom: 1.25rem;
-    color: #444;
+    color: $theme-font-dark;
     width: 100%;
 }
 
 /* Links */
 .markdown-body a {
-    color: $primary-color;
+    color: $theme-primary;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .markdown-body a:hover {
-    // color: darken($primary-color, 10%);
     text-decoration: underline;
 }
 
@@ -80,31 +83,34 @@
 
 /* Blockquotes */
 .markdown-body blockquote {
-    border-left: 4px solid $primary-color;
+    border-left: 4px solid $theme-primary;
     margin: 1.25rem 0;
     padding-left: 1rem;
     font-style: italic;
-    color: #555;
+    color: $theme-font-light-gray;
     background-color: #f8f8f8;
 }
 
 /* Code Blocks */
 .markdown-body pre {
-    background-color: #f4f4f4;
+    background-color: $theme-background-gt;
     padding: 1rem;
     border-radius: 8px;
     font-size: 1rem;
     overflow-x: auto;
     margin-bottom: 1.5rem;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px $theme-shallow-shadow;
 }
 
 .markdown-body code {
-    background-color: rgba(0, 0, 0, 0.05);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
-    font-family: "Courier New", Courier, monospace;
-    color: $primary-color;
+    word-wrap: break-word;
+    /* 自动换行 */
+    word-break: break-word;
+    /* 防止长单词或 URL 不换行 */
+    font-family: $font-family;
+    color: $theme-primary;
 }
 
 /* Images */
@@ -125,19 +131,19 @@
 .markdown-body table th,
 .markdown-body table td {
     padding: 0.75rem;
-    border: 1px solid #ddd;
+    border: 1px solid $theme-font-light;
     text-align: left;
 }
 
 .markdown-body table th {
-    background-color: #f4f4f4;
+    background-color: $theme-font-light;
     font-weight: 600;
 }
 
 /* Horizontal Rules */
 .markdown-body hr {
     border: none;
-    border-top: 2px solid #ddd;
+    border-top: 2px solid $theme-font-light;
     margin: 2rem 0;
 }
 

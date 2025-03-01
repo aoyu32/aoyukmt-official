@@ -1,0 +1,88 @@
+@use "_theme.scss" as *;
+
+$max-width: 1200px; //最大宽度
+$percentage-width: 95%; //最大百分比宽度
+$distance-top: 72px; //距离视口的高度
+$scroll-size:5px;//滚动条粗细
+
+$img-size-small: 40px;
+$img-size-medium: 150px;
+$img-size-large: 190px;
+// 字体
+$font-weight: bold;
+$logo-font-family: 'Courier New', monospace;
+$font-family: 'Arial', sans-serif;
+
+//功能展示区域padding
+$detail-padding: 3rem 2rem 0rem 2rem;
+//功能展示卡片外边距
+$detail-card-margin-top: 2rem;
+$detail-card-margin-bottom: 0;
+
+//功能特点卡片外边距
+$feature-card-gap: 2rem;
+//功能特点卡片内边距
+$feature-card-padding: 2rem;
+
+//主页渐变背景
+// 渐变背景变量
+$gradient-background: linear-gradient(135deg,
+        $theme-gradient-background-first,
+        $theme-gradient-background-second,
+        $theme-gradient-background-third,
+        $theme-gradient-background-fourth);
+
+//页脚动态背景
+$footer-dynamic-background: url('data:image/svg+xml,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23ffffff" fill-opacity="0.1"/></svg>') repeat-x;
+
+//下载卡片之间距离
+$download-card-gap: 20px;
+//下载卡片圆角
+$download-card-radius: 20px;
+//下载卡片内边距
+$download-card-padding: 20px;
+//下载卡片安装方式标题下边距
+$download-card-h3-margin: 10px;
+//下载卡片安装方式说明下边距
+$download-card-p-margin: 15px;
+
+//下载按钮内边距
+$download-button-padding: 10px 20px;
+//下载按钮圆角
+$download-button-radius: 5px;
+
+//下载页面动态背景
+$dynamic-background: linear-gradient(120deg,
+        $dynamic-background-first,
+        $dynamic-background-second,
+        $dynamic-background-third,
+        $dynamic-background-fourth);
+
+//下载界面页脚宽度
+$download-footer-padding: 5px;
+
+//使用文档界面左侧边栏宽度
+$document-sidebar-lw: 250px;
+//使用文档页面标题侧边栏宽度
+$document-sidebar-rw: 200px;
+
+//使用文档界面文档区域宽度
+$document-content-width: calc(100% - #{$document-sidebar-lw} - #{$document-sidebar-rw});
+
+//使用文档页面标题侧边栏padding
+$document-sidebar-padding: 2rem 2rem 2rem 0rem;
+//使用文档右侧标题侧边栏的ul的padding
+$document-sidebar-ul-padding: 0rem 1rem;
+//使用文档右侧标题侧边栏的字体大小
+$document-sidebar-fontsize: 13px;
+
+//使用文档左边侧边栏二级菜单的padding
+$document-sidebar-li-padding: 12px 15px;
+
+
+//页面控制高度
+//整体margin
+$document-page-margin:40px 0 20px 0;
+$document-page-height:65px;
+//两个之间的margin
+$document-page-lr-margin:10px

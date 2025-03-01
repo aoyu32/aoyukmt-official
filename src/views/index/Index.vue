@@ -35,7 +35,7 @@
 
         <section>
             <div class="scroll-up">
-                <span @click="scrollTo('top',400)">&#9650;</span>
+                <span @click="scrollTo('top', 400)">&#9650;</span>
             </div>
         </section>
         <footer>
@@ -128,21 +128,22 @@ onUnmounted(() => {
 
 </script>
 <style lang="scss" scoped>
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/index/introduce.scss";
 @use "@/assets/styles/index/footer.scss";
 
 //功能特点卡片盒子
 .features {
     padding: 5rem 2rem;
-    max-width: 1200px;
+    max-width: $max-width;
     margin: 0 auto;
 
     h2 {
         text-align: center;
         font-size: 2rem;
         margin-bottom: 3rem;
-        color: $primary-color;
+        color: $theme-primary;
     }
 }
 
@@ -150,21 +151,21 @@ onUnmounted(() => {
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: $feature-card-gap;
 }
 
 //功能展示卡片盒子
 .feature-details {
-    padding: 3rem 2rem 0rem 2rem;
+    padding: $detail-padding;
     // padding: 5rem 2rem;
-    background: #f8f8f8;
+    background: $theme-detail-background;
     overflow: hidden;
 
     h2 {
         text-align: center;
         font-size: 2rem;
         margin-bottom: 3rem;
-        color: $primary-color;
+        color: $theme-primary;
     }
 }
 
@@ -176,9 +177,8 @@ onUnmounted(() => {
     justify-content: center;
     align-items: center;
     animation: fadeIn 2s 1s both;
-    background: #f8f8f8;
+    background: $theme-detail-background;
     position: relative;
-    z-index: 1;
     /* 设置较高的 z-index */
 
     span {
@@ -188,7 +188,7 @@ onUnmounted(() => {
         align-items: center;
         justify-content: center;
         font-size: 1rem;
-        color: rgb(241, 140, 140);
+        color: $theme-secondary;
         animation: floating 3s ease-in-out infinite;
         border-radius: 50%;
         background-color: transparent;
@@ -197,7 +197,7 @@ onUnmounted(() => {
         &:hover {
             width: 40px;
             height: 40px;
-            background-color: rgba(244, 177, 177, 0.4);
+            background-color: $theme-primary-lt;
             cursor: pointer;
         }
     }
