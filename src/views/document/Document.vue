@@ -8,9 +8,9 @@
         </button>
         <div class="main-content">
             <div class="document-sidebar" :class="{ 'show': !isShowSidebar }">
-                <DocumentSidebar :menuData="menuData" />
+                <DocumentSidebar :menuData="menuData" @hideSidebar="handleHideSidebar" />
             </div>
-            <div class="document-content">
+            <div class="document-content" @click="hideSidebarOrOutline">
                 <div class="document-markdown">
                     <!-- 文档内容 -->
                     <!-- 传递Markdown文本或文件路径 -->
@@ -23,12 +23,12 @@
                 </div>
             </div>
             <div class="document-outline" :class="{ 'show': !isShowOutline }">
-                <MarkdownOutline />
+                <MarkdownOutline @hideOutline="handleHideOutline" />
             </div>
-
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from 'vue'
 import DocumentSidebar from '@/components/document/DocumentSidebar.vue'
@@ -74,7 +74,7 @@ const handleHeadings = (headingsData) => {
 // 切换左侧边栏
 const toggleSidebar = () => {
     if (!isShowOutline.value) {
-        isShowOutline.value = true; // 如果左侧边栏展开，关闭右侧边栏
+        isShowOutline.value = true;
         isShowSidebar.value = !isShowSidebar.value
     } else {
         isShowSidebar.value = !isShowSidebar.value
@@ -83,13 +83,29 @@ const toggleSidebar = () => {
 
 // 切换右侧标题侧边栏
 const toggleOutline = () => {
-
     if (!isShowSidebar.value) {
         isShowSidebar.value = true
         isShowOutline.value = !isShowOutline.value
     } else {
         isShowOutline.value = !isShowOutline.value
     }
+}
+
+// 点击空白区域时隐藏侧边栏或大纲
+const hideSidebarOrOutline = () => {
+    if (!isShowSidebar.value || !isShowOutline.value) {
+        isShowSidebar.value = true;
+        isShowOutline.value = true;
+    }
+}
+
+//隐藏侧边栏
+const handleHideSidebar = () => {
+    isShowSidebar.value = true
+}
+//隐藏标题栏
+const handleHideOutline = () => {
+    isShowOutline.value = true
 }
 </script>
 <style lang="scss" scoped>

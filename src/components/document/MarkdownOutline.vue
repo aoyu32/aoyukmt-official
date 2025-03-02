@@ -20,9 +20,10 @@ import { scrollTo } from '@/utils/scroll';
 const store = useDocumentStore();
 const { headings } = storeToRefs(store);
 const activeHeadingId = ref(null);
-
+const emit = defineEmits(['hideOutline'])
 //点击跳转到标题
 const scrollToHeading = (headingId) => {
+    emit('hideOutline', true)
     const element = document.getElementById(headingId);     // 获取目标元素
     let offset = 0
     if (window.innerWidth >= 1000) {

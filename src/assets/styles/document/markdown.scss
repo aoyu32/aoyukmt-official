@@ -88,7 +88,7 @@
     padding-left: 1rem;
     font-style: italic;
     color: $theme-font-light-gray;
-    background-color: #f8f8f8;
+    background-color: $theme-background-light;
 }
 
 /* Code Blocks */
@@ -143,7 +143,7 @@
 /* Horizontal Rules */
 .markdown-body hr {
     border: none;
-    border-top: 2px solid $theme-font-light;
+    border-top: 2px solid $theme-primary-lt;
     margin: 2rem 0;
 }
 

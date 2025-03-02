@@ -131,7 +131,7 @@ AOS.refresh();
         height: 40px;
         width: 528px;
         font-size: 2rem;
-        color: $theme-primary;
+        color: $download-typing-text;
         display: inline-block;
         text-align: left;
         margin-bottom: 30px;

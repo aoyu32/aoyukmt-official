@@ -184,7 +184,7 @@ const resetText = (link, originalText) => {
           left: 50%;
           width: 0;
           height: 2px;
-          background: $theme-primary-hover;
+          background: $theme-secondary-light;
           transition: width 0.3s ease, left 0.3s ease;
         }
 
@@ -237,7 +237,7 @@ main {
         position: absolute;
         top: calc(100% + 1px); // 距离导航栏顶部
         right: 2px; // 保持适当的边距
-        background: $theme-primary-dt; // 半透明背景
+        background: $theme-primary; // 半透明背景
         width: 150px; // 合适的宽度
         padding: 1rem;
         box-shadow: 0 4px 6px $theme-shallow-shadow;

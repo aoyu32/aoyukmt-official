@@ -1,4 +1,6 @@
-@use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
 
 /* 弹框的遮罩层 */
 .modal-overlay {
@@ -7,7 +9,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: $theme-background-dark;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,13 +19,13 @@
 
 /* 弹框样式 */
 .dialog {
-    background: #fff;
-    border-radius: 10px;
-    width: 350px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: $theme-background;
+    border-radius: $feedback-diglog-radius;
+    width: $feedback-diglog-width;
+    box-shadow: 0 4px 8px $theme-deep-shadow;
     position: relative;
     overflow: hidden;
-    padding: 30px;
+    padding: $feedback-dialog-padding;
 
     &-header {
         width: 100%;
@@ -34,16 +36,17 @@
 
     .username {
         font-size: 15px;
-        font-weight: 600;
-        color: #f32d2d;
+        font-weight: $font-weight;
+        color: $theme-primary;
     }
 
     /* 关闭按钮 */
     .close-button {
-        width: 20px;
-        height: 20px;
-        background: transparent;
-        color: #fff;
+        background-color: $theme-primary-dt;
+        width: $feedback-dialog-close;
+        height: $feedback-dialog-close;
+        // background: transparent;
+        color: $theme-font-light;
         border: none;
         border-radius: 50%;
         font-size: 14px;
@@ -54,7 +57,7 @@
         transition: background-color 0.3s;
 
         &:hover {
-            // background: #ff3b3b;
+            background: $theme-primary-dt;
         }
     }
 
@@ -70,13 +73,13 @@
 
     .avatar {
         position: relative;
-        width: 90px;
-        height: 90px;
+        width: $feedback-dialog-avatar;
+        height: $feedback-dialog-avatar;
         border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #fff;
+        color: $theme-font-light;
         font-size: 32px;
     }
 
@@ -87,7 +90,7 @@
         text-align: center;
         font-size: 16px;
         font-weight: 600;
-        color: #6b6b6bc7;
+        color: $theme-font-light-gray;
         margin-bottom: 10px;
     }
 
@@ -97,15 +100,17 @@
         margin: 0 auto 10px;
         display: block;
         padding: 10px;
-        border: 2px solid #ddd;
+        border: 2px solid $theme-border-gray;
         border-radius: 5px;
         font-size: 16px;
         outline: none;
+        background-color: $theme-background;
         transition: border-color 0.3s;
+        color: $theme-font-light;
 
         &:focus {
-            border-color: #ff4d4d;
-            color: #535151ea;
+            border-color: $theme-primary;
+            color: $theme-font-dark;
 
             &::placeholder {
                 color: transparent;
@@ -116,7 +121,7 @@
     /* 提示内容 */
     .input-hint {
         font-size: 12px;
-        color: #fc6f6fb1;
+        color: $theme-secondary-light;
         margin-bottom: 10px;
         font-weight: 600;
     }
@@ -130,7 +135,7 @@
     }
 
     button {
-        width: 45%;
+        width: $feedback-dialog-btn;
         padding: 10px;
         border: none;
         border-radius: 5px;
@@ -140,22 +145,22 @@
     }
 
     .confirm-button {
-        background: #ff4d4d;
-        color: #fff;
+        background: $theme-primary;
+        color: $theme-font-light;
 
         &:hover {
-            background: #e43c3c;
+            background: $theme-primary-hover-dark;
         }
     }
 
     .cancel-button {
-        background: #fff;
-        color: #ff4d4d;
-        border: 1px solid #ff4d4d;
+        color: $theme-font-dark;
+        border: 1px solid $theme-primary;
+        background-color: $theme-background;
 
         &:hover {
-            background: #ff4d4dbf;
-            color: #fff;
+            background: $theme-primary-hover;
+            color: $theme-font-dark;
         }
     }
 }
@@ -165,8 +170,8 @@
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background: white;
-        border: 2px solid $primary-color;
+        background: $theme-background;
+        border: 2px solid $theme-primary;
 
         img {
             width: 100%;
@@ -181,22 +186,22 @@
     position: absolute;
     bottom: 1px;
     right: 1px;
-    width: 24px;
-    height: 24px;
-    background: #fff;
-    border: 2px solid #ff7e7edd;
+    width: $feedback-avatar-btn;
+    height: $feedback-avatar-btn;
+    background: $theme-background;
+    border: 2px solid $theme-secondary;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #ff7e7edd;
+    color: $theme-secondary-light;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s ease-in-out;
 
     &:hover {
-        border: 2px solid #d0cdcddf;
-        color: #d0cdcddf;
+        border: 2px solid $theme-primary-hover-dark;
+        color: $theme-primary-hover-dark;
     }
 
     /* 上传按钮的提示气泡 */
@@ -214,8 +219,8 @@
         bottom: -35px;
         left: 120%;
         transform: translateX(-50%);
-        background-color: #ff4d4da1;
-        color: white;
+        background-color: $theme-primary-hover-dark;
+        color: $theme-font-light;
         padding: 7px 10px;
         border-radius: 9px;
         font-size: 12px;
@@ -256,12 +261,12 @@
         top: -27px;
         left: 100%;
         transform: translateX(-50%);
-        background-color: #ff4d4da1;
+        background-color: $theme-primary-hover-dark;
         color: white;
         padding: 3px 10px;
         border-radius: 5px;
         font-size: 12px;
-        display: var(--tooltip-display, none);
+        display: none;
         /* 使用 CSS 自定义属性控制显示 */
         /* 默认隐藏 */
         opacity: 0;
@@ -288,44 +293,3 @@
     animation: blinkOfAvatar 0.5s infinite;
 }
 
-/* 定义闪烁的动画 */
-@keyframes blinkOfInput {
-    0% {
-        /* opacity: 1; */
-        text-shadow: 0 0 3px rgba(255, 77, 77, 0.42), 0 0 6px rgba(255, 77, 77, 0.393);
-        /* 红光反射，范围更小 */
-    }
-
-    50% {
-        /* opacity: 0; */
-        text-shadow: none;
-        /* 文字消失时没有阴影 */
-    }
-
-    100% {
-        /* opacity: 1; */
-        text-shadow: 0 0 3px rgba(255, 77, 77, 0.42), 0 0 6px rgba(255, 77, 77, 0.393);
-        /* 恢复红光反射 */
-    }
-}
-
-/* 定义闪烁的动画 */
-@keyframes blinkOfAvatar {
-    0% {
-        /* opacity: 1; */
-        box-shadow: 0 0 5px rgba(255, 77, 77, 0.42), 0 0 8px rgba(255, 77, 77, 0.393);
-        /* 红光反射，范围更小 */
-    }
-
-    50% {
-        /* opacity: 0; */
-        box-shadow: none;
-        /* 文字消失时没有阴影 */
-    }
-
-    100% {
-        /* opacity: 1; */
-        box-shadow: 0 0 5px rgba(255, 77, 77, 0.42), 0 0 8px rgba(255, 77, 77, 0.393);
-        /* 恢复红光反射 */
-    }
-}

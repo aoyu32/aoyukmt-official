@@ -43,6 +43,10 @@ const scrollToBottom = () => {
 
 </script>
 <style lang="scss" scoped>
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
 .chat-window {
     flex-grow: 1;
     padding: 1rem;
@@ -50,7 +54,6 @@ const scrollToBottom = () => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    height: calc(100% - 100px);
 
     /* 提示框 */
     /* chat-tip 提示框的基本样式 */
@@ -61,8 +64,8 @@ const scrollToBottom = () => {
         top: 0;
         transform: translateX(-50%);
         padding: 10px 20px;
-        background-color: #ff6161;
-        color: white;
+        background-color: $theme-secondary-dark;
+        color: $theme-font-light;
         border-radius: 8px;
         font-size: 16px;
         font-weight: bold;
@@ -70,33 +73,7 @@ const scrollToBottom = () => {
         max-width: 80%;
         opacity: 0;
         z-index: 10;
-        box-shadow: 1px 5px 10px rgba(70, 63, 63, 0.304);
-    }
-
-    /* 提示框从上方弹出的动画 */
-    @keyframes slideDown {
-        0% {
-            transform: translateX(-50%) translateY(-75%);
-            opacity: 0;
-        }
-
-        100% {
-            transform: translateX(-50%) translateY(15px);
-            opacity: 1;
-        }
-    }
-
-    /* 提示框收回的动画 */
-    @keyframes slideUp {
-        0% {
-            transform: translateX(-50%) translateY(15px);
-            opacity: 1;
-        }
-
-        100% {
-            transform: translateX(-50%) translateY(-65%);
-            opacity: 0;
-        }
+        box-shadow: 1px 5px 10px $theme-deep-shadow;
     }
 
     /* 通过弹出和收回动画显示/隐藏提示框 */

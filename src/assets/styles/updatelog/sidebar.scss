@@ -1,18 +1,22 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
 /* 导航栏样式 */
 .updatelog-sidebar {
     position: fixed;
-    width: 250px;
+    width: $updatelog-sidebar-width;
     height: 100%;
-    padding: 30px 20px;
+    padding: $updatelog-sidebar-padding;
     display: flex;
     flex-direction: column;
-    box-shadow: 1px 0 3px rgba(88, 86, 86, 0.114), -1px 0 3px rgba(88, 86, 86, 0.114);
+    box-shadow: 1px 0 3px $theme-shallow-shadow, -1px 0 3px $theme-shallow-shadow;
 
     h2 {
         font-size: 18px;
-        color: #ff4b5c;
+        color: $theme-primary;
         margin-bottom: 15px;
-        border-bottom: 2px solid #ff4444;
+        border-bottom: 2px solid $theme-primary;
         padding-bottom: 5px;
 
     }
@@ -33,36 +37,18 @@
         display: block;
         padding: 10px 15px;
         text-decoration: none;
-        background-color: #feabb3;
-        color: #fff;
+        background-color: $theme-secondary-lt;
+        color: $theme-font-light;
         border-radius: 5px;
         transition: background 0.3s, transform 0.2s;
         text-align: center;
         font-size: 14px;
 
         &:hover {
-            background-color: #ff6b6b;
+            background-color: $theme-secondary-dark;
             transform: scale(1.05);
         }
     }
 
-
-}
-
-
-/* Media Queries for Responsive Design */
-@media (max-width: 768px) {
-
-    .updatelog-sidebar {
-        background-color: #fff;
-        transform: translateX(-100%);
-        transition: transform 0.1s ease-in-out;
-        z-index: 15;
-    }
-
-    .updatelog-sidebar.show {
-        transform: translateX(0);
-        box-shadow: 3px 0 3px rgba(184, 146, 146, 0.197);
-    }
 
 }

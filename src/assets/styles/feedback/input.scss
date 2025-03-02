@@ -1,31 +1,36 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
 .input-box {
     width: 100%;
-    max-height: 500px;
+    max-height: $feedback-textarea-max-height;
     display: flex;
     flex-direction: column;
-    padding: 5px 20px 20px;
+    padding: $feedback-textarea-padding;
 
 
     .preview-container {
         display: flex;
-        gap: 10px;
+        gap: $feedback-preview-gap;
         margin-bottom: 10px;
         flex-wrap: wrap;
 
         .image-wrapper {
             position: relative;
-            width: 100px;
-            height: 60px;
+            width: $feedback-preview-width;
+            height: $feedback-preview-height;
 
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 border-radius: 8px;
-                border: 1px solid #ccc;
+                border: 1px solid $theme-font-light-gray;
+
                 filter: grayscale(100%);
-                mask-image: linear-gradient(to bottom, rgb(90, 88, 88) 0%, rgba(93, 90, 90, 0) 100%);
-                -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+                mask-image: linear-gradient(to bottom, $theme-font-lgt 0%, $theme-font-dark 100%);
+                -webkit-mask-image: linear-gradient(to bottom, $theme-background-gt 0%, $theme-font-dark 100%);
                 transition: mask-image 1s ease-out, filter 1s ease-out;
             }
 
@@ -33,20 +38,21 @@
                 position: absolute;
                 top: 5px;
                 right: 5px;
-                background-color: rgba(0, 0, 0, 0.5);
-                color: white;
+                background-color: $theme-background-dark;
+                color: $theme-font-light;
                 border: none;
                 border-radius: 50%;
-                width: 20px;
-                height: 20px;
+                width: $feedback-preview-dtn;
+                height: $feedback-preview-dtn;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-size: 12px;
                 cursor: pointer;
+                transition: background-color 0.5s ease-in-out;
 
                 &:hover {
-                    background-color: rgba(69, 67, 67, 0.7);
+                    background-color: $theme-background-dt;
                 }
             }
         }
@@ -57,31 +63,32 @@
         align-items: center;
         flex-direction: column;
         justify-content: space-between;
-        padding: 10px 15px 5px 10px;
+        padding: $feedback-input-padding;
         position: relative;
-        border: 1px solid #ff6666;
-        max-height: 500px;
-        border-radius: 15px;
+        border: 1px solid $theme-secondary-dark;
+        max-height: $feedback-textarea-max-height;
+        border-radius: $feedback-input-radius;
+
         width: 100%;
         transition: box-shadow 0.2s ease;
 
         &.focused {
-            box-shadow: 0 0 7px rgba(255, 102, 102, 0.7);
+            box-shadow: 0 0 7px $theme-primary-shadow;
         }
 
         textarea {
             width: 100%;
-            max-height: 200px;
-            min-height: 40px;
+            max-height: $feedback-input-max-height;
+            min-height: $feedback-input-min-height;
             overflow-y: auto;
             overflow: hidden;
+            background-color:  $theme-background;
             resize: none;
-            font-family: 'Arial', sans-serif;
-            color: #333;
+            font-family: $font-family;
+            color: $theme-font-dark;
             border: none;
             font-size: 15px;
             outline: none;
-            border-radius: 5px;
             position: relative;
 
             &:focus::placeholder {
@@ -100,14 +107,15 @@
         font-size: 22px;
 
         button {
-            width: 32px;
-            height: 32px;
+            width: $feedback-us-btn;
+            height: $feedback-us-btn;
             border-radius: 50%;
-            border: 1px solid #ff6666;
+            border: 1px solid $theme-secondary-dark;
             transition: 0.2s ease-in-out;
+            background-color: $theme-primary-lt;
 
             &:hover {
-                background-color: #ff6666;
+                background-color: $theme-secondary-light;
             }
         }
 
@@ -119,14 +127,14 @@
 
             /* 上传按钮的提示气泡 */
             &::after {
-                content: "请上传图片，可以拖拽和复制上传哦.😏";
+                content: $feedback-hover-text;
                 /* 提示文本 */
                 position: absolute;
                 bottom: -20px;
                 left: 120%;
                 transform: translateX(-50%);
-                background-color: #ff4d4da1;
-                color: white;
+                background-color: $theme-primary-hover-dark;
+                color: $theme-font-light;
                 padding: 8px 12px;
                 border-radius: 5px;
                 font-size: 14px;
@@ -155,14 +163,14 @@
             display: inline-block;
 
             &::after {
-                content:attr(data-tooltip);
+                content: attr(data-tooltip);
                 /* 提示文本 */
                 position: absolute;
                 bottom: -20px;
                 right: 120%;
                 transform: translateX(-50%);
-                background-color: #ff4d4d88;
-                color: white;
+                background-color: $theme-primary-hover-dark;
+                color: $theme-font-light;
                 padding: 8px 12px;
                 border-radius: 5px;
                 font-size: 14px;
@@ -186,7 +194,8 @@
 
         // 红色边框阴影呼吸灯效果
         .breathing-border {
-            animation: breathing-border-shadow 1.5s ease-in-out infinite;;
+            animation: breathing-border-shadow 1.5s ease-in-out infinite;
+            ;
         }
 
     }
@@ -195,68 +204,16 @@
 }
 
 @media (max-width: 768px) {
-    .chat-container {
-        width: 95%;
-    }
-
-    .chat-message .message-wrapper {
-        display: flex;
-        flex-direction: column;
-        max-width: 70%;
-    }
-}
-
-// 红色边框阴影呼吸灯动画
-// 红色边框阴影呼吸灯动画
-@keyframes breathing-border-shadow {
-    0% {
-        box-shadow: 0 0 2px rgba(255, 0, 0, 0.1), 0 0 5px rgba(255, 118, 118, 0.2);
-    }
-
-    50% {
-        box-shadow: 0 0 4px rgba(255, 0, 0, 0.3), 0 0 10px rgba(255, 0, 0, 0.4);
-    }
-
-    100% {
-        box-shadow: 0 0 2px rgba(255, 0, 0, 0.1), 0 0 5px rgba(255, 118, 118, 0.2);
-    }
-}
-
-/* 提示气泡显示动画 */
-@keyframes slideIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 提示气泡隐藏动画 */
-@keyframes slideOut {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
-
-/* 提示气泡隐藏动画 */
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateY(-10px);
+    .input-box {
+        .preview-container {
+            .image-wrapper {
+                width: 100px; // Adjust the width for smaller screens
+            }
+        }
+        .chat-input-area {
+            textarea {
+                min-height: auto; // Allow the textarea to adjust its height dynamically on smaller screens
+            }
+        }
     }
 }

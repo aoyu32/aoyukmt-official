@@ -1,4 +1,8 @@
 @use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
 
 /* Headings */
 .content :deep(h1),
@@ -10,18 +14,18 @@
     margin-top: 1rem; // 调整标题间距，使内容更紧凑
     margin-bottom: 0.5rem; // 调整标题间距，使内容更紧凑
     font-weight: 600;
-    color: #ffffff;
+    color: $theme-font-light;
 }
 
 .content :deep(h1) {
     font-size: 1.75rem; // 调整标题字体大小
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid $theme-border-gray;
     padding-bottom: 0.5rem;
 }
 
 .content :deep(h2) {
     font-size: 1.5rem; // 调整标题字体大小
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid $theme-border-gray;
     padding-bottom: 0.5rem;
 }
 
@@ -46,13 +50,13 @@
 .content :deep(p) {
     margin-bottom: 0.6rem; // 调整段落间距，使内容更紧凑
     margin-top: 0.6rem; // 调整段落间距，使内容更紧凑
-    color: #ffffff;
+    color: $theme-font-light;
     line-height: 2; // 调整行高，使内容更紧凑
 }
 
 /* Links */
 .content :deep(a) {
-    color: $primary-color;
+    color: $theme-primary;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -76,38 +80,38 @@
 
 /* Blockquotes */
 .content :deep(blockquote) {
-    border-left: 4px solid $primary-color;
+    border-left: 4px solid $theme-primary;
     margin: 0.75rem 0; // 调整引用间距，使内容更紧凑
     padding-left: 1rem;
     font-style: italic;
-    color: #555;
-    background-color: #f8f8f8;
+    color: $theme-font-gray;
+    background-color: $theme-background-light;
 }
 
 /* Code Blocks */
 .content :deep(pre) {
-    background-color: #f9f7f744;
+    background-color: $theme-background-lt;
     margin-top: 5px;
     padding: 0.75rem; // 调整代码块内边距，使内容更紧凑
     border-radius: 8px;
     font-size: 0.875rem; // 调整代码字体大小
     overflow-x: auto;
     margin-bottom: 0.75rem; // 调整代码块间距，使内容更紧凑
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px $theme-shallow-shadow;
 }
 
 .content :deep(pre code) {
     background-color: transparent;
     line-height: 1.7;
-    color: #ffffff;
+    color: $theme-font-light;
 }
 
 .content :deep(code) {
-    background-color: rgba(255, 141, 116, 0.913);
+    background-color: $theme-secondary-light;
     padding: 0.2rem 0.4rem;
-    border-radius: 4px;
+    // border-radius: 4px;
     font-family: "Courier New", Courier, monospace;
-    color: #fef3f3;
+    color: $theme-font-light;
 }
 
 /* Images */
@@ -128,19 +132,19 @@
 .content :deep(table th),
 .content :deep(table td) {
     padding: 0.5rem; // 调整表格单元格内边距，使内容更紧凑
-    border: 1px solid #ddd;
+    border: 1px solid $theme-background-light;
     text-align: left;
 }
 
 .content :deep(table th) {
-    background-color: #f4f4f4;
+    background-color: $theme-background;
     font-weight: 600;
 }
 
 /* Horizontal Rules */
 .content :deep(hr) {
     border: none;
-    border-top: 2px solid #ddd;
+    border-top: 2px solid $theme-background-light;
     margin: 1rem 0; // 调整水平线间距，使内容更紧凑
 }
 
@@ -161,7 +165,7 @@
     .content :deep(p) {
         margin-bottom: 0.6rem; // 调整段落间距，使内容更紧凑
         margin-top: 0.6rem; // 调整段落间距，使内容更紧凑
-        color: #ffffff;
+        color: $theme-font-light;
         line-height: 2; // 调整行高，使内容更紧凑
     }
 

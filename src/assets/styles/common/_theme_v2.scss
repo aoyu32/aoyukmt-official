@@ -1,0 +1,87 @@
+// Main Theme Colors - Primary (Purple)
+$theme-primary: #6a5acd; // Primary theme color (Slate Blue)
+$theme-primary-light: #7b68ee; // Lighter primary color
+$theme-primary-dark: #483d8b; // Darker primary color 
+$theme-primary-lt: #6a5acd2a; // Semi-transparent primary
+$theme-primary-dt: #6a5acd4f; // Darker semi-transparent primary
+$theme-primary-hover: #6a5acd20; // Light hover state
+$theme-primary-hover-dark: #483d8b74; // Dark hover state
+$theme-primary-shadow: #6a5acdc1; // Primary shadow
+$theme-primary-shadow-lt: #6a5acd48; // Light primary shadow
+
+// Secondary (Teal)
+$theme-secondary: #20b2aa; // Secondary theme color (Light Sea Green)
+$theme-secondary-light: #48d1cc; // Lighter secondary
+$theme-secondary-dark: #008b8b; // Darker secondary
+$theme-secondary-lt: #20b2aa6b; // Semi-transparent secondary
+
+// Accent Colors (Coral)
+$theme-accent: #ff7f50; // Coral accent
+$theme-accent-light: #ffa07a; // Light salmon
+$theme-accent-dark: #e9573f; // Darker coral
+$theme-accent-lt: #ff7f502a; // Semi-transparent coral
+
+// Additional Accent (Gold)
+$theme-accent2: #ffd700; // Gold accent
+$theme-accent2-light: #ffea00; // Light gold
+$theme-accent2-dark: #daa520; // Goldenrod
+$theme-accent2-lt: #ffd7003a; // Semi-transparent gold
+
+// Background Colors
+$theme-background: #ffffff; // White background
+$theme-background-light: #f8f8f8; // Light gray background
+$theme-background-lt: #ffffff66; // Semi-transparent white
+$theme-background-dark: rgba(48, 48, 48, 0.705); // Dark background
+$theme-background-dt: rgba(78, 78, 78, 0.434); // Semi-transparent dark
+$theme-background-gt: #bcbcbc1f; // Gray with transparency
+$theme-border-gray: rgba(112, 112, 112, 0.374); // Border color
+
+// Shadow Colors
+$theme-shallow-shadow: rgba(0, 0, 0, 0.1); // Light shadow
+$theme-deep-shadow: rgba(0, 0, 0, 0.2); // Medium shadow
+
+// Text Colors
+$theme-font-light: rgb(255, 255, 255); // White text
+$theme-font-dark: rgb(45, 45, 45); // Dark text
+$theme-font-gray: rgb(108, 107, 107); // Gray text
+$theme-font-light-gray: #726d6da1; // Light gray text
+$theme-font-lgt: #9c9c9c38; // Very light gray text
+
+// Gradient Backgrounds
+$theme-gradient-background-first: rgba(106, 90, 205, 0.9); // Purple
+$theme-gradient-background-second: rgba(32, 178, 170, 0.8); // Teal
+$theme-gradient-background-third: rgba(255, 127, 80, 0.7); // Coral
+$theme-gradient-background-fourth: rgba(255, 215, 0, 0.6); // Gold
+
+// Feature Display Backgrounds
+$theme-detail-background: #f8f8f8; // Feature display background
+$theme-img-background: #f0f0f0; // Image background
+$theme-card-background: white; // Card background
+
+// Download Section Gradient
+$dynamic-background-first: #7b68ee; // Purple
+$dynamic-background-second: #48d1cc; // Teal
+$dynamic-background-third: #ffa07a; // Light Salmon
+$dynamic-background-fourth: #ffd700; // Gold
+$download-card-hover-shadow: rgba(106, 90, 205, 0.8); // Card hover shadow
+
+// Document Sidebar
+$document-sidebar-background: hsl(0, 0%, 100%); // White sidebar
+
+// Feedback Chat Breathing Border Animation Colors
+$feedback-chat-shadow-light: rgba(255, 255, 255, 0.8); // White
+$feedback-chat-shadow-medium: rgba(230, 230, 255, 0.8); // Light purple
+$feedback-chat-shadow-dark: rgba(200, 200, 255, 0.8); // Medium purple
+$feedback-chat-shadow-darker: rgba(150, 150, 255, 0.8); // Deep purple
+$feedback-chat-shadow-darkest: rgba(106, 90, 205, 0.8); // Slate blue
+
+$feedback-chat-shadow-soft: rgba(255, 255, 255, 0.5); // Soft white
+$feedback-chat-shadow-moderate: rgba(230, 230, 255, 0.5); // Soft light purple
+$feedback-chat-shadow-deep: rgba(200, 200, 255, 0.5); // Soft medium purple
+$feedback-chat-shadow-deeper: rgba(150, 150, 255, 0.5); // Soft deep purple
+$feedback-chat-shadow-deepest: rgba(106, 90, 205, 0.5); // Soft slate blue
+
+// User Info Dialog Animation Colors
+$theme-dialog-shadow-light: rgba(106, 90, 205, 0.42); // Purple shadow
+$theme-dialog-shadow-medium: rgba(106, 90, 205, 0.39); // Medium purple shadow
+$theme-dialog-shadow-accent: rgba(255, 127, 80, 0.35); // Coral shadow accent

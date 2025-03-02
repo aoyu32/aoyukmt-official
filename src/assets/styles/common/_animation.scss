@@ -192,3 +192,172 @@
         /* 光晕完全消失 */
     }
 }
+
+//呼吸边框
+// 呼吸边框动画
+@keyframes breathing-border {
+    0% {
+        box-shadow: 0 0 10px $feedback-chat-shadow-light, 0 0 20px $feedback-chat-shadow-soft;
+    }
+
+    25% {
+        box-shadow: 0 0 10px $feedback-chat-shadow-medium, 0 0 20px $feedback-chat-shadow-moderate;
+    }
+
+    50% {
+        box-shadow: 0 0 10px $feedback-chat-shadow-dark, 0 0 20px $feedback-chat-shadow-deep;
+    }
+
+    75% {
+        box-shadow: 0 0 10px $feedback-chat-shadow-darker, 0 0 20px $feedback-chat-shadow-deeper;
+    }
+
+    100% {
+        box-shadow: 0 0 10px $feedback-chat-shadow-darkest, 0 0 20px $feedback-chat-shadow-deepest;
+    }
+}
+
+
+//悬浮气泡动画
+@keyframes breathing-border-shadow {
+    0% {
+        box-shadow: 0 0 2px rgba(255, 0, 0, 0.1), 0 0 5px rgba(255, 118, 118, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 4px rgba(255, 0, 0, 0.3), 0 0 10px rgba(255, 0, 0, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 2px rgba(255, 0, 0, 0.1), 0 0 5px rgba(255, 118, 118, 0.2);
+    }
+}
+
+/* 提示气泡显示动画 */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 提示气泡隐藏动画 */
+@keyframes slideOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* 提示气泡隐藏动画 */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* 提示框从上方弹出的动画 */
+@keyframes slideDown {
+    0% {
+        transform: translateX(-50%) translateY(-75%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(15px);
+        opacity: 1;
+    }
+}
+
+/* 提示框收回的动画 */
+@keyframes slideUp {
+    0% {
+        transform: translateX(-50%) translateY(15px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-65%);
+        opacity: 0;
+    }
+}
+
+//消息发送动画
+@keyframes fadeInUser {
+    from {
+        opacity: 0;
+        transform: translateX(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInOfficial {
+    from {
+        opacity: 0;
+        transform: translateX(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-message .message-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 75%;
+        justify-content: center;
+    }
+}
+
+//修改用户信息窗口文字闪烁
+/* 定义闪烁的动画 */
+@keyframes blinkOfInput {
+    0% {
+        text-shadow: 0 0 3px $theme-dialog-shadow-light, 0 0 6px $theme-dialog-shadow-medium;
+    }
+
+    50% {
+        text-shadow: none;
+    }
+
+    100% {
+        text-shadow: 0 0 3px $theme-dialog-shadow-light, 0 0 6px $theme-dialog-shadow-medium;
+    }
+}
+
+@keyframes blinkOfAvatar {
+    0% {
+        box-shadow: 0 0 5px $theme-dialog-shadow-light, 0 0 8px $theme-dialog-shadow-medium;
+    }
+
+    50% {
+        box-shadow: none;
+    }
+
+    100% {
+        box-shadow: 0 0 5px $theme-dialog-shadow-light, 0 0 8px $theme-dialog-shadow-medium;
+    }
+}

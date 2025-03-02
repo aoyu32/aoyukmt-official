@@ -15,7 +15,7 @@
                             </span>
                         </a>
                         <ul class="nav-submenu" :class="{ 'show': menuItem.isOpen }">
-                            <li v-for="(subItem, subIndex) in menuItem.submenu" :key="subIndex">
+                            <li v-for="(subItem, subIndex) in menuItem.submenu" :key="subIndex" @click="hideSidebar">
                                 <a href="#" :data-md="subItem.id"
                                     :class="{ 'active': activeParentIndex === index && activeChildIndex === subIndex }"
                                     @click.prevent="handleSubmenuClick(index, subIndex, subItem.src)">
@@ -90,6 +90,12 @@ watch(() => store.activeChildIndex, (newValue) => {
     store.setFilePath(filePath); // 更新文件路径
 })
 
+const emit = defineEmits(['hideSidebar'])
+//通知父组件隐藏侧边栏
+const hideSidebar = () => {
+    emit('hideSidebar', true)
+    window.scrollTo(0,0)
+}
 </script>
 
 

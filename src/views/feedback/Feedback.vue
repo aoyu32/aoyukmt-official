@@ -52,10 +52,10 @@ const handleUserMessage = (msg) => {
     }, 1000)
 
     // 请求 coze 获取流式回复
-    const stream = fetchChatStream(msg);
+    // const stream = fetchChatStream(msg);
     // const stream = callDashScopeStream(msg)
 
-    // const stream = new SparkAIService().sendMessageStream(msg)
+    const stream = new SparkAIService().sendMessageStream(msg)
     const reader = stream.getReader();
     console.log(reader);
 
@@ -102,71 +102,41 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/constant.scss" as *;
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
 
 .main-content {
     display: flex;
     width: 100%;
     height: 100vh;
-    background-color: hsla(0, 100%, 67%, 0.345);
-    padding-top: 72px;
+    // background-color: hsla(0, 100%, 67%, 0.345);
+    background-color: $theme-primary-lt;
+    padding-top: $distance-top;
     align-items: center;
     justify-content: center;
 
     .chat-container {
-        width: 1200px;
+        width: $max-width;
         display: flex;
-        height: 95%;
+        height: $percentage-height;
         position: relative;
         flex-direction: column;
-        background: #ffffff;
+        background: $theme-background;
         border-radius: 12px;
         /* position: relative; */
-        border: 2px solid $primary-color;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+        border: 2px solid $theme-primary;
+        // box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
         overflow: hidden;
         animation: breathing-border 5s infinite alternate;
     }
 
     @media (max-width: 1250px) {
         .chat-container {
-            width: 95%;
+            width: $percentage-width;
         }
 
     }
 
-}
-
-
-
-@keyframes breathing-border {
-    0% {
-        box-shadow:
-            0 0 10px rgba(255, 255, 255, 0.8),
-            0 0 20px rgba(255, 255, 255, 0.5);
-    }
-
-    25% {
-        box-shadow:
-            0 0 10px rgba(255, 230, 230, 0.8),
-            0 0 20px rgba(255, 230, 230, 0.5);
-    }
-
-    50% {
-        box-shadow:
-            0 0 10px rgba(255, 200, 200, 0.8),
-            0 0 20px rgba(255, 200, 200, 0.5);
-    }
-
-    75% {
-        box-shadow:
-            0 0 10px rgba(255, 150, 150, 0.8),
-            0 0 20px rgba(255, 150, 150, 0.5);
-    }
-
-    100% {
-        box-shadow:
-            0 0 10px rgba(255, 102, 102, 0.8),
-            0 0 20px rgba(255, 102, 102, 0.5);
-    }
 }
 </style>
