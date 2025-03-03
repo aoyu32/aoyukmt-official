@@ -4,7 +4,7 @@
       <img :src="messageData.isUser ? feedbackStore.user.avatar : aoyukmtAvatar" alt="">
     </div>
     <div class="message-wrapper">
-      <div class="name">{{ messageData.isUser ? feedbackStore.user.name : 'AOYUKMT官方' }}</div>
+      <div class="name">{{ messageData.isUser ? "🪶" + feedbackStore.user.name : officialName }}</div>
       <div class="message-content">
         <!-- 显示图片 -->
         <div v-if="hasImages" class="message-content-img" :style="messageTextStyle">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import {ref, computed } from "vue";
 import { marked } from "marked";
 import { useFeedbackStore } from "@/stores/feedback";
 import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
@@ -28,6 +28,7 @@ import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
 
 
 const feedbackStore = useFeedbackStore()
+const officialName = ref("AOYUKMT智能助手📫")
 // 接收父组件传递的 messageData
 const props = defineProps({
   messageData: {
@@ -38,8 +39,6 @@ const props = defineProps({
 
 //将markdown语法的消息解析为html
 const messageContent = computed(() => {
-  console.log(props.messageData.text);
-
   return props.messageData.isUser ? props.messageData.text : marked(props.messageData.text)
 })
 

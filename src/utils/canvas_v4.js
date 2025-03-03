@@ -20,45 +20,18 @@ export function initBackgroundCanvas(canvasId, options = {}) {
     // 跟踪鼠标位置
     let mouseX = 0;
     let mouseY = 0;
-
+    
     // 当前悬浮的组合
     let hoveredCombo = null;
 
-    // 从 CSS 变量中读取颜色
-    const getColorVariable = (variable) => {
-        return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
-    };
-
-
     // 颜色自定义选项及默认值
     const colors = {
-        keyBackground: {
-            start: getColorVariable("--key-background-start"),
-            end: getColorVariable("--key-background-end"),
-        },
-        keyBorder: getColorVariable("--key-border"),
-        keyText: getColorVariable("--key-text"),
-        plusSign: getColorVariable("--plus-sign"),
-        hoverBorder: getColorVariable("--hover-border"),
+        keyBackground: options.keyBackground || { start: "#ffffff", end: "#f0f0f0" }, // 按键渐变颜色
+        keyBorder: options.keyBorder || "#ff3333", // 边框颜色
+        keyText: options.keyText || "#ff0000", // 按键内文字颜色
+        plusSign: options.plusSign || "#ff0000", // 按键之间加号的颜色
+        hoverBorder: options.hoverBorder || "#00ff00" // 鼠标悬浮时的边框高亮颜色
     };
-
-    // 监听 CSS 变量变化
-    const observer = new MutationObserver(() => {
-        // 当 CSS 变量变化时，更新颜色
-        colors.keyBackground.start = getColorVariable("--key-background-start");
-        colors.keyBackground.end = getColorVariable("--key-background-end");
-        colors.keyBorder = getColorVariable("--key-border");
-        colors.keyText = getColorVariable("--key-text");
-        colors.plusSign = getColorVariable("--plus-sign");
-        colors.hoverBorder = getColorVariable("--hover-border");
-    });
-
-    // 监听 document 的样式变化
-    observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["style"],
-    });
-
 
     /**
      * 调整画布大小以匹配窗口尺寸
@@ -67,22 +40,22 @@ export function initBackgroundCanvas(canvasId, options = {}) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-
+    
     // 初始化画布大小
     resizeCanvas();
-
+    
     // 添加调整大小的监听器
     window.addEventListener("resize", resizeCanvas);
-
+    
     // 添加鼠标移动监听器
     canvas.addEventListener("mousemove", (event) => {
         const rect = canvas.getBoundingClientRect();
         mouseX = event.clientX - rect.left;
         mouseY = event.clientY - rect.top;
-
+        
         // 重置当前悬浮状态
         let newHoveredCombo = null;
-
+        
         // 检查是否悬浮在任何组合上
         for (let combo of combos) {
             if (combo.isMouseOver(mouseX, mouseY)) {
@@ -90,7 +63,7 @@ export function initBackgroundCanvas(canvasId, options = {}) {
                 break;
             }
         }
-
+        
         // 如果悬浮状态发生变化
         if (hoveredCombo !== newHoveredCombo) {
             // 如果之前有悬浮的组合，解除其悬浮状态
@@ -98,10 +71,10 @@ export function initBackgroundCanvas(canvasId, options = {}) {
                 hoveredCombo.hovered = false;
                 hoveredCombo.pauseFading = false;
             }
-
+            
             // 设置新的悬浮组合
             hoveredCombo = newHoveredCombo;
-
+            
             // 如果有新的悬浮组合，暂停其渐变效果
             if (hoveredCombo) {
                 hoveredCombo.hovered = true;
@@ -109,7 +82,7 @@ export function initBackgroundCanvas(canvasId, options = {}) {
             }
         }
     });
-
+    
     // 添加鼠标离开监听器
     canvas.addEventListener("mouseleave", () => {
         // 如果有悬浮的组合，解除其悬浮状态
@@ -160,7 +133,7 @@ export function initBackgroundCanvas(canvasId, options = {}) {
             // 选择随机按键
             this.key1 = keys[Math.floor(Math.random() * keys.length)];
             this.key2 = keys[Math.floor(Math.random() * keys.length)];
-
+            
             // 初始不透明度和淡入淡出设置
             this.opacity = 0;
             this.fadingIn = true;
@@ -181,11 +154,11 @@ export function initBackgroundCanvas(canvasId, options = {}) {
             ctx.font = "bold 16px Arial";
             const key1TextWidth = ctx.measureText(this.key1).width;
             const key2TextWidth = ctx.measureText(this.key2).width;
-
+            
             // 确保最小按键宽度（40px）或文本宽度加内边距（30px）
             this.key1Width = Math.max(key1TextWidth + 30, 40);
             this.key2Width = Math.max(key2TextWidth + 30, 40);
-
+            
             // 计算总宽度，包括加号空间（30px）
             this.width = this.key1Width + 30 + this.key2Width;
 
@@ -227,7 +200,7 @@ export function initBackgroundCanvas(canvasId, options = {}) {
                 attempts++;
             }
         }
-
+        
         /**
          * 检查鼠标是否在此组合上方
          * @param {number} mx - 鼠标X坐标
@@ -236,11 +209,11 @@ export function initBackgroundCanvas(canvasId, options = {}) {
          */
         isMouseOver(mx, my) {
             if (!this.active || this.opacity <= 0) return false;
-
+            
             return (
-                mx >= this.x &&
-                mx <= this.x + this.width &&
-                my >= this.y &&
+                mx >= this.x && 
+                mx <= this.x + this.width && 
+                my >= this.y && 
                 my <= this.y + this.height
             );
         }
@@ -291,7 +264,7 @@ export function initBackgroundCanvas(canvasId, options = {}) {
                     // 调整位置以保持在边界内
                     this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
                 }
-
+                
                 if (this.y < 0 || this.y > canvas.height - this.height) {
                     this.dy *= -1; // 反转垂直速度
                     // 调整位置以保持在边界内
@@ -354,52 +327,19 @@ export function initBackgroundCanvas(canvasId, options = {}) {
 
             // 绘制第一个按键
             drawKey(this.key1, this.x, this.y, this.key1Width);
-
+            
             // 绘制加号
             ctx.fillStyle = colors.plusSign;
             ctx.font = "bold 20px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText("+", this.x + this.key1Width + 15, this.y + this.height / 2);
-
+            
             // 绘制第二个按键
             drawKey(this.key2, this.x + this.key1Width + 30, this.y, this.key2Width);
 
             // 恢复上下文状态
             ctx.restore();
-        }
-
-        /**
-         * 绘制从当前组合到其他组合的连线
-         * @param {CanvasRenderingContext2D} ctx - 画布上下文
-         * @param {ShortcutCombo[]} combos - 所有组合的数组
-         */
-        drawConnections(ctx, combos) {
-            if (!this.hovered || this.opacity <= 0) return;
-
-            // 计算当前组合的中心点
-            const centerX = this.x + this.width / 2;
-            const centerY = this.y + this.height / 2;
-
-            // 设置连线样式
-            ctx.strokeStyle = colors.hoverBorder;
-            ctx.lineWidth = 1;
-            ctx.globalAlpha = this.opacity;
-
-            // 遍历所有组合
-            for (let combo of combos) {
-                if (combo !== this && combo.active && combo.opacity > 0) {
-                    // 计算目标组合的中心点
-                    const targetX = combo.x + combo.width / 2;
-                    const targetY = combo.y + combo.height / 2;
-
-                    // 绘制连线
-                    ctx.beginPath();
-                    ctx.moveTo(centerX, centerY);
-                    ctx.lineTo(targetX, targetY);
-                    ctx.stroke();
-                }
-            }
         }
     }
 
@@ -421,18 +361,13 @@ export function initBackgroundCanvas(canvasId, options = {}) {
             combo.draw();
         });
 
-        // 如果当前有悬浮的组合，绘制连线
-        if (hoveredCombo) {
-            hoveredCombo.drawConnections(ctx, combos);
-        }
-
         // 请求下一帧动画
         requestAnimationFrame(animate);
     }
 
     // 启动动画
     animate();
-
+    
     // 返回一个用于更新颜色的方法
     return {
         /**

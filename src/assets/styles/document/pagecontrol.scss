@@ -41,11 +41,14 @@
         font-weight: $font-weight;
         display: flex;
         align-items: center;
-        /* 垂直居中 */
         justify-content: flex-start;
-        /* 水平靠左 */
         width: 100%;
-        /* 占满父容器宽度 */
+        line-height: 100%;
+        font-size: 16px;
+
+        span {
+            margin-left: 10px;
+        }
     }
 
     .next {
@@ -53,11 +56,15 @@
         font-weight: $font-weight;
         display: flex;
         align-items: center;
-        /* 垂直居中 */
         justify-content: flex-end;
-        /* 水平靠右 */
         width: 100%;
-        /* 占满父容器宽度 */
+        font-size: 16px;
+        line-height: 100%;
+
+        span {
+            margin-right: 10px;
+        }
+
     }
 
 }

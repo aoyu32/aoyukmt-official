@@ -24,6 +24,7 @@ import Tools from "@/utils/tools";
 import ModalDialog from "@/components/feedback/ModalDialog.vue";
 import { callDashScopeStream } from "@/api/aliyun";
 import SparkAIService from '@/api/spark'
+import { GeminiAssistant } from '@/api/gemini'
 
 const feedbackStore = useFeedbackStore()
 
@@ -53,11 +54,14 @@ const handleUserMessage = (msg) => {
 
     // 请求 coze 获取流式回复
     // const stream = fetchChatStream(msg);
+    //阿里云百炼通义千问
     // const stream = callDashScopeStream(msg)
-
-    const stream = new SparkAIService().sendMessageStream(msg)
+    //讯飞星火大模型
+    // const stream = new SparkAIService().sendMessageStream(msg)
+    //Gemini大模型
+    const prompt = "你是一个aoyukmt官网的助手"
+    const stream = new GeminiAssistant().chat(prompt,msg)
     const reader = stream.getReader();
-    console.log(reader);
 
     readStream(reader);
 
@@ -68,7 +72,8 @@ async function readStream(reader) {
     let fullMessage = '';
     while (true) {
         const { done, value } = await reader.read();
-
+      
+        
         if (done) {
             // 流式接收完成
             feedbackStore.completeCurrentOfficialMessage();

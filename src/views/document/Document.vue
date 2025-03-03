@@ -1,10 +1,10 @@
 <template>
     <div class="document">
-        <button class="sidebar-toggle" @click="toggleSidebar">
-            <i class="iconfont icon-a-1you_right" id="sidebar-button" style="font-size: 24px;"></i>
+        <button class="sidebar-toggle" :class="{ 'rotated': !isShowSidebar }" @click="toggleSidebar">
+            <i class="iconfont icon-toggle-right"></i>
         </button>
-        <button class="outline-toggle" @click="toggleOutline">
-            <i class="iconfont icon-a-1you_right" id="sidebar-button" style="font-size: 24px;"></i>
+        <button class="outline-toggle" :class="{ 'rotated': !isShowOutline }" @click="toggleOutline">
+            <i class="iconfont icon-toggle-left"></i>
         </button>
         <div class="main-content">
             <div class="document-sidebar" :class="{ 'show': !isShowSidebar }">
@@ -103,6 +103,7 @@ const hideSidebarOrOutline = () => {
 const handleHideSidebar = () => {
     isShowSidebar.value = true
 }
+
 //隐藏标题栏
 const handleHideOutline = () => {
     isShowOutline.value = true
@@ -125,13 +126,16 @@ const handleHideOutline = () => {
     display: none;
     position: fixed;
     top: $distance-top;
+    width: 15px;
+    height: 15px;
     z-index: 20;
     color: $theme-primary;
     border: none;
+    text-align: center;
     left: 0;
     cursor: pointer;
     background-color: $theme-background;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 
     span {
         font-size: 1rem;
@@ -139,6 +143,21 @@ const handleHideOutline = () => {
 
     &:hover {
         color: $theme-primary-light;
+        text-shadow: 0 0 5px $theme-primary-light,
+            0 0 10px $theme-primary-dt,
+            0 0 15px $theme-primary-lt;
+    }
+
+    .iconfont {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+        display: block;
+    }
+    
+    &.rotated {
+        .iconfont {
+            transform: rotate(180deg);
+        }
     }
 }
 
@@ -152,7 +171,7 @@ const handleHideOutline = () => {
     right: 0;
     cursor: pointer;
     background-color: $theme-background;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 
     span {
         font-size: 1rem;
@@ -160,6 +179,21 @@ const handleHideOutline = () => {
 
     &:hover {
         color: $theme-primary-light;
+        text-shadow: 0 0 5px $theme-primary-light,
+            0 0 10px $theme-primary-dt,
+            0 0 15px $theme-primary-lt;
+    }
+
+    .iconfont {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+        display: block;
+    }
+    
+    &.rotated {
+        .iconfont {
+            transform: rotate(-180deg);
+        }
     }
 }
 
@@ -203,17 +237,14 @@ const handleHideOutline = () => {
         z-index: 10;
         padding: $document-sidebar-padding;
     }
-
-
 }
-
 
 @media (max-width: 1000px) {
 
     .document-sidebar {
         left: 0;
         transform: translateX(-100%);
-        transition: transform 0.1s ease;
+        transition: transform 0.3s ease;
 
 
         &.show {
@@ -234,7 +265,7 @@ const handleHideOutline = () => {
         .document-outline {
             right: 0;
             transform: translateX(100%);
-            transition: transform 0.1s ease;
+            transition: transform 0.3s ease;
             background: $document-sidebar-background;
 
             &.show {
@@ -251,6 +282,5 @@ const handleHideOutline = () => {
     .outline-toggle {
         display: block;
     }
-
 }
 </style>

@@ -118,7 +118,15 @@ const details = ref([
 ]);
 
 onMounted(() => {
-    initBackgroundCanvas("backgroundCanvas");
+    const controller = initBackgroundCanvas("backgroundCanvas");
+    // Update colors later
+    // controller.updateColors({
+    //     keyBackground: { start: '#ffffff', end: '#ffffff' },
+    //     keyBorder: '#4caf50',
+    //     keyText: '#388e3c',
+    //     plusSign: '#ffcc00'
+    // });
+
     initLenis();
 });
 

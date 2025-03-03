@@ -44,12 +44,16 @@
                 border-radius: 50%;
                 width: $feedback-preview-dtn;
                 height: $feedback-preview-dtn;
+                cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 12px;
-                cursor: pointer;
+
                 transition: background-color 0.5s ease-in-out;
+
+                .iconfont {
+                    font-size: 10px;
+                }
 
                 &:hover {
                     background-color: $theme-background-dt;
@@ -82,7 +86,7 @@
             min-height: $feedback-input-min-height;
             overflow-y: auto;
             overflow: hidden;
-            background-color:  $theme-background;
+            background-color: $theme-background;
             resize: none;
             font-family: $font-family;
             color: $theme-font-dark;
@@ -210,6 +214,7 @@
                 width: 100px; // Adjust the width for smaller screens
             }
         }
+
         .chat-input-area {
             textarea {
                 min-height: auto; // Allow the textarea to adjust its height dynamically on smaller screens

@@ -43,6 +43,7 @@ watch(
   () => props.filePath,
   (newFilePath) => {
     renderMarkdown(newFilePath);
+    window.scrollTo(0, 0)
   },
   { immediate: true }
 );
@@ -69,7 +70,7 @@ const extractHeadings = () => {
 
 onMounted(() => {
   console.log(props.filePath);
-  
+
   renderMarkdown(props.filePath)
 })
 

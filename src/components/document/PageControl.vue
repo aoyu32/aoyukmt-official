@@ -2,14 +2,14 @@
     <nav class="markdown-page">
         <a class="pre-page" :class="{ hidden: !prevLabel }" id="pre-page" @click="toPrePage">
             <p class="pre">
-                <i class="iconfont icon-shangyiye"></i>
+                <i class="iconfont icon-prepage-right"></i>
                 <span>{{ prevLabel || '' }}</span>
             </p>
         </a>
         <a class="next-page" :class="{ hidden: !nextLabel }" id="next-page" @click="toNextPage">
             <p class="next">
                 <span>{{ nextLabel || '' }}</span>
-                <i class="iconfont icon-xiayiye"></i>
+                <i class="iconfont icon-shangyiye"></i>
             </p>
         </a>
     </nav>

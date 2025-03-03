@@ -49,15 +49,20 @@
         color: $theme-font-light;
         border: none;
         border-radius: 50%;
-        font-size: 14px;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        transition: background-color 0.3s;
+        transition: background-color 0.5s;
+
 
         &:hover {
-            background: $theme-primary-dt;
+            background: $theme-secondary;
+        }
+
+        .iconfont {
+            font-size: 12px;
+            font-weight: $font-weight;
         }
     }
 
@@ -292,4 +297,3 @@
 .blink-avatar {
     animation: blinkOfAvatar 0.5s infinite;
 }
-

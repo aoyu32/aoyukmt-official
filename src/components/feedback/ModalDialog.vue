@@ -4,7 +4,7 @@
             <div class="dialog-header">
                 <span class="username" id="username">Hi, {{ feedbackStore.user.name }}</span>
                 <button class="close-button" @click="feedbackStore.setShowDialog(false)">
-                    <i>❌</i>
+                    <i class="iconfont icon-close-bold"></i>
                 </button>
             </div>
             <div class="avatar-container">
@@ -16,7 +16,7 @@
                         @change="handleImageUpload" />
                     <div for="avatar-img-input" class="avatar-upload" :class="{ 'show-tooltip': isAvatarBlink }"
                         :data-avatar-tooltip="avatarToolTip" id="avatar-upload" @click="modifyAvatar">
-                        <i class="iconfont icon-xiugaimima">🛠️</i>
+                        <i class="iconfont icon-picture"></i>
                     </div>
                 </div>
             </div>

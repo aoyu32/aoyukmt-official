@@ -82,6 +82,9 @@ const handleSubmenuClick = (parentIndex, childIndex) => {
 
 watch(() => store.activeParentIndex, (newValue) => {
     activeParentIndex.value = newValue
+    console.log("展开的一级菜单：",newValue);
+    
+    toggleMenu(newValue)
 })
 
 watch(() => store.activeChildIndex, (newValue) => {
@@ -94,7 +97,7 @@ const emit = defineEmits(['hideSidebar'])
 //通知父组件隐藏侧边栏
 const hideSidebar = () => {
     emit('hideSidebar', true)
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
 }
 </script>
 
