@@ -20,15 +20,16 @@
 </template>
 
 <script setup>
-import {ref, computed } from "vue";
+import { onMounted, onUpdated, nextTick, watch, ref, computed } from "vue";
 import { marked } from "marked";
 import { useFeedbackStore } from "@/stores/feedback";
 import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
-
-
+import hljs from 'highlight.js';
+import "highlight.js/styles/github.css"; // 亮色主题
 
 const feedbackStore = useFeedbackStore()
 const officialName = ref("AOYUKMT智能助手📫")
+const messageContainer = ref(null); // 代码块容器
 // 接收父组件传递的 messageData
 const props = defineProps({
   messageData: {
@@ -36,12 +37,33 @@ const props = defineProps({
     required: true
   }
 });
+// 配置 marked
+marked.setOptions({
+  highlight: (code, lang) => {
+    const validLang = hljs.getLanguage(lang) ? lang : "plaintext";
+    return hljs.highlight(code, { language: validLang }).value;
+  }
+});
 
-//将markdown语法的消息解析为html
+// Markdown 转换为 HTML
 const messageContent = computed(() => {
-  return props.messageData.isUser ? props.messageData.text : marked(props.messageData.text)
-})
+  return props.messageData.isUser ? props.messageData.text : marked(props.messageData.text);
+});
 
+// 封装代码高亮方法
+const applyHighlight = async () => {
+  await nextTick(); // 确保 DOM 已更新
+  messageContainer.value?.querySelectorAll("pre code").forEach((el) => {
+    hljs.highlightElement(el); // 重新高亮代码
+  });
+};
+
+// 监听 Markdown 内容变化，触发代码高亮
+watch(messageContent, applyHighlight);
+
+// 当组件挂载 & 重新挂载（路由切换返回时）时，重新执行高亮
+onMounted(applyHighlight);
+onUpdated(applyHighlight); // 组件更新时，确保代码高亮
 // 计算是否有图片
 const hasImages = computed(() => props.messageData.img.length > 0);
 //计算是否有文本

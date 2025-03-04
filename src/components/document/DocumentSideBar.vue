@@ -8,8 +8,7 @@
                         'open': menuItem.isOpen,
                         'active-parent': activeParentIndex === index
                     }]">
-                        <a href="javascript:void(0)" @click="toggleMenu(index)"
-                            :class="{ 'active': activeParentIndex === index }">
+                        <a href="" @click="toggleMenu(index)" :class="{ 'active': activeParentIndex === index }">
                             {{ menuItem.label }}
                             <span class="iconfont icon-arrow-right" :class="{ rotate: menuItem.isOpen }">
                             </span>
@@ -43,7 +42,6 @@ const store = useDocumentStore();
 // });
 // 创建本地响应式数据
 const localMenuData = store.menuData
-console.log(localMenuData);
 // 跟踪激活的菜单项
 const activeParentIndex = ref(null);
 const activeChildIndex = ref(null);
@@ -51,7 +49,6 @@ const activeChildIndex = ref(null);
 
 // 在组件挂载后设置默认状态
 onMounted(() => {
-
     // 设置第一个一级菜单为激活状态
     activeParentIndex.value = 0;
     // 设置第一个二级菜单为激活状态
@@ -76,15 +73,11 @@ const handleSubmenuClick = (parentIndex, childIndex) => {
     localMenuData[parentIndex].isOpen = true;
     const filePath = localMenuData[parentIndex].submenu[childIndex].src;
     store.setFilePath(filePath); // 更新文件路径
-
 };
 
 
 watch(() => store.activeParentIndex, (newValue) => {
     activeParentIndex.value = newValue
-    console.log("展开的一级菜单：",newValue);
-    
-    toggleMenu(newValue)
 })
 
 watch(() => store.activeChildIndex, (newValue) => {

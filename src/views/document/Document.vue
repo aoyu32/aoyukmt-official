@@ -153,7 +153,7 @@ const handleHideOutline = () => {
         transition: transform 0.3s ease;
         display: block;
     }
-    
+
     &.rotated {
         .iconfont {
             transform: rotate(180deg);
@@ -189,7 +189,7 @@ const handleHideOutline = () => {
         transition: transform 0.3s ease;
         display: block;
     }
-    
+
     &.rotated {
         .iconfont {
             transform: rotate(-180deg);

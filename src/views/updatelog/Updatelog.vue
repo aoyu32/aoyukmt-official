@@ -1,8 +1,9 @@
 <template>
     <div class="updatelog">
         <div class="main-content">
-            <button class="sidebar-toggle" @click="isShowSidebar = !isShowSidebar">
-                <i class="iconfont icon-a-1you_right" id="sidebar-button" style="font-size: 24px;"></i>
+            <button class="sidebar-toggle" :class="{ 'rotated': isShowSidebar }"
+                @click="isShowSidebar = !isShowSidebar">
+                <i class="iconfont icon-arrow-left-filling" id="sidebar-button"></i>
             </button>
             <div class="sidebar" :class="{ 'show': !isShowSidebar }">
                 <UpdatelogSidebar @showSidebar="handleShowSidebar" />
@@ -99,6 +100,7 @@ const handleShowSidebar = () => {
     left: 0;
     cursor: pointer;
     background-color: $theme-background;
+    border-radius: 50%;
     transition: background-color 0.3s ease;
 
     span {
@@ -107,6 +109,18 @@ const handleShowSidebar = () => {
 
     &:hover {
         color: $theme-primary-light;
+    }
+
+    .iconfont {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+        display: block;
+    }
+
+    &.rotated {
+        .iconfont {
+            transform: rotate(180deg);
+        }
     }
 }
 

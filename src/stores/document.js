@@ -6,17 +6,18 @@ export const useDocumentStore = defineStore('document', {
         activeParentIndex: 0, // 默认激活的父菜单索引
         activeChildIndex: 0, // 默认激活的子菜单索引
         headings: [], // 大纲标题列表
-        menuData:[]
+        menuData: [],
+        activeHeadingId: null//标题栏激活id
     }),
     actions: {
         setFilePath(filePath) {
             this.activeFilePath = filePath;
         },
-        setActiveChildIndex(childIndex){
-            this.activeChildIndex=childIndex   
+        setActiveChildIndex(childIndex) {
+            this.activeChildIndex = childIndex
         },
-        setActiveParentIndex(parentIndex){
-            this.activeParentIndex=parentIndex
+        setActiveParentIndex(parentIndex) {
+            this.activeParentIndex = parentIndex
         },
         setActiveMenu(parentIndex, childIndex) {
             this.activeParentIndex = parentIndex;
@@ -25,8 +26,11 @@ export const useDocumentStore = defineStore('document', {
         setHeadings(headings) {
             this.headings = headings;
         },
-        setMenuData(data){
+        setMenuData(data) {
             this.menuData = data
+        },
+        setActiveHeadingId(id) {
+            this.activeHeadingId = id
         }
     },
 });

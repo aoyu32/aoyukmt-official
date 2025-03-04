@@ -3,8 +3,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { marked } from 'marked';
+import hljs from 'highlight.js';
+import { useDocumentStore } from '@/stores/document';
+// import "highlight.js/styles/github-dark.min.css";  // 你可以换成其他主题
+import "highlight.js/styles/github.css"; // 亮色主题
+
+const store = useDocumentStore()
 
 const markdownDiv = ref(null)
 const props = defineProps({
@@ -17,8 +23,17 @@ const props = defineProps({
     default: ''
   }
 });
-const htmlContent = ref('');
+
+// **设置 marked 代码高亮，只执行一次**
+marked.setOptions({
+  highlight: (code, lang) => {
+    const validLang = hljs.getLanguage(lang) ? lang : "plaintext";
+    return hljs.highlight(code, { language: validLang }).value;
+  }
+});
+
 // 渲染 Markdown 文件内容
+const htmlContent = ref('');
 const renderMarkdown = async (filePath) => {
   try {
     const response = await fetch(filePath);
@@ -26,10 +41,12 @@ const renderMarkdown = async (filePath) => {
       throw new Error(`Error loading document: ${response.statusText}`);
     }
 
+
     const markdown = await response.text();
     htmlContent.value = marked(markdown);
 
     await nextTick();
+    hljs.highlightAll()
     extractHeadings();
 
   } catch (error) {
@@ -47,6 +64,34 @@ watch(
   },
   { immediate: true }
 );
+// // 观察器实例
+let observer = null;
+// // 设置标题观察器
+const setupHeadingObserver = () => {
+  if (observer) observer.disconnect();
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          store.setActiveHeadingId(entry.target.id);
+        } else {
+          store.setActiveHeadingId(null);
+        }
+      });
+
+    },
+    {
+      threshold: 0.1,
+      rootMargin: '-90px 0px -75% 0px',
+    }
+  );
+  const h2Elements = markdownDiv.value.querySelectorAll('h2');
+  h2Elements.forEach((heading) => {
+    observer.observe(heading);
+  });
+};
+
 
 //提取h2标题
 const emit = defineEmits(['getHeadings'])
@@ -65,14 +110,26 @@ const extractHeadings = () => {
   });
 
   emit('getHeadings', headingsData)
+
+  // 设置 Intersection Observer
+  nextTick(() => {
+    setupHeadingObserver();
+  });
 };
 
 
 onMounted(() => {
-  console.log(props.filePath);
-
   renderMarkdown(props.filePath)
 })
+
+// 组件卸载时清理 observer
+onBeforeUnmount(() => {
+  if (observer) {
+    observer.disconnect();
+    observer = null;
+  }
+});
+
 
 </script>
 <style lang="scss">

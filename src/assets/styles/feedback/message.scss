@@ -77,7 +77,10 @@
                 width: 100%;
                 font-size: 15px;
                 color: $theme-font-light;
-                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                white-space: pre-wrap;
             }
         }
 
@@ -103,7 +106,7 @@
     .message-wrapper {
         display: flex;
         flex-direction: column;
-        max-width: 50%;
+        max-width: 65%;
     }
 
     .message-content {
