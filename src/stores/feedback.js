@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+// import loadingGifSrc from 'W:\\w.project\\aoyukmt\\aoyukmt-official\\src\\assets\\loadding.gif'; // 引入GIF图片
 
 export const useFeedbackStore = defineStore('feedback', () => {
     // State
@@ -85,7 +86,10 @@ export const useFeedbackStore = defineStore('feedback', () => {
 
     // 开始流式接收官方消息
     const startStreamingOfficialMessage = () => {
-        const officialMsg = { text: '让我想想怎么回答...', img: [], date: new Date().toLocaleString(), isUser: false };
+        // const loadingGif = `<img src="${loadingGifSrc}" alt="思考中" style="width: 40px; height: 40px; display: block; margin: 0 auto;" />`;
+
+        
+        const officialMsg = { text: '', img: [], date: new Date().toLocaleString(), isUser: false };
         officialMessage.value.push(officialMsg);
         chatMessages.value.push(officialMsg);
         currentOfficialMessageIndex.value = chatMessages.value.length - 1; // 记录当前消息的索引

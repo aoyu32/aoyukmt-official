@@ -7,8 +7,8 @@ import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { marked } from 'marked';
 import hljs from 'highlight.js';
 import { useDocumentStore } from '@/stores/document';
-// import "highlight.js/styles/github-dark.min.css";  // 你可以换成其他主题
-import "highlight.js/styles/github.css"; // 亮色主题
+import "highlight.js/styles/github-dark.min.css";  // 你可以换成其他主题
+
 
 const store = useDocumentStore()
 
@@ -83,7 +83,7 @@ const setupHeadingObserver = () => {
     },
     {
       threshold: 0.1,
-      rootMargin: '-90px 0px -75% 0px',
+      rootMargin: '-100px 0px -60% 0px',
     }
   );
   const h2Elements = markdownDiv.value.querySelectorAll('h2');

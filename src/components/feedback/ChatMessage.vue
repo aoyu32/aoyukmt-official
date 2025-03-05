@@ -11,8 +11,16 @@
           <img v-for="(item, index) in messageData.img" :src="item.src" :key="index" alt="">
         </div>
         <!-- 显示文本，动态计算 padding -->
-        <div class="content" v-if="hasText" ref="messageContainer"
-          v-html="messageData.text === '' ? '思考中' : messageContent"></div>
+
+        <div class="content" v-if="hasText" ref="messageContainer" v-html="messageContent"></div>
+        <div class="loadding" v-else>
+          <!-- <img :src="loadding" alt=""> -->
+          <div class="loadding-container">
+            <!-- 波浪线效果 -->
+            <!-- 其他用法 -->
+            <Loadding animation-type="zoom" text="LOADDING" />
+          </div>
+        </div>
       </div>
       <div class="time">{{ messageData.date }}</div>
     </div>
@@ -25,7 +33,8 @@ import { marked } from "marked";
 import { useFeedbackStore } from "@/stores/feedback";
 import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
 import hljs from 'highlight.js';
-import "highlight.js/styles/github.css"; // 亮色主题
+import "highlight.js/styles/atom-one-light.css";
+import Loadding from "@/components/feedback/Loadding.vue";
 
 const feedbackStore = useFeedbackStore()
 const officialName = ref("AOYUKMT智能助手📫")
@@ -38,6 +47,8 @@ const props = defineProps({
   }
 });
 // 配置 marked
+
+
 marked.setOptions({
   highlight: (code, lang) => {
     const validLang = hljs.getLanguage(lang) ? lang : "plaintext";
@@ -49,6 +60,8 @@ marked.setOptions({
 const messageContent = computed(() => {
   return props.messageData.isUser ? props.messageData.text : marked(props.messageData.text);
 });
+
+
 
 // 封装代码高亮方法
 const applyHighlight = async () => {

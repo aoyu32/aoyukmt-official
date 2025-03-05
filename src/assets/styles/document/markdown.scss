@@ -130,12 +130,13 @@
 .markdown-body table th,
 .markdown-body table td {
     padding: 0.75rem;
-    border: 1px solid $theme-font-light;
+    border: 1px solid $theme-border-gray;
     text-align: left;
 }
 
 .markdown-body table th {
-    background-color: $theme-font-light;
+    background-color: $theme-primary-dt;
+    color: $theme-font-dark;
     font-weight: 600;
 }
 
@@ -143,6 +144,7 @@
 .markdown-body hr {
     border: none;
     border-top: 2px solid $theme-primary-lt;
+    
     margin: 2rem 0;
 }
 

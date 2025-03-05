@@ -10,6 +10,10 @@
     color: $theme-font-dark;
     cursor: pointer;
 
+    p {
+        margin-top: 5px;
+    }
+
     &:hover {
         transform: translateY(-5px);
     }

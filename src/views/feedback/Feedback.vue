@@ -57,10 +57,10 @@ const handleUserMessage = (msg) => {
     //阿里云百炼通义千问
     // const stream = callDashScopeStream(msg)
     //讯飞星火大模型
-    // const stream = new SparkAIService().sendMessageStream(msg)
+    const stream = new SparkAIService().sendMessageStream(msg)
     //Gemini大模型
-    const prompt = "你是一个aoyukmt官网的助手"
-    const stream = new GeminiAssistant().chat(prompt,msg)
+    // const prompt = "你是一个aoyukmt官网的助手"
+    // const stream = new GeminiAssistant().chat(prompt,msg)
     const reader = stream.getReader();
 
     readStream(reader);
