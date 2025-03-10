@@ -15,12 +15,12 @@ export const initLenis = () => {
         // // },
         // // easing: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t, // easeInOutQuad
         // // easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, // easeInOutCubic
-        // smooth: true, // 是否平滑
+        smooth: true, // 是否平滑
         // direction: 'vertical', // 滚动方向
-        duration: 0.6, // 滚动动画持续时间，稍微延长一点以获得更平滑的效果
+        duration: 1.0, // 滚动动画持续时间，稍微延长一点以获得更平滑的效果
         easing: (t) => Math.sin((t * Math.PI) / 2), // 使用正弦缓动函数，流畅且没有卡顿
         // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // 缓动函数
-        smooth: true, // 启用平滑滚动
+        // smooth: true, // 启用平滑滚动
         direction: 'vertical', // 垂直滚动
 
     });
@@ -32,6 +32,8 @@ export const initLenis = () => {
     };
 
     requestAnimationFrame(animate);
+
+    return lenis; // 返回 Lenis 实例
 };
 
 export const destroyLenis = () => {

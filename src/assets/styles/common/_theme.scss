@@ -86,7 +86,6 @@
 // $theme-dialog-shadow-medium: rgba(255, 77, 77, 0.393); // 中等深度的红色阴影
 
 
-
 // 主色调变量（可随主题切换）
 $theme-primary: #ff85a2; // 主要主题色（粉红色）
 $theme-primary-light: #ff6b8b; // 比主要颜色再鲜艳一些亮一些的颜色
@@ -171,6 +170,7 @@ $feedback-chat-shadow-deepest: rgba(255, 133, 162, 0.5); // 最深的柔和阴�
 // 定义颜色变量
 $theme-dialog-shadow-light: rgba(255, 133, 162, 0.42); // 较浅的粉红色阴影
 $theme-dialog-shadow-medium: rgba(255, 133, 162, 0.393); // 中等深度的粉红色阴影
+
 
 :root {
     --key-background-start: #{$theme-background};

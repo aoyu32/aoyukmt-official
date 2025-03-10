@@ -10,22 +10,22 @@
                     animation: 'slide-right',
                     offset: 30
                 }">
-                    <img :src="detail.image" :alt="detail.alt" />
+                    <img :src="detail.imgUrl" :alt="detail.title" />
                 </div>
                 <div class="detail-text">
-                    <p>{{ detail.text }}</p>
+                    <p>{{ detail.content }}</p>
                 </div>
             </template>
             <template v-else>
                 <!-- 奇数索引 -->
                 <div class="detail-text">
-                    <p>{{ detail.text }}</p>
+                    <p>{{ detail.content }}</p>
                 </div>
                 <div class="detail-image" v-aos="{
                     animation: 'slide-left',
                     offset: 20
                 }">
-                    <img :src="detail.image" :alt="detail.alt" />
+                    <img :src="detail.imgUrl" :alt="detail.title" />
                 </div>
             </template>
         </div>

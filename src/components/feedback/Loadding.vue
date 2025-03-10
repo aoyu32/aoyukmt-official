@@ -13,6 +13,7 @@
 
 <script setup>
 import { computed } from 'vue'
+
 // 定义组件props
 const props = defineProps({
     // 加载文案
@@ -33,10 +34,6 @@ const props = defineProps({
     // 自定义颜色配置
     colors: {
         type: Object,
-        default: () => ({
-            start: '#3498db',
-            end: '#e74c3c'
-        })
     },
     // 动画持续时间
     duration: {
@@ -52,6 +49,16 @@ const props = defineProps({
     showDots: {
         type: Boolean,
         default: false
+    },
+    // 自定义字体大小
+    fontSize: {
+        type: String,
+        default: '15px'
+    },
+    // 自定义颜色
+    customColor: {
+        type: String,
+        default: ''
     }
 })
 
@@ -68,6 +75,8 @@ const getCharStyles = (index) => {
     return {
         animationDelay: `${0.1 * (index + 1)}s`,
         animationDuration: `${props.duration}s`,
+        color: props.customColor, // 优先使用自定义颜色
+        fontSize: props.fontSize, // 应用自定义字体大小
         '--jump-intensity': `${30 * props.intensity}px`
     }
 }
@@ -94,7 +103,6 @@ const getCharStyles = (index) => {
 
 .loading-container {
     display: flex;
-    font-size: 15px;
     font-weight: bold;
     width: 100%;
     height: 100%;
@@ -111,8 +119,7 @@ const getCharStyles = (index) => {
     margin: 0 1px;
     opacity: 0.7;
     will-change: transform;
-    color: $theme-font-light;
-
+    color: $theme-primary-dark;
 }
 
 /* 动画样式 */

@@ -29,12 +29,13 @@
     </nav>
   </header>
   <main>
-    <router-view></router-view>
+    <router-view>
+    </router-view>
   </main>
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted } from "vue";
+import { ref, watchEffect, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import TypeEffect from "@/utils/typing";
 
@@ -93,6 +94,10 @@ onMounted(() => {
 
   });
 });
+
+onUnmounted(() => {
+  destroyLenis()
+})
 
 // 改变链接文本的函数
 const changeText = (link, newText) => {

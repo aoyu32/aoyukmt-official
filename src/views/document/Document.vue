@@ -6,15 +6,19 @@
         <button class="outline-toggle" :class="{ 'rotated': !isShowOutline }" @click="toggleOutline">
             <i class="iconfont icon-toggle-left"></i>
         </button>
-        <div class="main-content">
+        <div class="loadding-box" v-if="menuData.length === 0">
+            <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up"
+                :fullScreen="false" />
+        </div>
+        <div class="main-content" v-if="menuData.length !== 0">
             <div class="document-sidebar" :class="{ 'show': !isShowSidebar }">
-                <DocumentSidebar :menuData="menuData" @hideSidebar="handleHideSidebar" />
+                <DocumentSidebar @hideSidebar="handleHideSidebar" />
             </div>
             <div class="document-content" @click="hideSidebarOrOutline">
                 <div class="document-markdown">
                     <!-- 文档内容 -->
                     <!-- 传递Markdown文本或文件路径 -->
-                    <MarkdownViewer :filePath="store.activeFilePath" @getHeadings="handleHeadings" v-aos="{
+                    <MarkdownViewer :docsUrl="store.activeDocsUrl" @getHeadings="handleHeadings" v-aos="{
                         animation: 'fade-down',
                         duration: 250
                     }" />
@@ -35,11 +39,12 @@ import DocumentSidebar from '@/components/document/DocumentSidebar.vue'
 import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
 import PageControl from '@/components/document/PageControl.vue';
 import MarkdownOutline from '@/components/document/MarkdownOutline.vue';
-import { menuData } from '@/data/sidebar';
+import Loadding from '@/components/feedback/Loadding.vue';
+import { apis } from '@/api/api';
 import { useDocumentStore } from '@/stores/document'
 
 const store = useDocumentStore();
-store.setMenuData(menuData)
+const menuData = ref([])
 
 // 控制侧边栏和标题侧边栏的显示状态
 const isShowSidebar = ref(true); // 默认不显示
@@ -58,12 +63,21 @@ const checkWindowSize = () => {
         isShowOutline.value = true;
     }
 }
-
-onMounted(() => {
+const loaddingText = ref('LOADDING')
+onMounted(async () => {
     // 初始检查窗口大小
     checkWindowSize();
     // 监听窗口大小变化
     window.addEventListener('resize', checkWindowSize);
+    //请求获取文档数据
+    try {
+        menuData.value = await apis.getDocumentData()
+        store.setMenuData(menuData.value)
+        store.setActiveDocsUrl(menuData.value[0].documents[0].docsUrl)
+    } catch (error) {
+        loaddingText.value = error.message
+    }
+
 });
 
 // 获取标题
@@ -195,6 +209,16 @@ const handleHideOutline = () => {
             transform: rotate(-180deg);
         }
     }
+}
+
+.loadding-box {
+    width: $percentage-width;
+    height: calc(100vh - $distance-top);
+    position: relative;
+    top: $distance-top;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .main-content {

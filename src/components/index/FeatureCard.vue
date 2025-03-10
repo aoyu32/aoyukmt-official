@@ -4,7 +4,7 @@
         duration: 200
     }">
         <div class="feature-icon">{{ feature.icon }}</div>
-        <h3>{{ feature.title }}</h3>
+        <h3>{{ feature.name }}</h3>
         <p>{{ feature.description }}</p>
     </div>
 </template>

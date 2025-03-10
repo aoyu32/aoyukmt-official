@@ -6,19 +6,16 @@
 import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { marked } from 'marked';
 import hljs from 'highlight.js';
-import { useDocumentStore } from '@/stores/document';
 import "highlight.js/styles/github-dark.min.css";  // 你可以换成其他主题
-
-
+import { useDocumentStore } from '@/stores/document';
 const store = useDocumentStore()
-
 const markdownDiv = ref(null)
 const props = defineProps({
   markdownData: {
     type: String, // 只接受 Markdown 内容
     default: ''
   },
-  filePath: {
+  docsUrl: {
     type: String, // 只接受文件路径
     default: ''
   }
@@ -34,14 +31,13 @@ marked.setOptions({
 
 // 渲染 Markdown 文件内容
 const htmlContent = ref('');
-const renderMarkdown = async (filePath) => {
+const renderMarkdown = async (docsUrl) => {
+  console.log("文档url:", docsUrl);
   try {
-    const response = await fetch(filePath);
+    const response = await fetch(docsUrl);
     if (!response.ok) {
       throw new Error(`Error loading document: ${response.statusText}`);
     }
-
-
     const markdown = await response.text();
     htmlContent.value = marked(markdown);
 
@@ -57,13 +53,14 @@ const renderMarkdown = async (filePath) => {
 
 // 监听 filePath 的变化
 watch(
-  () => props.filePath,
+  () => props.docsUrl,
   (newFilePath) => {
     renderMarkdown(newFilePath);
     window.scrollTo(0, 0)
   },
   { immediate: true }
 );
+
 // // 观察器实例
 let observer = null;
 // // 设置标题观察器
@@ -119,7 +116,7 @@ const extractHeadings = () => {
 
 
 onMounted(() => {
-  renderMarkdown(props.filePath)
+  renderMarkdown(props.docsUrl)
 })
 
 // 组件卸载时清理 observer

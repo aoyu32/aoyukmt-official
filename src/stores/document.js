@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useDocumentStore = defineStore('document', {
     state: () => ({
-        activeFilePath: '/docs/intro.md', // 默认文档路径
+        activeDocsUrl: '', // 默认文档url
         activeParentIndex: 0, // 默认激活的父菜单索引
         activeChildIndex: 0, // 默认激活的子菜单索引
         headings: [], // 大纲标题列表
@@ -10,8 +10,8 @@ export const useDocumentStore = defineStore('document', {
         activeHeadingId: null//标题栏激活id
     }),
     actions: {
-        setFilePath(filePath) {
-            this.activeFilePath = filePath;
+        setActiveDocsUrl(url) {
+            this.activeDocsUrl = url;
         },
         setActiveChildIndex(childIndex) {
             this.activeChildIndex = childIndex
@@ -28,6 +28,9 @@ export const useDocumentStore = defineStore('document', {
         },
         setMenuData(data) {
             this.menuData = data
+        },
+        setParentMenuOpen(index) {
+            this.menuData[index].isOpen = !this.menuData[index].isOpen
         },
         setActiveHeadingId(id) {
             this.activeHeadingId = id
