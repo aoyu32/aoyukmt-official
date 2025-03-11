@@ -56,7 +56,6 @@ const initTypeEffect = {
   pauseTime: 300,  // 自定义暂停时间
   cursor: "|",  // 自定义光标
 }
-
 // 在 onMounted 中设置监听
 onMounted(() => {
   watchEffect(() => {
@@ -94,10 +93,6 @@ onMounted(() => {
 
   });
 });
-
-onUnmounted(() => {
-  destroyLenis()
-})
 
 // 改变链接文本的函数
 const changeText = (link, newText) => {

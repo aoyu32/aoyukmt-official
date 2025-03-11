@@ -1,56 +1,83 @@
 <template>
     <div class="updatelog">
         <div class="main-content">
-            <button class="sidebar-toggle" :class="{ 'rotated': isShowSidebar }"
-                @click="isShowSidebar = !isShowSidebar">
-                <i class="iconfont icon-arrow-left-filling" id="sidebar-button"></i>
-            </button>
-            <div class="sidebar" :class="{ 'show': !isShowSidebar }">
-                <UpdatelogSidebar @showSidebar="handleShowSidebar" />
+            <div class="loadding-box" v-if="updatelogStore.isLatestEmpty && updatelogStore.isHistoryEmpty">
+                <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up" :fullScreen="false" />
             </div>
-            <div class="container" @click="toggleSidebar">
-                <div class="content">
-                    <div class="latest" v-aos="{
-                        animation: 'zoom-in',
-                        duration: 300,
-                    }">
-                        <h2 id="latest">🪁 NEW版本更新日志</h2>
-                        <UpdatelogCard :versionData="latestData" />
-                    </div>
-                    <div class="history">
-                        <h2>🥏 历史版本</h2>
-                        <UpdatelogCard v-for="(item, index) in historyData" :key="index" :versionData="item"
-                            :id="`version${item.id}`" />
+            <div class="updatelog-box" v-else>
+                <button class="sidebar-toggle" :class="{ 'rotated': isShowSidebar }"
+                    @click="isShowSidebar = !isShowSidebar">
+                    <i class="iconfont icon-arrow-left-filling" id="sidebar-button"></i>
+                </button>
+                <div class="sidebar" :class="{ 'show': !isShowSidebar }">
+                    <UpdatelogSidebar @showSidebar="handleShowSidebar" />
+                </div>
+                <div class="container" @click="toggleSidebar">
+                    <div class="content">
+                        <div class="latest" v-aos="{
+                            animation: 'zoom-in',
+                            duration: 300,
+                        }">
+                            <h2 id="latest">🪁 NEW版本更新日志</h2>
+                            <div class="loadding" v-if="updatelogStore.isLatestEmpty">
+                                <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up"
+                                    :fullScreen="false" />
+                            </div>
+                            <UpdatelogCard :versionData="updatelogStore.latest" v-else />
+                        </div>
+
+                        <div class="history">
+                            <h2>🥏 历史版本</h2>
+                            <div class="loadding" v-if="updatelogStore.isHistoryEmpty">
+                                <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up"
+                                    :fullScreen="false" />
+                            </div>
+                            <UpdatelogCard v-for="(item, index) in updatelogStore.history" :key="index"
+                                :versionData="item" :id="`version${item.id}`" />
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
 
 </template>
 <script setup>
-import { ref, nextTick, computed, onMounted, onUnmounted } from 'vue'
+import { ref, nextTick, onUpdated, onMounted, onUnmounted } from 'vue'
 import UpdatelogCard from '@/components/updatelog/UpdatelogCard.vue';
 import UpdatelogSidebar from '@/components/updatelog/UpdatelogSidebar.vue';
-import { initLenis, destroyLenis } from "@/utils/lenis";
 import { useUpdatelogStore } from '@/stores/updatelog';
-import { latestData, historyData } from '@/data/version'
-
+import Loadding from '@/components/feedback/Loadding.vue';
+import { apis } from '@/api/api';
+const loaddingText = ref("LOADDING")
 const updatelogStore = useUpdatelogStore()
+onMounted(async () => {
 
-onMounted(() => {
-    initLenis();
-    updatelogStore.setLatest(latestData)
-    updatelogStore.setHistory(historyData)
+    // 初始检查窗口大小
+    checkWindowSize();
+    // 监听窗口大小变化
+    window.addEventListener('resize', checkWindowSize);
+    if (updatelogStore.isLatestEmpty) {
+        try {
+            const latestLog = await apis.getLatestUpdatelog()
+            updatelogStore.setLatest(latestLog)
+        } catch (error) {
+            loaddingText.value = error.message
+        }
+    }
+    if (updatelogStore.isHistoryEmpty) {
+        try {
+            const historyLog = await apis.getHistoryUpdatelog()
+            console.log(historyLog);
+            updatelogStore.setHistory(historyLog)
+        } catch (error) {
+            loaddingText.value = error.message
+        }
+
+    }
 
 });
-
-onUnmounted(() => {
-    destroyLenis()
-})
-
 //是否显示侧边栏
 const isShowSidebar = ref(true)
 
@@ -60,13 +87,6 @@ const checkWindowSize = () => {
         isShowSidebar.value = true;
     }
 }
-
-onMounted(() => {
-    // 初始检查窗口大小
-    checkWindowSize();
-    // 监听窗口大小变化
-    window.addEventListener('resize', checkWindowSize);
-});
 
 const toggleSidebar = () => {
     if (isShowSidebar.value = true) {
@@ -139,6 +159,14 @@ const handleShowSidebar = () => {
         flex-direction: row;
         position: relative;
 
+        .loadding-box {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .sidebar {
             position: fixed;
             width: $updatelog-sidebar-width;
@@ -175,6 +203,15 @@ const handleShowSidebar = () => {
                 padding: 10px 50px 0 50px;
                 box-shadow: 1px 0 3px $theme-shallow-shadow;
 
+                .loadding {
+                    width: 100%;
+                    height: 250px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 30px;
+                    background-color: $theme-primary-lt;
+                }
 
 
                 h2 {
@@ -187,7 +224,7 @@ const handleShowSidebar = () => {
                 .latest {
                     width: 100%;
                     padding: 20px;
-                    margin-bottom: 30px;
+                    // margin-bottom: 30px;
                 }
 
                 .history {
@@ -199,6 +236,12 @@ const handleShowSidebar = () => {
 
 
     }
+
+    .updatelog-box {
+        width: 100%;
+        height: 100%;
+    }
+
 
 }
 

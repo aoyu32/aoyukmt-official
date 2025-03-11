@@ -21,8 +21,7 @@ export const initLenis = () => {
         easing: (t) => Math.sin((t * Math.PI) / 2), // 使用正弦缓动函数，流畅且没有卡顿
         // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // 缓动函数
         // smooth: true, // 启用平滑滚动
-        direction: 'vertical', // 垂直滚动
-
+        direction: 'vertical' // 垂直滚动
     });
 
     // 更新滚动动画帧

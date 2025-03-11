@@ -8,18 +8,18 @@
             <div class="log-content">
                 <h3>{{ versionData.description }}</h3>
                 <!-- <div class="content-markdown"> -->
-                <MarkdownViewer :filePath="versionData.notes" />
+                <MarkdownViewer :docsUrl="versionData.changelogUrl" />
                 <!-- </div> -->
             </div>
             <div class="log-download">
                 <h4>下载该版本:</h4>
                 <div>
                     <a href="#" class="download-link download-link-install">安装版</a>
-                    <p>{{ versionData.setup.signature }}</p>
+                    <p>{{ versionData.installerHash }}</p>
                 </div>
                 <div>
                     <a href="#" class="download-link download-link-portable">便携版</a>
-                    <p>{{ versionData.zip.signature }}</p>
+                    <p>{{ versionData.zipPackageHash }}</p>
                 </div>
             </div>
         </div>
@@ -28,7 +28,6 @@
 <script setup>
 import { ref, nextTick, onMounted } from 'vue'
 import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
-
 
 //版本日志数据
 const props = defineProps({

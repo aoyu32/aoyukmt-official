@@ -24,10 +24,10 @@
         <section class="features" id="features">
             <h2>功能 🔖 特点</h2>
             <div class="feature-container">
-                <div class="loadding-box" v-if="indexStore.featureList.length === 0">
+                <div class="loadding-box" v-if="indexStore.isFeatureListEmpty">
                     <Loadding :text="loaddingText" fontSize="25px" animationType="jump-up" :fullScreen="false" />
                 </div>
-                <div class="feature-grid">
+                <div class="feature-grid" v-else>
                     <FeatureCard v-for="(feature, index) in indexStore.featureList" :key="index" :feature="feature" />
                 </div>
             </div>
@@ -36,10 +36,10 @@
         <section class="feature-details" id="details">
             <h2>功能 🎸 展示</h2>
             <div class="details-container">
-                <div class="loadding-box" v-if="indexStore.detailList.length === 0">
+                <div class="loadding-box" v-if="indexStore.isDetailListEmpty">
                     <Loadding :text="loaddingText" fontSize="25px" animationType="jump-up" :fullScreen="false" />
                 </div>
-                <div class="details-box">
+                <div class="details-box" v-else>
                     <DetailCard v-for="(detail, index) in indexStore.detailList" :key="index" :detail="detail"
                         :index="index" />
                 </div>
@@ -65,43 +65,50 @@
 <script setup>
 import FeatureCard from "@/components/index/FeatureCard.vue";
 import DetailCard from "@/components/index/DetailCard.vue";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, nextTick, onUpdated, onUnmounted } from "vue";
+
 import { initLenis, destroyLenis } from "@/utils/lenis";
 import { scrollTo } from "@/utils/scroll";
 import { apis } from "@/api/api";
 import { useIndexStore } from "@/stores";
+
 //动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
 import Loadding from "@/components/feedback/Loadding.vue";
 const loaddingText = ref("LOADDING")
 const indexStore = useIndexStore()
+let lenis = null
 onMounted(async () => {
-    initLenis()
+    lenis = initLenis()
     initBackgroundCanvas("backgroundCanvas");
-
-    if (indexStore.featureList.length === 0) {
+    if (indexStore.isFeatureListEmpty) {
         try {
             const featureList = await apis.getFeatureList()
             indexStore.setFeatureList(featureList)
-
-        } catch (error) {
-            loaddingText.value = error.message;
-        }
-    } 
-
-    if (indexStore.detailList.length === 0) {
-        try {
-            const detailList = await apis.getDetailList()
-            indexStore.setDetailList(detailList)
+            // 等待 DOM 更新后再执行
+            await nextTick();
+            lenis.resize()
         } catch (error) {
             loaddingText.value = error.message;
         }
     }
-});
+    if (indexStore.isDetailListEmpty) {
+        try {
+            const detailList = await apis.getDetailList()
+            indexStore.setDetailList(detailList)
+            // 等待 DOM 更新后再执行
+            await nextTick();
+            lenis.resize()
+        } catch (error) {
+            loaddingText.value = error.message;
+        }
+    }
 
-onUnmounted(() => {
-    destroyLenis(); // 销毁 Lenis
 });
+onUnmounted(() => {
+    destroyLenis()
+})
+
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/_theme.scss" as *;

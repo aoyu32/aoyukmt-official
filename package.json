@@ -17,6 +17,7 @@
     "crypto-js": "^4.2.0",
     "highlight.js": "^11.11.1",
     "lenis": "^1.2.3",
+    "locomotive-scroll": "^4.1.4",
     "marked": "^15.0.4",
     "openai": "^4.86.1",
     "pinia": "^2.2.6",

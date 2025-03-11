@@ -12,6 +12,13 @@ export const apis = {
 
     getDocumentData: () => {
         return instance.get('documents')
+    },
+
+    getLatestUpdatelog: () => {
+        return instance.get('latest')
+    },
+    getHistoryUpdatelog: () => {
+        return instance.get('changelog\\history')
     }
 
 }

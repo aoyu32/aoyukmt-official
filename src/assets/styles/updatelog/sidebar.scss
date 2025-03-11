@@ -6,10 +6,10 @@
 .updatelog-sidebar {
     position: fixed;
     width: $updatelog-sidebar-width;
-    height: 100%;
-    padding: $updatelog-sidebar-padding;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    // padding: $updatelog-sidebar-padding;
     box-shadow: 1px 0 3px $theme-shallow-shadow, -1px 0 3px $theme-shallow-shadow;
 
     h2 {
@@ -18,19 +18,50 @@
         margin-bottom: 15px;
         border-bottom: 2px solid $theme-primary;
         padding-bottom: 5px;
-
     }
 
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 20px 0;
+    .latest {
+        padding: 30px 20px;
+        flex-shrink: 0;
+        /* 防止最新版本区域被压缩 */
 
-        li {
+        ul {
+            list-style: none;
+        }
+    }
 
-            margin-bottom: 10px;
+    .history {
+        flex: 1;
+        /* 让历史版本区域占据剩余空间 */
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 20px;
+        /* 确保底部有空间 */
+        max-height: calc(100vh - 150px);
+        /* 限制最大高度，确保不超出视窗 */
+
+        h2 {
+            margin: 0 20px;
+            margin-bottom: 5px;
+            flex-shrink: 0;
+            /* 防止标题被压缩 */
         }
 
+        ul.history-ul {
+            list-style: none;
+            height: 100%;
+            /* 填充可用高度 */
+            overflow-y: auto;
+            /* 使列表可滚动 */
+            margin: 0;
+            padding: 0 0px 50px 0;
+            /* 右侧留出滚动条空间，底部加大内边距 */
+
+            li {
+                margin: 10px 30px;
+    
+            }
+        }
     }
 
     a {
@@ -49,6 +80,4 @@
             transform: scale(1.05);
         }
     }
-
-
 }

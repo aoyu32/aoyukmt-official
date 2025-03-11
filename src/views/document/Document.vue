@@ -6,11 +6,10 @@
         <button class="outline-toggle" :class="{ 'rotated': !isShowOutline }" @click="toggleOutline">
             <i class="iconfont icon-toggle-left"></i>
         </button>
-        <div class="loadding-box" v-if="menuData.length === 0">
-            <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up"
-                :fullScreen="false" />
+        <div class="loadding-box" v-if="store.isMenuDataEmpty">
+            <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up" :fullScreen="false" />
         </div>
-        <div class="main-content" v-if="menuData.length !== 0">
+        <div class="main-content" v-if="!store.isMenuDataEmpty">
             <div class="document-sidebar" :class="{ 'show': !isShowSidebar }">
                 <DocumentSidebar @hideSidebar="handleHideSidebar" />
             </div>
@@ -70,13 +69,16 @@ onMounted(async () => {
     // 监听窗口大小变化
     window.addEventListener('resize', checkWindowSize);
     //请求获取文档数据
-    try {
-        menuData.value = await apis.getDocumentData()
-        store.setMenuData(menuData.value)
-        store.setActiveDocsUrl(menuData.value[0].documents[0].docsUrl)
-    } catch (error) {
-        loaddingText.value = error.message
+    if (store.isMenuDataEmpty) {
+        try {
+            menuData.value = await apis.getDocumentData()
+            store.setMenuData(menuData.value)
+            store.setActiveDocsUrl(menuData.value[0].documents[0].docsUrl)
+        } catch (error) {
+            loaddingText.value = error.message
+        }
     }
+
 
 });
 
