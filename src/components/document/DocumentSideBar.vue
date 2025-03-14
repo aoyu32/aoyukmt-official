@@ -40,14 +40,7 @@ const { menuData, activeChildIndex, activeParentIndex } = storeToRefs(store)
 
 // 在组件挂载后设置默认状态
 onMounted(() => {
-    // 设置第一个一级菜单为激活状态
-    store.setActiveParentIndex(0)
-    // 设置第一个二级菜单为激活状态
-    store.setActiveChildIndex(0)
-    console.log(menuData.value);
-    
-    //默认显示第一个一级菜单的第一个文档
-    // store.setActiveDocsUrl()
+    store.setActiveDocsUrl(menuData.value[store.activeParentIndex].documents[store.activeChildIndex].docsUrl)
 });
 
 // 切换菜单展开状态 - 只负责展开/收起，不处理高亮
@@ -62,15 +55,9 @@ const handleSubmenuClick = (parentIndex, childIndex, docsUrl) => {
 };
 
 
-// watch(() => store.activeParentIndex, (newValue) => {
-//     activeParentIndex.value = newValue
-// })
-
-// watch(() => store.activeChildIndex, (newValue) => {
-//     activeChildIndex.value = newValue
-//     const filePath = localMenuData[store.activeParentIndex].submenu[store.activeChildIndex].src;
-//     store.setFilePath(filePath); // 更新文件路径
-// })
+watch(() => store.activeChildIndex, (newValue) => {
+    store.setActiveDocsUrl(menuData.value[store.activeParentIndex].documents[newValue].docsUrl)
+})
 
 const emit = defineEmits(['hideSidebar'])
 //通知父组件隐藏侧边栏

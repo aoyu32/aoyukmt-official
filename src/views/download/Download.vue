@@ -17,8 +17,10 @@
                     :description="item.description" :downloadLink="item.downloadLink" :animation="item.animation" />
             </div>
             <p class="latest-version">
-                <span class="version">🦈V1.0.0</span> ｜
-                <span class="update">🎉Last updated 2024-11-22</span> ｜
+                <span class="version" @click="toLatestVersion">🦈{{ updatelogStore.isLatestEmpty ? errorText :
+                    "V" + updatelogStore.latest.version }}</span> ｜
+                <span class="update">🎉{{ updatelogStore.isLatestEmpty ? errorText : updatelogStore.latest.releaseDate
+                    }}</span> ｜
                 <span class="platform">🎲Win 7 & 10 & 11</span>
             </p>
         </section>
@@ -31,13 +33,14 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import DownloadCard from "@/components/download/DownloadCard.vue";
 import TypeEffect from "@/utils/typing";
+import { useRouter } from 'vue-router';
 import AOS from 'aos';
+import { apis } from '@/api/api';
+import { useUpdatelogStore } from '@/stores/updatelog';
+const updatelogStore = useUpdatelogStore()
 import 'aos/dist/aos.css';  // 必须引入CSS
 const downloadText = ref(null)
 let typingInstance = null;  // 用来存储打字效果实例
-
-const backgroundCanvas = ref(null);
-
 
 const initTypeEffect = {
     typingSpeed: 50,  // 自定义输入速度
@@ -45,11 +48,23 @@ const initTypeEffect = {
     pauseTime: 300,  // 自定义暂停时间
     cursor: "👇",  // 自定义光标
 }
+
 // 在 onMounted 中设置监听
-onMounted(() => {
+const errorText = ref("")
+onMounted(async () => {
     typingInstance = new TypeEffect("下载AOYUKMT到你的WINDOWS", downloadText.value, initTypeEffect);
     typingInstance.start();  // 启动打字效果
+    //请求版本信息
+    if (updatelogStore.isLatestEmpty) {
+        try {
+            const latestLog = await apis.getLatestUpdatelog()
+            updatelogStore.setLatest(latestLog)
+        } catch (error) {
+            errorText.value = "...error..."
+        }
+    }
 });
+
 // 组件销毁时清除打字机效果
 onBeforeUnmount(() => {
     if (typingInstance) {
@@ -61,13 +76,13 @@ const downloadOptions = ref([
         title: '安装版',
         description: '🔧 安装程序，适用于更复杂的安装需求',
         downloadLink: './downloads/aoyukmt_full.zip',
-        animation: 'slide-right', // 这里的动画可以根据需要更改
+        animation: 'slide-right', 
     },
     {
         title: '便携版',
         description: '📦 灵活：ZIP压缩包解压即用，绿色便携',
         downloadLink: './downloads/aoyukmt_portable.zip',
-        animation: 'slide-left', // 这里的动画可以根据需要更改
+        animation: 'slide-left', 
     }
 
 ]);
@@ -79,6 +94,11 @@ AOS.init(
 )
 
 AOS.refresh();
+
+const router = useRouter()
+const toLatestVersion = () => {
+    router.push("/updatelog")
+}
 
 </script>
 <style lang="scss" scoped>

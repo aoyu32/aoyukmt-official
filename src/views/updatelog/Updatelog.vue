@@ -44,7 +44,7 @@
 
 </template>
 <script setup>
-import { ref, nextTick, onUpdated, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import UpdatelogCard from '@/components/updatelog/UpdatelogCard.vue';
 import UpdatelogSidebar from '@/components/updatelog/UpdatelogSidebar.vue';
 import { useUpdatelogStore } from '@/stores/updatelog';

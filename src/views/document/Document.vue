@@ -73,7 +73,7 @@ onMounted(async () => {
         try {
             menuData.value = await apis.getDocumentData()
             store.setMenuData(menuData.value)
-            store.setActiveDocsUrl(menuData.value[0].documents[0].docsUrl)
+            store.setActiveDocsUrl(menuData.value[store.activeParentIndex].documents[store.activeChildIndex].docsUrl)
         } catch (error) {
             loaddingText.value = error.message
         }

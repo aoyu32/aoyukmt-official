@@ -13,7 +13,7 @@
                 <!-- <h1>自定义“真快捷”键工具</h1> -->
                 <h1>一个能重新定义快捷键的工具</h1>
                 <p>自由支配你的按键，让你拥有一套属于自己的快捷键，独特的键盘操作</p>
-                <a href="https://github.com/aoyu32/aoyukmt_pro/releases" class="download-btn floating">
+                <a class="download-btn floating" @click="downloadApp">
                     立即下载
                 </a>
             </div>
@@ -104,7 +104,22 @@ onMounted(async () => {
         }
     }
 
+
+
 });
+
+const downloadApp = async () => {
+    try {
+        const path = await apis.downloadLatest("installer")
+        window.location.href = path
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
 onUnmounted(() => {
     destroyLenis()
 })

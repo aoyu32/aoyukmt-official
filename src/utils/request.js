@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // 创建axios实例
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/web/api', // 从环境变量获取基础URL
+  baseURL: 'http://localhost:8080/web', // 从环境变量获取基础URL
   timeout: 10000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
@@ -33,11 +33,15 @@ const instance = axios.create({
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
-    // 对响应数据做点什么
+    // 如果是文件流响应，直接返回整个响应对象
+    if (response.config.responseType === 'blob') {
+      return response;
+    }
+
+    // 对 JSON 响应数据做处理
     const { data } = response;
-    console.log("服务端响应：",data);
+    console.log("服务端响应：", data);
     if (data.code === 0 || data.code === 200) {
-    
       return data.data; // 直接返回数据部分
     } else {
       // 将完整的错误信息传递给组件，不在拦截器中显示错误提示
@@ -54,7 +58,7 @@ instance.interceptors.response.use(
       // 请求已发出，但服务器响应的状态码不在 2xx 范围内
       const { status } = error.response;
       statusCode = status;
-      
+
       switch (status) {
         case 401:
           errorMessage = '未授权，请重新登录';
@@ -77,7 +81,7 @@ instance.interceptors.response.use(
     } else if (error.request) {
       errorMessage = '网络连接出错，请检测网络！';
     }
-    
+
     const enhancedError = {
       ...error,
       statusCode,
@@ -88,5 +92,4 @@ instance.interceptors.response.use(
     return Promise.reject(enhancedError);
   }
 );
-
 export default instance;
