@@ -48,7 +48,7 @@ import { ref, onMounted } from 'vue'
 import UpdatelogCard from '@/components/updatelog/UpdatelogCard.vue';
 import UpdatelogSidebar from '@/components/updatelog/UpdatelogSidebar.vue';
 import { useUpdatelogStore } from '@/stores/updatelog';
-import Loadding from '@/components/feedback/Loadding.vue';
+import Loadding from '@/components/common/Loadding.vue';
 import { apis } from '@/api/api';
 const loaddingText = ref("LOADDING")
 const updatelogStore = useUpdatelogStore()

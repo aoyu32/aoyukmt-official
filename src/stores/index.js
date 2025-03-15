@@ -5,6 +5,8 @@ export const useIndexStore = defineStore('index', () => {
     // 定义响应式状态
     const featureList = ref([]); // 特性列表
     const detailList = ref([]); // 详情列表
+    //是否下载提示消息
+    const showTip = ref(false)
 
     // 计算属性 - 判断 featureList 是否为空
     const isFeatureListEmpty = computed(() => featureList.value.length === 0);
@@ -22,12 +24,24 @@ export const useIndexStore = defineStore('index', () => {
         detailList.value = list;
     };
 
+    //设置是否显示提示消息
+    const setShowTip = () => {
+        showTip.value = true;
+        // 1.5秒后隐藏
+        setTimeout(() => {
+            showTip.value = false;
+        }, 1500);
+    };
+
+
     return {
         featureList,
         detailList,
+        showTip,
         isFeatureListEmpty, // 计算属性：特性列表是否为空
         isDetailListEmpty, // 计算属性：详情列表是否为空
         setFeatureList,
-        setDetailList
+        setDetailList,
+        setShowTip
     };
 });

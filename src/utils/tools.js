@@ -171,4 +171,52 @@ export default class tools {
         return avatar.toDataUri();
     }
 
+    /**
+     * 下载文件的封装函数
+     * @param {string} downloadUrl - 下载文件的链接
+     */
+    static downloadFile = async (downloadUrl) => {
+        try {
+            // 使用 fetch 请求下载文件
+            const response = await fetch(downloadUrl);
+
+            // 检查响应是否正常
+            if (!response.ok) {
+                throw new Error("下载失败: 文件无法访问");
+            }
+
+            // 获取文件的二进制数据
+            const blob = await response.blob();
+
+            // 创建一个临时的 URL 来触发文件下载
+            const downloadLink = URL.createObjectURL(blob);
+
+            // 创建一个下载链接并模拟点击
+            const link = document.createElement("a");
+            link.href = downloadLink;
+
+            // 从响应头中提取文件名，如果有的话
+            const disposition = response.headers.get("Content-Disposition");
+            let fileName = "aoyukmt"; // 默认文件名
+            if (disposition && disposition.indexOf("filename=") !== -1) {
+                const matches = disposition.match(/filename="([^"]+)"/);
+                if (matches && matches[1]) {
+                    fileName = matches[1]; // 使用响应头中的文件名
+                }
+            }
+
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+
+            // 清理资源
+            document.body.removeChild(link);
+            URL.revokeObjectURL(downloadLink);
+
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
+
+
 }

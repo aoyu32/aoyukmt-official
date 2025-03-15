@@ -1,5 +1,6 @@
 <template>
     <div class="index">
+        <Message :messageContent="tipContext" :isShowMessage="indexStore.showTip" :topOffset="'72px'" />
         <section class="introduce">
             <canvas id="backgroundCanvas"></canvas> <!-- 将 canvas 放入 section 内 -->
             <div class="aoyukmt-ico" v-aos="{
@@ -13,9 +14,9 @@
                 <!-- <h1>自定义“真快捷”键工具</h1> -->
                 <h1>一个能重新定义快捷键的工具</h1>
                 <p>自由支配你的按键，让你拥有一套属于自己的快捷键，独特的键盘操作</p>
-                <a class="download-btn floating" @click="downloadApp">
+                <button class="download-btn floating" @click.prevent="downloadApp">
                     立即下载
-                </a>
+                </button>
             </div>
             <div class="scroll-down">
                 <span>&#9660;</span>
@@ -66,7 +67,8 @@
 import FeatureCard from "@/components/index/FeatureCard.vue";
 import DetailCard from "@/components/index/DetailCard.vue";
 import { ref, onMounted, nextTick, onUpdated, onUnmounted } from "vue";
-
+import Message from "@/components/common/Message.vue";
+import tools from "@/utils/tools";
 import { initLenis, destroyLenis } from "@/utils/lenis";
 import { scrollTo } from "@/utils/scroll";
 import { apis } from "@/api/api";
@@ -74,7 +76,7 @@ import { useIndexStore } from "@/stores";
 
 //动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
-import Loadding from "@/components/feedback/Loadding.vue";
+import Loadding from "@/components/common/Loadding.vue";
 const loaddingText = ref("LOADDING")
 const indexStore = useIndexStore()
 let lenis = null
@@ -104,18 +106,18 @@ onMounted(async () => {
         }
     }
 
-
-
 });
+const tipContext = ref("")
+const downloadApp = async (event) => {
 
-const downloadApp = async () => {
     try {
-        const path = await apis.downloadLatest("installer")
-        window.location.href = path
-
+        const path = await apis.downloadLatest("installer", "123")
+        tools.downloadFile(path)
     } catch (error) {
-        console.log(error.message);
+        tipContext.value = error.message + "!🤬"
+        indexStore.setShowTip()
     }
+
 }
 
 

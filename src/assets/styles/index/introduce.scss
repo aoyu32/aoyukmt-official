@@ -68,6 +68,8 @@
     .download-btn {
         background: $theme-font-light;
         color: $theme-primary;
+        user-select: none; /* 禁用文本选择 */
+        border: none;
         padding: 1rem 2rem;
         border-radius: 50px;
         text-decoration: none;

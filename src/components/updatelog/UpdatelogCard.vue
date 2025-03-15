@@ -27,7 +27,7 @@
 </template>
 <script setup>
 import { ref, nextTick, onMounted } from 'vue'
-import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
+import MarkdownViewer from '@/components/common/MarkdownViewer.vue';
 
 //版本日志数据
 const props = defineProps({

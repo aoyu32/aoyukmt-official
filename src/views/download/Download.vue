@@ -1,5 +1,6 @@
 <template>
     <div class="download">
+        <Message :messageContent="tipContext" :isShowMessage="downloadStore.showTip" :topOffset="'72px'" />
         <section class="download-section dynamic-background">
             <!-- 动态背景的 Canvas -->
             <!-- <canvas ref="backgroundCanvas" class="canvas-background"></canvas> -->
@@ -13,8 +14,9 @@
 
             <p class="download-platform">支持 window 7+ 平台，选择适合您的版本：</p>
             <div class="download-options">
-                <DownloadCard v-for="(item, index) in downloadOptions" :key="index" :title="item.title"
-                    :description="item.description" :downloadLink="item.downloadLink" :animation="item.animation" />
+                <DownloadCard v-for="(item, index) in downloadStore.downloadOptions" :key="index" :title="item.title"
+                    :description="item.description" :downloadLink="item.downloadLink" :animation="item.animation"
+                    @setTipContext="handleTipContext" />
             </div>
             <p class="latest-version">
                 <span class="version" @click="toLatestVersion">🦈{{ updatelogStore.isLatestEmpty ? errorText :
@@ -35,9 +37,12 @@ import DownloadCard from "@/components/download/DownloadCard.vue";
 import TypeEffect from "@/utils/typing";
 import { useRouter } from 'vue-router';
 import AOS from 'aos';
+import Message from '@/components/common/Message.vue';
 import { apis } from '@/api/api';
 import { useUpdatelogStore } from '@/stores/updatelog';
+import { useDownloadStore } from '@/stores/download';
 const updatelogStore = useUpdatelogStore()
+const downloadStore = useDownloadStore()
 import 'aos/dist/aos.css';  // 必须引入CSS
 const downloadText = ref(null)
 let typingInstance = null;  // 用来存储打字效果实例
@@ -65,28 +70,19 @@ onMounted(async () => {
     }
 });
 
+//设置提示消息
+const tipContext = ref("")
+const handleTipContext = (value) => {
+    tipContext.value = value
+    downloadStore.setShowTip()
+}
+
 // 组件销毁时清除打字机效果
 onBeforeUnmount(() => {
     if (typingInstance) {
         typingInstance.stop();  // 停止当前的打字机效果
     }
 });
-const downloadOptions = ref([
-    {
-        title: '安装版',
-        description: '🔧 安装程序，适用于更复杂的安装需求',
-        downloadLink: './downloads/aoyukmt_full.zip',
-        animation: 'slide-right', 
-    },
-    {
-        title: '便携版',
-        description: '📦 灵活：ZIP压缩包解压即用，绿色便携',
-        downloadLink: './downloads/aoyukmt_portable.zip',
-        animation: 'slide-left', 
-    }
-
-]);
-
 AOS.init(
     {
         duration: 600,  // 动画持续时间，单位：毫秒

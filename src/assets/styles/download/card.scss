@@ -33,6 +33,8 @@
         display: inline-block;
         background-color: $theme-primary;
         color: $theme-font-light;
+        border: none;
+        user-select: none;
         padding: $download-button-padding;
         text-decoration: none;
         border-radius: $download-button-radius;

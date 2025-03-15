@@ -72,9 +72,9 @@ export const apis = {
         return instance.get('changelog\\history');
     },
 
-    downloadLatest: (type) => {
+    downloadLatest: (appFileName,uid) => {
         // return downloadFile('download\\latest', data);
-        return instance.get(`download\\latest\\${type}`)
+        return instance.get(`download\\latest\\${appFileName}\\${uid}`)
     },
 
 };

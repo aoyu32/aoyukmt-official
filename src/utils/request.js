@@ -33,11 +33,6 @@ const instance = axios.create({
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
-    // 如果是文件流响应，直接返回整个响应对象
-    if (response.config.responseType === 'blob') {
-      return response;
-    }
-
     // 对 JSON 响应数据做处理
     const { data } = response;
     console.log("服务端响应：", data);

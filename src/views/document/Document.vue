@@ -35,10 +35,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import DocumentSidebar from '@/components/document/DocumentSidebar.vue'
-import MarkdownViewer from '@/components/document/MarkdownViewer.vue';
+import MarkdownViewer from '@/components/common/MarkdownViewer.vue';
 import PageControl from '@/components/document/PageControl.vue';
 import MarkdownOutline from '@/components/document/MarkdownOutline.vue';
-import Loadding from '@/components/feedback/Loadding.vue';
+import Loadding from '@/components/common/Loadding.vue';
 import { apis } from '@/api/api';
 import { useDocumentStore } from '@/stores/document'
 

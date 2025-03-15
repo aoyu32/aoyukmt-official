@@ -111,12 +111,10 @@
         outline: none;
         background-color: $theme-background;
         transition: border-color 0.3s;
-        color: $theme-font-light;
+        color: $theme-font-gray;
 
         &:focus {
             border-color: $theme-primary;
-            color: $theme-font-dark;
-
             &::placeholder {
                 color: transparent;
             }

@@ -34,7 +34,7 @@ import { useFeedbackStore } from "@/stores/feedback";
 import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
 import hljs from 'highlight.js';
 import "highlight.js/styles/atom-one-light.css";
-import Loadding from "@/components/feedback/Loadding.vue";
+import Loadding from "@/components/common/Loadding.vue";
 
 const feedbackStore = useFeedbackStore()
 const officialName = ref("AOYUKMT智能助手📫")
