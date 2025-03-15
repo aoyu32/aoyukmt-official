@@ -111,7 +111,10 @@ const tipContext = ref("")
 const downloadApp = async (event) => {
 
     try {
-        const path = await apis.downloadLatest("installer", "123")
+        const path = await apis.downloadLatest({
+            'uid': "123",
+            'packageType': 'installer'
+        })
         tools.downloadFile(path)
     } catch (error) {
         tipContext.value = error.message + "!🤬"

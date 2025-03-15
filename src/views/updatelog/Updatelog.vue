@@ -53,7 +53,6 @@ import { apis } from '@/api/api';
 const loaddingText = ref("LOADDING")
 const updatelogStore = useUpdatelogStore()
 onMounted(async () => {
-
     // 初始检查窗口大小
     checkWindowSize();
     // 监听窗口大小变化
@@ -74,7 +73,6 @@ onMounted(async () => {
         } catch (error) {
             loaddingText.value = error.message
         }
-
     }
 
 });

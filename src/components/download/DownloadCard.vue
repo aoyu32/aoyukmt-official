@@ -29,7 +29,10 @@ const emit = defineEmits(["setTipContext"])
 const requestDownload = async (title) => {
     if (title === '安装版') {
         try {
-            const path = await apis.downloadLatest("installer", "123")
+            const path = await apis.downloadLatest({
+                'uid': '123',
+                'packageType': 'installer'
+            })
             tools.downloadFile(path)
         } catch (error) {
             emit("setTipContext", error.message + "!☹️")
@@ -38,7 +41,10 @@ const requestDownload = async (title) => {
 
     if (title === '便携版') {
         try {
-            const path = await apis.downloadLatest("zip", "123")
+            const path = await apis.downloadLatest({
+                'uid': '123',
+                'packageType': 'zip'
+            })
             tools.downloadFile(path)
         } catch (error) {
             emit("setTipContext", error.message + "!☹️")

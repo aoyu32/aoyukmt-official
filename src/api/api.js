@@ -17,7 +17,7 @@ const downloadFile = async (url, data) => {
         const blob = new Blob([response.data], { type: response.headers['content-type'] });
 
         console.log(response);
-        
+
         // 从响应头中获取文件名
         const contentDisposition = response.headers['content-disposition'];
         console.log(contentDisposition);
@@ -72,9 +72,13 @@ export const apis = {
         return instance.get('changelog\\history');
     },
 
-    downloadLatest: (appFileName,uid) => {
-        // return downloadFile('download\\latest', data);
-        return instance.get(`download\\latest\\${appFileName}\\${uid}`)
+    downloadLatest: (data) => {
+        return instance.post('download\\latest', data)
     },
+
+    downloadHistory: (data) => {
+        return instance.post('download\\history', data)
+    }
+
 
 };
