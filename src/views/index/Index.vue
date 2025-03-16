@@ -83,39 +83,45 @@ let lenis = null
 onMounted(async () => {
     lenis = initLenis()
     initBackgroundCanvas("backgroundCanvas");
-    if (indexStore.isFeatureListEmpty) {
-        try {
-            const featureList = await apis.getFeatureList()
-            indexStore.setFeatureList(featureList)
-            // 等待 DOM 更新后再执行
-            await nextTick();
-            lenis.resize()
-        } catch (error) {
-            loaddingText.value = error.message;
-        }
-    }
-    if (indexStore.isDetailListEmpty) {
-        try {
-            const detailList = await apis.getDetailList()
-            indexStore.setDetailList(detailList)
-            // 等待 DOM 更新后再执行
-            await nextTick();
-            lenis.resize()
-        } catch (error) {
-            loaddingText.value = error.message;
-        }
-    }
+    await fetchData()
+
 
 });
+// 请求数据的通用方法
+const fetchData = async () => {
+    const requests = [];
+
+    if (indexStore.isFeatureListEmpty) {
+        requests.push(
+            apis.getFeatureList().then((featureList) => indexStore.setFeatureList(featureList))
+        );
+    }
+
+    if (indexStore.isDetailListEmpty) {
+        requests.push(
+            apis.getDetailList().then((detailList) => indexStore.setDetailList(detailList))
+        );
+    }
+
+    try {
+        await Promise.all(requests);
+        await nextTick(); // 确保 DOM 更新后再调整滚动行为
+        lenis.resize();
+    } catch (error) {
+        loaddingText.value = error.message;
+    }
+};
+
+
 const tipContext = ref("")
-const downloadApp = async (event) => {
+const downloadApp = async () => {
 
     try {
         const path = await apis.downloadLatest({
             'uid': "123",
             'packageType': 'installer'
         })
-        tools.downloadFile(path)
+        await tools.downloadFile(path)
     } catch (error) {
         tipContext.value = error.message + "!🤬"
         indexStore.setShowTip()

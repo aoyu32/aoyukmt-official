@@ -4,6 +4,7 @@ import { ref, computed } from "vue";
 export const useUpdatelogStore = defineStore('updatelog', () => {
     const latest = ref({})//最新版本
     const history = ref([])//历史版本
+    const showTip = ref(false)//是否显示消息提示
 
     // 判断 `latest` 是否为空（对象无有效属性）
     const isLatestEmpty = computed(() => {
@@ -14,6 +15,14 @@ export const useUpdatelogStore = defineStore('updatelog', () => {
     const isHistoryEmpty = computed(() => {
         return history.value.length === 0;
     });
+
+    //设置消息提示
+    const setShowTip = () => {
+        showTip.value = true
+        setTimeout(() => {
+            showTip.value = false
+        }, 1500)
+    }
 
     //最新版本
     const setLatest = (latestVerison) => {
@@ -32,9 +41,11 @@ export const useUpdatelogStore = defineStore('updatelog', () => {
     return {
         latest,
         history,
+        showTip,
 
         setLatest,
         setHistory,
+        setShowTip,
         // 添加的空值判断
         isLatestEmpty,
         isHistoryEmpty

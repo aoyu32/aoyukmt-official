@@ -26,31 +26,34 @@ const props = defineProps({
 });
 const emit = defineEmits(["setTipContext"])
 //请求下载应用
+// 定义 title 与 packageType 的映射关系
+const packageMap = {
+    '安装版': 'installer',
+    '便携版': 'zip'
+};
+
+// 请求下载应用
 const requestDownload = async (title) => {
-    if (title === '安装版') {
-        try {
-            const path = await apis.downloadLatest({
-                'uid': '123',
-                'packageType': 'installer'
-            })
-            tools.downloadFile(path)
-        } catch (error) {
-            emit("setTipContext", error.message + "!☹️")
-        }
+    const packageType = packageMap[title];
+
+    if (!packageType) {
+        emit("setTipContext", "未知的下载类型! ❌");
+        return;
     }
 
-    if (title === '便携版') {
-        try {
-            const path = await apis.downloadLatest({
-                'uid': '123',
-                'packageType': 'zip'
-            })
-            tools.downloadFile(path)
-        } catch (error) {
-            emit("setTipContext", error.message + "!☹️")
-        }
+    try {
+        const path = await apis.downloadLatest({
+            uid: '123',
+            packageType
+        });
+        await tools.downloadFile(path);
+    } catch (error) {
+        emit("setTipContext", error.message + "! ☹️");
     }
-}
+};
+
+
+
 </script>
 
 <style lang="scss" scoped>

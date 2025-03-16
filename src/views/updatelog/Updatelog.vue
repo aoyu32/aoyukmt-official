@@ -1,5 +1,6 @@
 <template>
     <div class="updatelog">
+        <Message :messageContent="tipContext" :isShowMessage="updatelogStore.showTip" :topOffset="'72px'" />
         <div class="main-content">
             <div class="loadding-box" v-if="updatelogStore.isLatestEmpty && updatelogStore.isHistoryEmpty">
                 <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up" :fullScreen="false" />
@@ -23,7 +24,8 @@
                                 <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up"
                                     :fullScreen="false" />
                             </div>
-                            <UpdatelogCard :versionData="updatelogStore.latest" v-else />
+                            <UpdatelogCard :versionData="updatelogStore.latest" v-else
+                                @setTipContext="handleTipContext" />
                         </div>
 
                         <div class="history">
@@ -33,7 +35,7 @@
                                     :fullScreen="false" />
                             </div>
                             <UpdatelogCard v-for="(item, index) in updatelogStore.history" :key="index"
-                                :versionData="item" :id="`version${item.id}`" />
+                                :versionData="item" :id="`version${item.id}`" @setTipContext="handleTipContext" />
                         </div>
                     </div>
                 </div>
@@ -50,6 +52,7 @@ import UpdatelogSidebar from '@/components/updatelog/UpdatelogSidebar.vue';
 import { useUpdatelogStore } from '@/stores/updatelog';
 import Loadding from '@/components/common/Loadding.vue';
 import { apis } from '@/api/api';
+import Message from '@/components/common/Message.vue';
 const loaddingText = ref("LOADDING")
 const updatelogStore = useUpdatelogStore()
 onMounted(async () => {
@@ -57,25 +60,29 @@ onMounted(async () => {
     checkWindowSize();
     // 监听窗口大小变化
     window.addEventListener('resize', checkWindowSize);
-    if (updatelogStore.isLatestEmpty) {
-        try {
-            const latestLog = await apis.getLatestUpdatelog()
-            updatelogStore.setLatest(latestLog)
-        } catch (error) {
-            loaddingText.value = error.message
+
+    try {
+        const requests = [];
+        if (updatelogStore.isLatestEmpty) {
+            requests.push(apis.getLatestUpdatelog().then(updatelogStore.setLatest));
         }
-    }
-    if (updatelogStore.isHistoryEmpty) {
-        try {
-            const historyLog = await apis.getHistoryUpdatelog()
-            console.log(historyLog);
-            updatelogStore.setHistory(historyLog)
-        } catch (error) {
-            loaddingText.value = error.message
+        if (updatelogStore.isHistoryEmpty) {
+            requests.push(apis.getHistoryUpdatelog().then(updatelogStore.setHistory));
         }
+        // 并行请求，提高性能
+        await Promise.all(requests);
+    } catch (error) {
+        loaddingText.value = error.message;
     }
 
 });
+
+const tipContext = ref("")
+const handleTipContext = (value) => {
+    tipContext.value = value
+    updatelogStore.setShowTip()
+}
+
 //是否显示侧边栏
 const isShowSidebar = ref(true)
 

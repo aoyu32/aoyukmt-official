@@ -182,7 +182,16 @@ export default class tools {
 
             // 检查响应是否正常
             if (!response.ok) {
-                throw new Error("下载失败: 文件无法访问");
+                throw new Error(`下载失败: ${response.status} ${response.statusText}`);
+            }
+
+            // 获取 Content-Type 以判断是否返回的是文件
+            const contentType = response.headers.get("Content-Type");
+
+            // 如果返回的是 JSON，说明是错误信息，而不是文件
+            if (contentType && contentType.includes("application/json")) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
             }
 
             // 获取文件的二进制数据
@@ -198,7 +207,7 @@ export default class tools {
             // 从响应头中提取文件名，如果有的话
             const disposition = response.headers.get("Content-Disposition");
             let fileName = "aoyukmt"; // 默认文件名
-            if (disposition && disposition.indexOf("filename=") !== -1) {
+            if (disposition && disposition.includes("filename=")) {
                 const matches = disposition.match(/filename="([^"]+)"/);
                 if (matches && matches[1]) {
                     fileName = matches[1]; // 使用响应头中的文件名
@@ -214,9 +223,10 @@ export default class tools {
             URL.revokeObjectURL(downloadLink);
 
         } catch (error) {
-            throw new Error(error.message);
+            throw error;
         }
     };
+
 
 
 }
