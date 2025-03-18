@@ -89,54 +89,54 @@ $document-page-height: 65px;
 //两个之间的margin
 $document-page-lr-margin: 10px;
 
-//意见反馈页面
+//智能助手页面
 //输入框区域最大高度
-$feedback-textarea-max-height: 500px;
+$assistant-textarea-max-height: 500px;
 //输入框最大高度
-$feedback-input-max-height: 200px;
-$feedback-input-min-height: 40px;
+$assistant-input-max-height: 200px;
+$assistant-input-min-height: 40px;
 
 //输入框区域内边距
-$feedback-textarea-padding: 5px 20px 20px;
+$assistant-textarea-padding: 5px 20px 20px;
 //输入框圆角
-$feedback-input-radius: 15px;
+$assistant-input-radius: 15px;
 //输入框内边距
-$feedback-input-padding: 10px 15px 5px 10px;
+$assistant-input-padding: 10px 15px 5px 10px;
 
 //图片预览间距
-$feedback-preview-gap: 10px;
+$assistant-preview-gap: 10px;
 //预览图片大小
-$feedback-preview-width: 100px;
-$feedback-preview-height: 60px;
+$assistant-preview-width: 100px;
+$assistant-preview-height: 60px;
 //删除预览按钮大小
-$feedback-preview-dtn: 20px;
+$assistant-preview-dtn: 20px;
 
 //上传和发送按钮大小
-$feedback-us-btn: 32px;
+$assistant-us-btn: 32px;
 
 //hover提示文本
-$feedback-hover-text: "请上传图片，可以拖拽和复制上传哦.😏";
+$assistant-hover-text: "请上传图片，可以拖拽和复制上传哦.😏";
 
 //聊天消息头像图片尺寸
-$feedback-avatar-size: 40px;
+$assistant-avatar-size: 40px;
 
 //聊天消息内边距
-$feedback-msg-padding: 0 0.6rem 0 0.6rem;
+$assistant-msg-padding: 0 0.6rem 0 0.6rem;
 
 //修改用户信息弹窗的宽度
-$feedback-diglog-width: 350px;
+$assistant-diglog-width: 350px;
 //修改用户信息弹窗的圆角
-$feedback-diglog-radius: 10px;
+$assistant-diglog-radius: 10px;
 //内边距
-$feedback-dialog-padding: 30px;
+$assistant-dialog-padding: 30px;
 //关闭按钮尺寸
-$feedback-dialog-close: 20px;
+$assistant-dialog-close: 20px;
 //头像尺寸
-$feedback-dialog-avatar: 90px;
+$assistant-dialog-avatar: 90px;
 //确认取消按钮大小
-$feedback-dialog-btn: 45%;
+$assistant-dialog-btn: 45%;
 //头像上传按钮大小
-$feedback-avatar-btn: 24px;
+$assistant-avatar-btn: 24px;
 
 //更新日志界面日志卡片内边距
 $updatelog-card-padding: 20px;

@@ -64,17 +64,17 @@ $download-card-hover-shadow: rgba(160, 50, 50, 0.8);
 // 使用文档界面侧边栏背景
 $document-sidebar-background: hsl(0, 0%, 15%); // 深灰色背景
 
-// 意见反馈界面聊天窗口呼吸边框动画
-$feedback-chat-shadow-light: rgba(180, 50, 50, 0.8);
-$feedback-chat-shadow-medium: rgba(160, 40, 40, 0.8);
-$feedback-chat-shadow-dark: rgba(140, 30, 30, 0.8);
-$feedback-chat-shadow-darker: rgba(120, 25, 25, 0.8);
-$feedback-chat-shadow-darkest: rgba(100, 20, 20, 0.8);
-$feedback-chat-shadow-soft: rgba(180, 50, 50, 0.5);
-$feedback-chat-shadow-moderate: rgba(160, 40, 40, 0.5);
-$feedback-chat-shadow-deep: rgba(140, 30, 30, 0.5);
-$feedback-chat-shadow-deeper: rgba(120, 25, 25, 0.5);
-$feedback-chat-shadow-deepest: rgba(100, 20, 20, 0.5);
+// 智能助手界面聊天窗口呼吸边框动画
+$assistant-chat-shadow-light: rgba(180, 50, 50, 0.8);
+$assistant-chat-shadow-medium: rgba(160, 40, 40, 0.8);
+$assistant-chat-shadow-dark: rgba(140, 30, 30, 0.8);
+$assistant-chat-shadow-darker: rgba(120, 25, 25, 0.8);
+$assistant-chat-shadow-darkest: rgba(100, 20, 20, 0.8);
+$assistant-chat-shadow-soft: rgba(180, 50, 50, 0.5);
+$assistant-chat-shadow-moderate: rgba(160, 40, 40, 0.5);
+$assistant-chat-shadow-deep: rgba(140, 30, 30, 0.5);
+$assistant-chat-shadow-deeper: rgba(120, 25, 25, 0.5);
+$assistant-chat-shadow-deepest: rgba(100, 20, 20, 0.5);
 
 // 修改用户信息窗口闪烁动画颜色变量
 $theme-dialog-shadow-light: rgba(180, 50, 50, 0.42);

@@ -1,5 +1,5 @@
 <template>
-    <div class="feedback">
+    <div class="assistant">
         <div class="main-content" id="main-content" @dragover="handleImageDragover" @drop="handleImageDrop">
             <div class="chat-container active">
                 <ChatWindow />
@@ -16,17 +16,17 @@
 <script setup>
 import { ref, onMounted } from "vue"
 
-import ChatWindow from '@/components/feedback/ChatWindow.vue';
-import ChatInput from '@/components/feedback/ChatInput.vue';
+import ChatWindow from '@/components/assistant/ChatWindow.vue';
+import ChatInput from '@/components/assistant/ChatInput.vue';
 import { fetchChatStream } from "@/api/coze";
-import { useFeedbackStore } from "@/stores/feedback";
+import { useAssistantStore } from "@/stores/assistant";
 import Tools from "@/utils/tools";
-import ModalDialog from "@/components/feedback/ModalDialog.vue";
+import ModalDialog from "@/components/assistant/ModalDialog.vue";
 import { callDashScopeStream } from "@/api/aliyun";
 import SparkAIService from '@/api/spark'
 import { GeminiAssistant } from '@/api/gemini'
 
-const feedbackStore = useFeedbackStore()
+const assistantStore = useAssistantStore()
 
 //监听文件拖动，将拖动到聊天窗口的图片传递给聊天输入框组件
 //存储拖动的文件
@@ -49,7 +49,7 @@ const handleUserMessage = (msg) => {
     // 开始流式接收官方消息
 
     setTimeout(() => {
-        feedbackStore.startStreamingOfficialMessage();
+        assistantStore.startStreamingOfficialMessage();
     }, 1000)
 
     // 请求 coze 获取流式回复
@@ -76,22 +76,22 @@ async function readStream(reader) {
         
         if (done) {
             // 流式接收完成
-            feedbackStore.completeCurrentOfficialMessage();
-            feedbackStore.isReplaying(false)
+            assistantStore.completeCurrentOfficialMessage();
+            assistantStore.isReplaying(false)
             break;
         }
         fullMessage += value;
 
         // 更新当前流式消息
-        if (feedbackStore.replying) {
-            feedbackStore.updateCurrentOfficialMessage(fullMessage);
+        if (assistantStore.replying) {
+            assistantStore.updateCurrentOfficialMessage(fullMessage);
         }
     }
 }
 
 //随机生成用户信息
 const initUser = () => {
-    feedbackStore.setUser({
+    assistantStore.setUser({
         id: Tools.getRandomId(),
         name: Tools.getRandomName('user-'),
         avatar: Tools.getRandomAvatar()

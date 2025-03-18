@@ -21,7 +21,7 @@
             <p class="latest-version">
                 <span class="version" @click="toLatestVersion">🦈{{ updatelogStore.isLatestEmpty ? errorText :
                     "V" + updatelogStore.latest.version }}</span> ｜
-                <span class="update">🎉{{ updatelogStore.isLatestEmpty ? errorText : updatelogStore.latest.releaseDate
+                <span class="update">🎉Latest Update Date：{{ updatelogStore.isLatestEmpty ? errorText : updatelogStore.latest.releaseDate
                     }}</span> ｜
                 <span class="platform">🎲Win 7 & 10 & 11</span>
             </p>

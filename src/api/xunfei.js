@@ -49,7 +49,7 @@ export default class SparkAIService {
                                 text: [
                                     {
                                         role: "system",
-                                        content: "你是一位专业且热情的 aoyukmt 官网意见反馈页面回复助手..."
+                                        content: "你是一位专业且热情的 aoyukmt 官网智能助手页面回复助手..."
                                     },
                                     {
                                         role: "user",

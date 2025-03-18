@@ -22,8 +22,8 @@ const router = createRouter({
           props: true, // 让路由参数作为 props 传递给组件
         },
         {
-          path: '/feedback',
-          component: () => import('@/views/feedback/Feedback.vue')
+          path: '/assistant',
+          component: () => import('@/views/assistant/Assistant.vue')
         },
         {
           path: '/updatelog',

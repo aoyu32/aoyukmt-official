@@ -68,18 +68,18 @@ $download-card-hover-shadow: rgba(106, 90, 205, 0.8); // Card hover shadow
 // Document Sidebar
 $document-sidebar-background: hsl(0, 0%, 100%); // White sidebar
 
-// Feedback Chat Breathing Border Animation Colors
-$feedback-chat-shadow-light: rgba(255, 255, 255, 0.8); // White
-$feedback-chat-shadow-medium: rgba(230, 230, 255, 0.8); // Light purple
-$feedback-chat-shadow-dark: rgba(200, 200, 255, 0.8); // Medium purple
-$feedback-chat-shadow-darker: rgba(150, 150, 255, 0.8); // Deep purple
-$feedback-chat-shadow-darkest: rgba(106, 90, 205, 0.8); // Slate blue
+// assistant Chat Breathing Border Animation Colors
+$assistant-chat-shadow-light: rgba(255, 255, 255, 0.8); // White
+$assistant-chat-shadow-medium: rgba(230, 230, 255, 0.8); // Light purple
+$assistant-chat-shadow-dark: rgba(200, 200, 255, 0.8); // Medium purple
+$assistant-chat-shadow-darker: rgba(150, 150, 255, 0.8); // Deep purple
+$assistant-chat-shadow-darkest: rgba(106, 90, 205, 0.8); // Slate blue
 
-$feedback-chat-shadow-soft: rgba(255, 255, 255, 0.5); // Soft white
-$feedback-chat-shadow-moderate: rgba(230, 230, 255, 0.5); // Soft light purple
-$feedback-chat-shadow-deep: rgba(200, 200, 255, 0.5); // Soft medium purple
-$feedback-chat-shadow-deeper: rgba(150, 150, 255, 0.5); // Soft deep purple
-$feedback-chat-shadow-deepest: rgba(106, 90, 205, 0.5); // Soft slate blue
+$assistant-chat-shadow-soft: rgba(255, 255, 255, 0.5); // Soft white
+$assistant-chat-shadow-moderate: rgba(230, 230, 255, 0.5); // Soft light purple
+$assistant-chat-shadow-deep: rgba(200, 200, 255, 0.5); // Soft medium purple
+$assistant-chat-shadow-deeper: rgba(150, 150, 255, 0.5); // Soft deep purple
+$assistant-chat-shadow-deepest: rgba(106, 90, 205, 0.5); // Soft slate blue
 
 // User Info Dialog Animation Colors
 $theme-dialog-shadow-light: rgba(106, 90, 205, 0.42); // Purple shadow

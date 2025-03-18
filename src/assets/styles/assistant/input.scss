@@ -4,22 +4,22 @@
 
 .input-box {
     width: 100%;
-    max-height: $feedback-textarea-max-height;
+    max-height: $assistant-textarea-max-height;
     display: flex;
     flex-direction: column;
-    padding: $feedback-textarea-padding;
+    padding: $assistant-textarea-padding;
 
 
     .preview-container {
         display: flex;
-        gap: $feedback-preview-gap;
+        gap: $assistant-preview-gap;
         margin-bottom: 10px;
         flex-wrap: wrap;
 
         .image-wrapper {
             position: relative;
-            width: $feedback-preview-width;
-            height: $feedback-preview-height;
+            width: $assistant-preview-width;
+            height: $assistant-preview-height;
 
             img {
                 width: 100%;
@@ -42,8 +42,8 @@
                 color: $theme-font-light;
                 border: none;
                 border-radius: 50%;
-                width: $feedback-preview-dtn;
-                height: $feedback-preview-dtn;
+                width: $assistant-preview-dtn;
+                height: $assistant-preview-dtn;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
@@ -67,11 +67,11 @@
         align-items: center;
         flex-direction: column;
         justify-content: space-between;
-        padding: $feedback-input-padding;
+        padding: $assistant-input-padding;
         position: relative;
         border: 1px solid $theme-secondary-dark;
-        max-height: $feedback-textarea-max-height;
-        border-radius: $feedback-input-radius;
+        max-height: $assistant-textarea-max-height;
+        border-radius: $assistant-input-radius;
 
         width: 100%;
         transition: box-shadow 0.2s ease;
@@ -82,8 +82,8 @@
 
         textarea {
             width: 100%;
-            max-height: $feedback-input-max-height;
-            min-height: $feedback-input-min-height;
+            max-height: $assistant-input-max-height;
+            min-height: $assistant-input-min-height;
             overflow-y: auto;
             overflow: hidden;
             background-color: $theme-background;
@@ -111,8 +111,8 @@
         font-size: 22px;
 
         button {
-            width: $feedback-us-btn;
-            height: $feedback-us-btn;
+            width: $assistant-us-btn;
+            height: $assistant-us-btn;
             border-radius: 50%;
             border: 1px solid $theme-secondary-dark;
             transition: 0.2s ease-in-out;
@@ -131,7 +131,7 @@
 
             /* 上传按钮的提示气泡 */
             &::after {
-                content: $feedback-hover-text;
+                content: $assistant-hover-text;
                 /* 提示文本 */
                 position: absolute;
                 bottom: -20px;

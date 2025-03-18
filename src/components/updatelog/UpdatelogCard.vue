@@ -45,8 +45,12 @@ const emit = defineEmits(["setTipContext"])
 
 // 请求下载应用
 const downloadApp = async (version, versionId, packageType) => {
-    const uid = '123';
+    //生成auid
+    tools.insertAUID()
     const isLatest = versionId === 'latest';
+    const uid = tools.getAUID()
+    console.log("更新日志下载auid:", uid);
+
 
     const apiMethod = isLatest ? apis.downloadLatest : apis.downloadHistory;
     const params = isLatest ? { uid, packageType } : { uid, version, packageType };

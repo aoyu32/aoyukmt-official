@@ -197,23 +197,23 @@
 // 呼吸边框动画
 @keyframes breathing-border {
     0% {
-        box-shadow: 0 0 10px $feedback-chat-shadow-light, 0 0 20px $feedback-chat-shadow-soft;
+        box-shadow: 0 0 10px $assistant-chat-shadow-light, 0 0 20px $assistant-chat-shadow-soft;
     }
 
     25% {
-        box-shadow: 0 0 10px $feedback-chat-shadow-medium, 0 0 20px $feedback-chat-shadow-moderate;
+        box-shadow: 0 0 10px $assistant-chat-shadow-medium, 0 0 20px $assistant-chat-shadow-moderate;
     }
 
     50% {
-        box-shadow: 0 0 10px $feedback-chat-shadow-dark, 0 0 20px $feedback-chat-shadow-deep;
+        box-shadow: 0 0 10px $assistant-chat-shadow-dark, 0 0 20px $assistant-chat-shadow-deep;
     }
 
     75% {
-        box-shadow: 0 0 10px $feedback-chat-shadow-darker, 0 0 20px $feedback-chat-shadow-deeper;
+        box-shadow: 0 0 10px $assistant-chat-shadow-darker, 0 0 20px $assistant-chat-shadow-deeper;
     }
 
     100% {
-        box-shadow: 0 0 10px $feedback-chat-shadow-darkest, 0 0 20px $feedback-chat-shadow-deepest;
+        box-shadow: 0 0 10px $assistant-chat-shadow-darkest, 0 0 20px $assistant-chat-shadow-deepest;
     }
 }
 

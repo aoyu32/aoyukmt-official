@@ -11,8 +11,8 @@
                 <label for="image-upload" class="upload-icon" @mouseenter="handleHover(1)"
                     @mouseleave="handleHover(0)">{{ lableText }}</label>
                 <button id="send-button" @mouseenter="handleHover(2)" @mouseleave="handleHover(0)"
-                    @click="feedbackStore.replying ? stopReplyingMessage() : sendMessage()" ref="sendButton"
-                    :class="{ 'breathing-border': feedbackStore.replying }" :data-tooltip="tooltipText">
+                    @click="assistantStore.replying ? stopReplyingMessage() : sendMessage()" ref="sendButton"
+                    :class="{ 'breathing-border': assistantStore.replying }" :data-tooltip="tooltipText">
                     {{ buttonText }}
                 </button>
             </div>
@@ -21,9 +21,9 @@
 </template>
 <script setup>
 import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
-import { useFeedbackStore } from '@/stores/feedback'
+import { useAssistantStore } from '@/stores/assistant'
 import Tools from '@/utils/tools'
-const feedbackStore = useFeedbackStore()
+const assistantStore = useAssistantStore()
 //接收拖动到父组件的图片
 const props = defineProps({
     files: {
@@ -37,7 +37,7 @@ const placeholderValue = "请输入您的反馈或意见..."
 
 //动态控制发送按钮的hover效果
 const tooltipText = computed(() => {
-    return feedbackStore.replying ? '点击停止回答!🙃' : '点击发送消息或按下Shift+Enter发送!😊'
+    return assistantStore.replying ? '点击停止回答!🙃' : '点击发送消息或按下Shift+Enter发送!😊'
 })
 
 
@@ -89,7 +89,7 @@ const buttonText = ref("🍥")
 //鼠标悬浮在上传图标或发送按钮改变图标
 const handleHover = (isHover) => {
     lableText.value = isHover === 1 ? "🖼️" : "🔗"
-    if (!feedbackStore.replying) {
+    if (!assistantStore.replying) {
         buttonText.value = isHover === 2 ? "👻" : "🍥"
     }
 }
@@ -154,7 +154,7 @@ const createImageWrapper = (file) => {
         };
 
         // 添加图片到store
-        const imageIndex = feedbackStore.addImage({
+        const imageIndex = assistantStore.addImage({
             src: e.target.result,
             type: file.type,
             size: file.size
@@ -166,7 +166,7 @@ const createImageWrapper = (file) => {
         deleteBtn.innerHTML = '<i class="iconfont icon-close"></i>'; // 删除按钮的内容
         deleteBtn.addEventListener('click', () => {
 
-            feedbackStore.removeImage(imageIndex)
+            assistantStore.removeImage(imageIndex)
             imageWrapper.remove(); // 删除整个图片和按钮的容器
 
 
@@ -191,13 +191,13 @@ const sendButton = ref(null)
 const emit = defineEmits(['receiveUserMessage'])
 const sendMessage = async () => {
 
-    if (feedbackStore.isEmpty(message.value)) {
-        feedbackStore.SetShowTip()
+    if (assistantStore.isEmpty(message.value)) {
+        assistantStore.SetShowTip()
         return
     }
     // 发送消息并自动触发官方回复
-    feedbackStore.addUserMessage({
-        img: feedbackStore.images,
+    assistantStore.addUserMessage({
+        img: assistantStore.images,
         text: message.value,
         date: Tools.getFormatDate('yyyy-mm-dd')
     });
@@ -205,11 +205,11 @@ const sendMessage = async () => {
     //将发送的消息传递给父组件
     emit('receiveUserMessage', message.value)
 
-    feedbackStore.isReplaying(true)
+    assistantStore.isReplaying(true)
     //清空输入的数据 
     message.value = ''
     previewContainer.value.innerHTML = ''
-    feedbackStore.clearAll()
+    assistantStore.clearAll()
     textareaBlur()
     resetHeight()
 
@@ -217,13 +217,13 @@ const sendMessage = async () => {
 
 const stopReplyingMessage = () => {
 
-    feedbackStore.isReplaying(false)
-    feedbackStore.currentOfficialMessageIndex = -1
+    assistantStore.isReplaying(false)
+    assistantStore.currentOfficialMessageIndex = -1
 
 }
 
 //监听官方消息是否回复完成
-watch(() => feedbackStore.replying, (newValue) => {
+watch(() => assistantStore.replying, (newValue) => {
     if (newValue) {
         buttonText.value = '🤖'
     } else {
@@ -250,5 +250,5 @@ onUnmounted(() => {
 
 </script>
 <style lang="scss">
-@use "@/assets/styles/feedback/input.scss" as *;
+@use "@/assets/styles/assistant/input.scss" as *;
 </style>

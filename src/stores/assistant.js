@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 // import loadingGifSrc from 'W:\\w.project\\aoyukmt\\aoyukmt-official\\src\\assets\\loadding.gif'; // 引入GIF图片
 
-export const useFeedbackStore = defineStore('feedback', () => {
+export const useAssistantStore = defineStore('assistant', () => {
     // State
     const user = ref({}); // 用户信息
     const currentOfficialMessageIndex = ref(-1); // 当前正在流式接收的官方消息的索引

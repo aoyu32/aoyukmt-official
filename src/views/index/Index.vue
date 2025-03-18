@@ -116,10 +116,12 @@ const fetchData = async () => {
 const tipContext = ref("")
 const downloadApp = async () => {
 
+    //生成auid
+    tools.insertAUID()
     try {
         const path = await apis.downloadLatest({
-            'uid': "123",
-            'packageType': 'installer'
+            uid: tools.getAUID(),
+            packageType: 'installer'
         })
         await tools.downloadFile(path)
     } catch (error) {

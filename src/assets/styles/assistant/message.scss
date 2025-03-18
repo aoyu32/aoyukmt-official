@@ -10,8 +10,8 @@
     padding-top: 10px;
 
     .avatar {
-        width: $feedback-avatar-size;
-        height: $feedback-avatar-size;
+        width: $assistant-avatar-size;
+        height: $assistant-avatar-size;
         border: 1px solid $theme-primary;
         border-radius: 50%;
         background-color: $theme-primary;
@@ -48,7 +48,7 @@
             background: $theme-primary;
             color: $theme-font-light;
             border-color: $theme-primary;
-            padding: $feedback-msg-padding;
+            padding: $assistant-msg-padding;
 
             .content {
                 width: 100%;

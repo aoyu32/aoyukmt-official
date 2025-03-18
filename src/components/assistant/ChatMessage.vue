@@ -1,10 +1,10 @@
 <template>
   <div class="chat-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
     <div class=" avatar" @click="ModifyUserInfo">
-      <img :src="messageData.isUser ? feedbackStore.user.avatar : aoyukmtAvatar" alt="">
+      <img :src="messageData.isUser ? assistantStore.user.avatar : aoyukmtAvatar" alt="">
     </div>
     <div class="message-wrapper">
-      <div class="name">{{ messageData.isUser ? "🪶" + feedbackStore.user.name : officialName }}</div>
+      <div class="name">{{ messageData.isUser ? "🪶" + assistantStore.user.name : officialName }}</div>
       <div class="message-content">
         <!-- 显示图片 -->
         <div v-if="hasImages" class="message-content-img" :style="messageTextStyle">
@@ -30,13 +30,13 @@
 <script setup>
 import { onMounted, onUpdated, nextTick, watch, ref, computed } from "vue";
 import { marked } from "marked";
-import { useFeedbackStore } from "@/stores/feedback";
+import { useAssistantStore } from "@/stores/assistant";
 import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
 import hljs from 'highlight.js';
 import "highlight.js/styles/atom-one-light.css";
 import Loadding from "@/components/common/Loadding.vue";
 
-const feedbackStore = useFeedbackStore()
+const assistantStore = useAssistantStore()
 const officialName = ref("AOYUKMT智能助手📫")
 const messageContainer = ref(null); // 代码块容器
 // 接收父组件传递的 messageData
@@ -94,12 +94,12 @@ const messageTextStyle = computed(() => {
 //修改用户信息
 const ModifyUserInfo = () => {
   if (props.messageData.isUser) {
-    feedbackStore.setShowDialog(true)
+    assistantStore.setShowDialog(true)
   }
 }
 </script>
 
 <style scoped lang="scss">
-@use "@/assets/styles/feedback/markdown.scss" as *;
-@use "@/assets/styles/feedback/message.scss" as *;
+@use "@/assets/styles/assistant/markdown.scss" as *;
+@use "@/assets/styles/assistant/message.scss" as *;
 </style>

@@ -1,18 +1,18 @@
 <template>
     <div class="chat-window lenis" id="chat-window" ref="chatWindow">
-        <Message :messageContent="tipContext" :isShowMessage="feedbackStore.showTip" :messagePosition="'absolute'" />
-        <ChatMessage v-for="(item, index) in feedbackStore.chatMessages" :key="index" :messageData="item" />
+        <Message :messageContent="tipContext" :isShowMessage="assistantStore.showTip" :messagePosition="'absolute'" />
+        <ChatMessage v-for="(item, index) in assistantStore.chatMessages" :key="index" :messageData="item" />
     </div>
 </template>
 <script setup>
 import { ref, onMounted, watch, nextTick } from 'vue';
 import ChatMessage from './ChatMessage.vue';
-import { useFeedbackStore } from "@/stores/feedback";
+import { useAssistantStore } from "@/stores/assistant";
 import Message from '../common/Message.vue';
 import { scrollTo } from '@/utils/scroll';
 
 const chatWindow = ref(null)
-const feedbackStore = useFeedbackStore()
+const assistantStore = useAssistantStore()
 const tipContext = ref('不输入内容休想发送消息! 😛')
 //提示消息状态
 onMounted(() => {
@@ -22,7 +22,7 @@ onMounted(() => {
 //渲染消息气泡
 // 监听 chatMessages 的变化，滚动到底部
 watch(
-    () => feedbackStore.chatMessages,
+    () => assistantStore.chatMessages,
     () => {
         // 使用 nextTick 确保 DOM 更新完成后再滚动
         nextTick(() => {

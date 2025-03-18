@@ -1,4 +1,5 @@
 import { createAvatar } from '@dicebear/core';
+import { ClientJS } from 'clientjs';
 import {
     lorelei,
     pixelArt,
@@ -226,6 +227,59 @@ export default class tools {
             throw error;
         }
     };
+
+    //生成唯一下载用户id,用来标记是哪个用户下载的
+    static createDownloadUserId() {
+        const client = new ClientJS();
+        const finger = client.getFingerprint()
+        console.log(finger);
+
+        //生成唯一id
+        const uid = this.getRandomId("numStr")
+        console.log("生成的uid为：", uid);
+        //加上特殊前缀
+        const auid = "aoyukmt-user-download:" + uid
+        return auid;
+    }
+
+    //向localStroage和sessionlocalStorage里存入audi
+    static insertAUID() {
+        //生成uid
+        const auid = this.createDownloadUserId()
+        //判断localstorage里是否存在auid
+
+        if (localStorage.getItem("auid") === null) {
+            //判断如果另一个存储空间如果没有值得话就把值复制到另一个存储空间
+            if (sessionStorage.getItem("auid" !== null)) {
+                localStorage.setItem("auid", sessionStorage.getItem("auid"))
+            } else {
+                localStorage.setItem("auid", auid)
+            }
+        }
+        if (sessionStorage.getItem("auid") === null) {
+            //判断如果另一个存储空间如果没有值得话就把值复制到另一个存储空间
+            if (localStorage.getItem("auid") !== null) {
+                sessionStorage.setItem("auid", localStorage.getItem("auid"))
+            } else {
+                sessionStorage.setItem("auid", auid)
+            }
+        }
+
+        console.log("存入本地存储的auid:", localStorage.getItem("auid"));
+        console.log("存入本地存储的auid:", sessionStorage.getItem("auid"));
+
+    }
+
+
+    //取auid
+    static getAUID() {
+        if (localStorage.getItem("auid") !== '') {
+            return localStorage.getItem("auid")
+        }
+        if (sessionStorage.getItem("auid") !== '') {
+            return sessionStorage.getItem("auid")
+        }
+    }
 
 
 

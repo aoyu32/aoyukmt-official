@@ -1,9 +1,9 @@
 <template>
-    <div class="modal-overlay" v-if="feedbackStore.showDialog">
+    <div class="modal-overlay" v-if="assistantStore.showDialog">
         <div class="dialog">
             <div class="dialog-header">
-                <span class="username" id="username">Hi, {{ feedbackStore.user.name }}</span>
-                <button class="close-button" @click="feedbackStore.setShowDialog(false)">
+                <span class="username" id="username">Hi, {{ assistantStore.user.name }}</span>
+                <button class="close-button" @click="assistantStore.setShowDialog(false)">
                     <i class="iconfont icon-close-bold"></i>
                 </button>
             </div>
@@ -26,23 +26,23 @@
             <div class="button-group">
                 <button class="confirm-button" :data-button-tooltip="buttonTooltip" id="confirm" @click="ConfirmModify"
                     :disabled="isDisable" @mouseenter="handleMouseenter">确认</button>
-                <button class="cancel-button" id="cancel" @click="feedbackStore.setShowDialog(false)">取消</button>
+                <button class="cancel-button" id="cancel" @click="assistantStore.setShowDialog(false)">取消</button>
             </div>
         </div>
     </div>
 </template>
 <script setup>
 import { ref } from 'vue'
-import { useFeedbackStore } from '@/stores/feedback';
+import { useAssistantStore } from '@/stores/assistant';
 
-const feedbackStore = useFeedbackStore()
+const assistantStore = useAssistantStore()
 
 //修改头像
 
 //上传input
 const uploadInput = ref(null)
 //头像图片
-const avatarImage = ref(feedbackStore.user.avatar)
+const avatarImage = ref(assistantStore.user.avatar)
 //头像边框是否闪烁
 const isAvatarBlink = ref(false)
 //头像提示文本
@@ -122,8 +122,8 @@ const handleMouseenter = () => {
     }
 
     // 检查是否有实际更改
-    const hasNameChange = inputNameValue.value.trim() !== '' && inputNameValue.value.trim() !== feedbackStore.user.name
-    const hasAvatarChange = avatarImage.value !== feedbackStore.user.avatar
+    const hasNameChange = inputNameValue.value.trim() !== '' && inputNameValue.value.trim() !== assistantStore.user.name
+    const hasAvatarChange = avatarImage.value !== assistantStore.user.avatar
 
     if (!hasNameChange && !hasAvatarChange) {
         buttonTooltip.value = '你没修改任何信息!🫠'
@@ -148,15 +148,15 @@ const ConfirmModify = () => {
     }
 
     if (inputNameValue.value.trim() !== '') {
-        feedbackStore.user.name = inputNameValue.value.trim()
+        assistantStore.user.name = inputNameValue.value.trim()
     }
-    feedbackStore.user.avatar = avatarImage.value
-    feedbackStore.showDialog = false
+    assistantStore.user.avatar = avatarImage.value
+    assistantStore.showDialog = false
     inputNameValue.value = ''
 }
 
 
 </script>
 <style lang="scss" scoped>
-@use "@/assets/styles/feedback/dialog.scss" as *;
+@use "@/assets/styles/assistant/dialog.scss" as *;
 </style>

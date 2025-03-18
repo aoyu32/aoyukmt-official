@@ -20,12 +20,12 @@
 /* 弹框样式 */
 .dialog {
     background: $theme-background;
-    border-radius: $feedback-diglog-radius;
-    width: $feedback-diglog-width;
+    border-radius: $assistant-diglog-radius;
+    width: $assistant-diglog-width;
     box-shadow: 0 4px 8px $theme-deep-shadow;
     position: relative;
     overflow: hidden;
-    padding: $feedback-dialog-padding;
+    padding: $assistant-dialog-padding;
 
     &-header {
         width: 100%;
@@ -43,8 +43,8 @@
     /* 关闭按钮 */
     .close-button {
         background-color: $theme-primary-dt;
-        width: $feedback-dialog-close;
-        height: $feedback-dialog-close;
+        width: $assistant-dialog-close;
+        height: $assistant-dialog-close;
         // background: transparent;
         color: $theme-font-light;
         border: none;
@@ -78,8 +78,8 @@
 
     .avatar {
         position: relative;
-        width: $feedback-dialog-avatar;
-        height: $feedback-dialog-avatar;
+        width: $assistant-dialog-avatar;
+        height: $assistant-dialog-avatar;
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -138,7 +138,7 @@
     }
 
     button {
-        width: $feedback-dialog-btn;
+        width: $assistant-dialog-btn;
         padding: 10px;
         border: none;
         border-radius: 5px;
@@ -189,8 +189,8 @@
     position: absolute;
     bottom: 1px;
     right: 1px;
-    width: $feedback-avatar-btn;
-    height: $feedback-avatar-btn;
+    width: $assistant-avatar-btn;
+    height: $assistant-avatar-btn;
     background: $theme-background;
     border: 2px solid $theme-secondary;
     border-radius: 50%;

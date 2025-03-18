@@ -35,6 +35,8 @@ const packageMap = {
 // 请求下载应用
 const requestDownload = async (title) => {
     const packageType = packageMap[title];
+    //生成auid
+    tools.insertAUID()
 
     if (!packageType) {
         emit("setTipContext", "未知的下载类型! ❌");
@@ -43,7 +45,7 @@ const requestDownload = async (title) => {
 
     try {
         const path = await apis.downloadLatest({
-            uid: '123',
+            uid: tools.getAUID(),
             packageType
         });
         await tools.downloadFile(path);

@@ -14,6 +14,7 @@
     "@dicebear/core": "^9.2.2",
     "aos": "^2.3.4",
     "axios": "^1.7.9",
+    "clientjs": "^0.2.1",
     "crypto-js": "^4.2.0",
     "highlight.js": "^11.11.1",
     "lenis": "^1.2.3",

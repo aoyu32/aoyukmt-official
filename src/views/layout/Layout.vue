@@ -17,9 +17,9 @@
           @mouseleave="resetText('document', '🐋 使用文档')">
           {{ document }}
         </router-link>
-        <router-link to="/feedback" @mouseover="changeText('feedback', '👍 意见反馈')"
-          @mouseleave="resetText('feedback', '👎 意见反馈')">
-          {{ feedback }}
+        <router-link to="/assistant" @mouseover="changeText('assistant', '👍 智能助手')"
+          @mouseleave="resetText('assistant', '👎 智能助手')">
+          {{ assistant }}
         </router-link>
         <router-link to="/updatelog" @mouseover="changeText('updatelog', '🐤 更新日志')"
           @mouseleave="resetText('updatelog', '🐣 更新日志')">
@@ -42,7 +42,7 @@ import TypeEffect from "@/utils/typing";
 const navLinks = ref(null)
 let download = ref("😎 下载安装");
 let document = ref("🐋 使用文档");
-let feedback = ref("👎 意见反馈");
+let assistant = ref("👎 智能助手");
 let updatelog = ref("🐣 更新日志");
 let pageText = ref("AOYUKMT");
 let isActive = ref(false)
@@ -78,8 +78,8 @@ onMounted(() => {
     } else if (currentRoute.startsWith("/document")) {
       typingInstance = new TypeEffect("DOCUMENT", logoText.value, initTypeEffect);
       navWidth.value = '95%'
-    } else if (currentRoute === "/feedback") {
-      typingInstance = new TypeEffect("FEEDBACK", logoText.value, initTypeEffect);
+    } else if (currentRoute === "/assistant") {
+      typingInstance = new TypeEffect("assistant", logoText.value, initTypeEffect);
       navWidth.value = '1200px'
     } else if (currentRoute === "/updatelog") {
       typingInstance = new TypeEffect("UPDATELOG", logoText.value, initTypeEffect);
@@ -100,8 +100,8 @@ const changeText = (link, newText) => {
     download.value = newText;
   } else if (link === 'document') {
     document.value = newText;
-  } else if (link === 'feedback') {
-    feedback.value = newText;
+  } else if (link === 'assistant') {
+    assistant.value = newText;
   } else if (link === 'updatelog') {
     updatelog.value = newText;
   }
@@ -113,8 +113,8 @@ const resetText = (link, originalText) => {
     download.value = originalText;
   } else if (link === 'document') {
     document.value = originalText;
-  } else if (link === 'feedback') {
-    feedback.value = originalText;
+  } else if (link === 'assistant') {
+    assistant.value = originalText;
   } else if (link === 'updatelog') {
     updatelog.value = originalText;
   }
