@@ -22,8 +22,28 @@ const router = createRouter({
           props: true, // 让路由参数作为 props 传递给组件
         },
         {
-          path: '/assistant',
-          component: () => import('@/views/assistant/Assistant.vue')
+          path: '/community',
+          component: () => import('@/views/community/Community.vue'),
+
+          children:[
+            {
+              path: '',
+              component: () => import('@/views/assistant/Assistant.vue')
+            },
+            {
+              path:'assistant',
+              component:()=>import('@/views/assistant/Assistant.vue')
+            },
+            {
+              path:'forum',
+              component:()=>import('@/views/forum/Forum.vue')
+            },
+            {
+              path:'feedback',
+              component:()=>import('@/views/feedback/Feedback.vue')
+            }
+          ]
+
         },
         {
           path: '/updatelog',

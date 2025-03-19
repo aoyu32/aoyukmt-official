@@ -33,7 +33,7 @@ const props = defineProps({
 })
 
 //输入框内文本
-const placeholderValue = "请输入您的反馈或意见..."
+const placeholderValue = "你可以向我咨询任何应用有关问题..."
 
 //动态控制发送按钮的hover效果
 const tooltipText = computed(() => {

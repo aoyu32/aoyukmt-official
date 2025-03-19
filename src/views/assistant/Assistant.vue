@@ -43,7 +43,7 @@ const handleImageDrop = (event) => {
         files.value = Array.from(droppedFiles);  // 将文件存储在 files 中
     }
 }
-//接收用户发生的消息
+//接收用户发送的消息
 const handleUserMessage = (msg) => {
 
     // 开始流式接收官方消息
@@ -60,20 +60,23 @@ const handleUserMessage = (msg) => {
     // const stream = new SparkAIService().sendMessageStream(msg)
     //Gemini大模型
     const prompt = "你是一个aoyukmt官网的助手"
-    const stream = new GeminiAssistant().chat(prompt,msg)
+    const stream = new GeminiAssistant().chat(prompt, msg)
     const reader = stream.getReader();
 
     readStream(reader);
+    console.log("hhhh");
+
 
 
 };
 
 async function readStream(reader) {
     let fullMessage = '';
+    assistantStore.isReplaying(true)
     while (true) {
         const { done, value } = await reader.read();
-      
-        
+
+
         if (done) {
             // 流式接收完成
             assistantStore.completeCurrentOfficialMessage();
@@ -84,6 +87,8 @@ async function readStream(reader) {
 
         // 更新当前流式消息
         if (assistantStore.replying) {
+            console.log('hffffhhh');
+
             assistantStore.updateCurrentOfficialMessage(fullMessage);
         }
     }
@@ -95,12 +100,15 @@ const initUser = () => {
         id: Tools.getRandomId(),
         name: Tools.getRandomName('user-'),
         avatar: Tools.getRandomAvatar()
+
     })
 }
 
 onMounted(() => {
+
     if (localStorage.getItem('user') === null) {
         initUser()
+        handleUserMessage("你好,你是谁")
     }
 })
 
@@ -110,37 +118,42 @@ onMounted(() => {
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
 
-.main-content {
-    display: flex;
+.assistant {
     width: 100%;
-    height: 100vh;
-    // background-color: hsla(0, 100%, 67%, 0.345);
-    background-color: $theme-primary-lt;
-    padding-top: $distance-top;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
 
-    .chat-container {
-        width: $max-width;
+    .main-content {
         display: flex;
-        height: $percentage-height;
-        position: relative;
-        flex-direction: column;
-        background: $theme-background;
-        border-radius: 12px;
-        /* position: relative; */
-        border: 2px solid $theme-primary;
-        // box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
-        overflow: hidden;
-        animation: breathing-border 5s infinite alternate;
-    }
+        width: 100%;
+        height: 100%;
+        // background-color: hsla(0, 100%, 67%, 0.345);
+        // background-color: $theme-primary-lt;
+        // padding-top: $distance-top;
+        align-items: center;
+        justify-content: center;
 
-    @media (max-width: 1250px) {
         .chat-container {
-            width: $percentage-width;
+            width: 100%;
+            display: flex;
+            height: $percentage-height;
+            position: relative;
+            flex-direction: column;
+            background: $theme-background;
+            border-radius: 12px;
+            /* position: relative; */
+            border: 2px solid $theme-primary;
+            // box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            animation: breathing-border 5s infinite alternate;
+        }
+
+        @media (max-width: 1250px) {
+            .chat-container {
+                width: $percentage-width;
+            }
+
         }
 
     }
-
 }
 </style>
