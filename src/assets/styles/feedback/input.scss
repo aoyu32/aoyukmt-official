@@ -1,0 +1,124 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
+.feedback-input {
+    width: 100%;
+    height: 100%;
+    max-height: $assistant-textarea-max-height;
+    display: flex;
+    padding: $assistant-textarea-padding;
+    flex-direction: column;
+
+    .input-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-height: $assistant-textarea-max-height;
+
+        .input-area {
+            width: 100%;
+            border: 1px solid $theme-primary;
+            max-height: $assistant-textarea-max-height;
+            padding: 10px 15px 5px 10px;
+
+            textarea {
+                width: 100%;
+                max-height: $assistant-input-max-height;
+                min-height: $assistant-input-min-height;
+                overflow-y: auto;
+                overflow: hidden;
+                border: none;
+                resize: none;
+                font-family: $font-family;
+                color: $theme-font-dark;
+                background-color: transparent;
+                font-size: 15px;
+                outline: none;
+                line-height: 100%;
+                position: relative;
+
+                &:focus::placeholder {
+                    color: transparent;
+                    outline: none;
+                    resize: none;
+                }
+            }
+        }
+
+    }
+
+    .preview-container {
+        display: flex;
+        gap: $assistant-preview-gap;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+
+        .image-wrapper {
+            position: relative;
+            width: $assistant-preview-width;
+            height: $assistant-preview-height;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 8px;
+                border: 1px solid $theme-font-light-gray;
+
+                filter: grayscale(100%);
+                mask-image: linear-gradient(to bottom, $theme-font-lgt 0%, $theme-font-dark 100%);
+                -webkit-mask-image: linear-gradient(to bottom, $theme-background-gt 0%, $theme-font-dark 100%);
+                transition: mask-image 1s ease-out, filter 1s ease-out;
+            }
+
+            .delete-btn {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background-color: $theme-background-dark;
+                color: $theme-font-light;
+                border: none;
+                border-radius: 50%;
+                width: $assistant-preview-dtn;
+                height: $assistant-preview-dtn;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                transition: background-color 0.5s ease-in-out;
+
+                .iconfont {
+                    font-size: 10px;
+                }
+
+                &:hover {
+                    background-color: $theme-background-dt;
+                }
+            }
+        }
+    }
+
+
+
+
+}
+
+@media (max-width: 768px) {
+    .input-box {
+        .preview-container {
+            .image-wrapper {
+                width: 100px; // Adjust the width for smaller screens
+            }
+        }
+
+        .chat-input-area {
+            textarea {
+                min-height: auto; // Allow the textarea to adjust its height dynamically on smaller screens
+            }
+        }
+    }
+}

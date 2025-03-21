@@ -1,23 +1,21 @@
 <template>
     <div class="sidebar">
+
         <!-- 上半部分：头像和用户名 -->
         <div class="sidebar-top">
             <div class="user-info">
                 <div class="avatar">
-                    <img src="@/assets/aoyukmt.png" alt="User Avatar" />
+                    <img :src="assistantStore.user.avatar" alt="User Avatar" />
                 </div>
-                <div class="username">用户名</div>
+                <p class="username">{{ assistantStore.user.name }}</p>
             </div>
         </div>
 
-        <!-- 中间部分：空着 -->
         <div class="sidebar-middle"></div>
 
-        <!-- 下半部分：菜单项 -->
-        <!-- 下半部分：菜单项 -->
         <div class="sidebar-bottom">
             <router-link v-for="(item, index) in menuItems" :key="index" :to="item.link" class="menu-item"
-                :title="item.name">
+                :title="item.name" :class="{ 'active': currentIndex === index }" @click="currentIndex = index">
                 <div class="menu-icon">{{ item.icon }}</div>
             </router-link>
         </div>
@@ -25,14 +23,16 @@
 </template>
 
 <script setup>
-import router from '@/router';
-import { lib } from 'crypto-js';
+import { ref } from 'vue'
+import { useAssistantStore } from '@/stores/assistant';
+const assistantStore = useAssistantStore()
+const currentIndex = ref(null)
 
 // 菜单项数据
 const menuItems = [
-    { name: "人机客服🐓", icon: "🐔", link: "/community/assistant" },
-    { name: "群聊论坛👽", icon: "☠️", link: "/community/forum" },
-    { name: "吐槽一下🐧", icon: "👻", link: "/community/feedback" },
+    { name: "人机客服🐔", icon: "🐻‍❄️", link: "/community/assistant" },
+    { name: "群聊论坛☠️", icon: "🐧", link: "/community/forum" },
+    { name: "意见反馈🐼", icon: "👻", link: "/community/feedback" },
 ];
 </script>
 
@@ -46,16 +46,14 @@ const menuItems = [
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: $theme-background-light;
-    color: white;
+    background-color: $theme-background;
     padding: 20px 10px;
     border: 2px solid $theme-primary;
     box-sizing: border-box;
     border-radius: 12px;
-    /* position: relative; */
     border: 2px solid $theme-primary;
 
-    a{
+    a {
         text-decoration: none;
     }
 
@@ -64,8 +62,8 @@ const menuItems = [
             text-align: center;
 
             .avatar {
-                width: 40px;
-                height: 40px;
+                width: 50px;
+                height: 50px;
                 border: 1px solid $theme-primary;
                 border-radius: 50%;
                 overflow: hidden;
@@ -80,15 +78,15 @@ const menuItems = [
             }
 
             .username {
-                font-size: 15px;
-                font-weight: 600;
+                font-size: 14px;
                 color: $theme-font-gray;
+                word-wrap: break-word;
             }
         }
     }
 
     .sidebar-middle {
-        flex-grow: 1; // 占据剩余空间
+        flex-grow: 1;
     }
 
     .sidebar-bottom {
@@ -107,6 +105,7 @@ const menuItems = [
             display: flex;
             align-items: center;
             justify-content: center;
+
             cursor: pointer;
             line-height: 40px;
             transition: background-color 0.3s ease;
@@ -144,11 +143,39 @@ const menuItems = [
             }
 
             .menu-icon {
+                width: 40px;
+                height: 40px;
                 font-size: 16px;
                 text-align: center;
                 line-height: 40px;
+                transition: 0.3s ease-in-out;
+
+
             }
+
+
+            &:not(.active):hover {
+             
+                border: 2px solid $theme-primary;
+
+                .menu-icon {
+                    transform: scale(1.3);
+                }
+            }
+
+            &.active {
+                border: 2px solid $theme-primary;
+                box-shadow: 0 0 7px $theme-primary-shadow;
+
+                .menu-icon {
+                    display: inline-block;
+                    animation: fontSize 2s infinite ease-in-out;
+                }
+            }
+
         }
+
+
     }
 }
 </style>

@@ -21,7 +21,6 @@
 
 <script setup>
 import CommunitySidebar from '@/components/community/CommunitySidebar.vue';
-import Assistant from '../assistant/Assistant.vue';
 
 // Script logic
 </script>
@@ -62,8 +61,6 @@ import Assistant from '../assistant/Assistant.vue';
             .nav {
                 height: 100%;
                 animation: fadeRight 0.3s ease-in-out;
-
-
             }
         }
 

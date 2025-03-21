@@ -7,8 +7,8 @@ export const useHeaderStore = defineStore('header', () => {
     const links = ref([
         {
             label: 'download',
-            name: '🫣 下载安装',
-            hoverName: '😎 下载安装',
+            name: '😎 下载安装',
+            hoverName: '🫣 下载安装',
             routerLink: '/download'
         },
         {
@@ -19,14 +19,14 @@ export const useHeaderStore = defineStore('header', () => {
         },
         {
             label: 'community',
-            name: '🛫 交流中心',
-            hoverName: '🛬 交流中心',
+            name: '🛬 交流中心',
+            hoverName: '🛫 交流中心',
             routerLink: '/community',
         },
         {
             label: 'updatelog',
-            name: '🐤 更新日志',
-            hoverName: '🐣 更新日志',
+            name: '🐣 更新日志',
+            hoverName: '🐤 更新日志',
             routerLink: '/updatelog',
         }
 

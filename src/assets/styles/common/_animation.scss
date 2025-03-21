@@ -364,12 +364,28 @@
 
 //向右滑入动画
 @keyframes fadeRight {
-    from{
+    from {
         opacity: 0;
         transform: translateX(-100px);
     }
-    to{
+
+    to {
         opacity: 1;
         transform: translateX(0px);
+    }
+}
+
+//字体变大变小动画
+@keyframes fontSize {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }

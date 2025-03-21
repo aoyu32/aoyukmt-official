@@ -11,7 +11,7 @@
       <div id="nav-links" :class="['nav-links', isActive ? 'active' : '']">
         <router-link v-for="(item, index) in links" :key="index" :to="item.routerLink" @mouseover="hoverIndex = index"
           @mouseleave="hoverIndex = null">
-          {{ hoverIndex === index ? item.name : item.hoverName }}
+          {{ hoverIndex === index ? item.hoverName : item.name }}
         </router-link>
       </div>
     </nav>
