@@ -1,0 +1,320 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
+.feedback-card {
+    width: 100%;
+    max-width: 45%;
+    animation: slideLeft 0.3s ease-in-out;
+
+
+    label {
+        color: $theme-primary;
+        font-weight: $font-weight;
+    }
+
+
+    .feedback-form {
+        width: 100%;
+        border: 1px solid $theme-primary;
+        padding: 15px;
+        background-color: rgba($theme-primary, 0.05);
+
+        @media (max-width: 480px) {
+            padding: 10px;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid $theme-primary;
+            margin-bottom: 15px;
+
+            .card-title {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 10px;
+
+                h3 {
+                    text-align: center;
+                    color: $theme-primary;
+                }
+
+
+                .option-type {
+                    color: $theme-primary;
+                    font-size: 0.9em;
+                }
+            }
+        }
+
+        // 用户信息
+        .user-info {
+            width: 100%;
+            position: relative;
+
+            .name-input {
+                position: relative;
+
+                input {
+                    width: 100%;
+                    padding: 6px;
+                    margin: 10px 0;
+                    border: 1px solid $theme-primary;
+                    outline: none;
+                    font-weight: 550;
+                    background-color: transparent;
+                    color: $theme-font-gray;
+                }
+
+
+
+                .clear-username {
+                    position: absolute;
+                    right: 6px;
+                    top: 50%;
+                    transform: translateY(-50%);
+
+                    button {
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        cursor: pointer;
+                        color: $theme-font-gray;
+                        transition: transform 0.3s ease-in-out;
+
+                        &:hover {
+                            color: $theme-primary;
+                            transform: rotate(90deg);
+                        }
+                    }
+                }
+            }
+        }
+
+        .form-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+
+            .body-file {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $theme-font-gray;
+
+
+                .upload-box {
+                    width: 100%;
+                    min-height: 80px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px dashed $theme-primary;
+                    transition: background-color 0.2s ease-in-out;
+                    cursor: pointer;
+
+                    .iconfont {
+                        font-size: 20px;
+                    }
+
+                    &:hover {
+                        background-color: $theme-secondary-lt;
+                    }
+
+                }
+
+                .file-list {
+                    width: 100%;
+                    min-height: 80px;
+                    padding: 5px 10px;
+                    overflow: hidden;
+                    overflow-y: auto;
+                    border: 1px solid $theme-primary;
+
+
+
+                    .file-item {
+                        width: 100%;
+                        border: 1px solid $theme-primary;
+                        margin-bottom: 3px;
+                        padding: 5px;
+
+                        display: flex;
+                        justify-content: space-between;
+
+                        .remove-btn {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
+                            background-color: transparent;
+                            border: none;
+                            transition: transform 0.3s ease-in-out;
+
+                            .iconfont {
+                                font-size: 14px;
+                            }
+
+                            &:hover {
+                                color: $theme-primary;
+                                transform: rotate(180deg);
+                            }
+
+                        }
+
+                        span {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .add-clear-btn {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+
+
+                        .add-more-btn,
+                        .clear-btn {
+                            border: none;
+                            cursor: pointer;
+                            background-color: $theme-primary;
+                            color: $theme-font-light;
+                            font-size: 12px;
+                            padding: 5px;
+
+                            &:hover {
+                                background-color: $theme-secondary;
+                            }
+                        }
+                    }
+
+
+
+                }
+
+                .submit {
+                    padding: 0;
+                    border: none;
+                }
+
+
+            }
+
+            .body-content {
+                background-color: rgba($theme-primary, 0.05);
+                color: $theme-font-dark;
+                height: 100%;
+                width: 100%;
+                min-height: 100px;
+                max-height: 500px;
+                border: 1px solid $theme-primary;
+                overflow: hidden;
+                overflow-y: auto;
+                position: relative;
+
+                .button-container {
+                    position: sticky;
+                    top: 0;
+                    right: 0;
+                    z-index: 1;
+                    height: 0;
+                    text-align: right;
+
+                    .clear-content-btn {
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        border: none;
+                        background-color: $theme-secondary;
+                        padding: 3px 5px;
+                        transition: 0.3s ease-in-out;
+                        color: $theme-font-light;
+                        font-size: 12px;
+
+                        &:hover {
+                            background-color: $theme-secondary-lt;
+                        }
+                    }
+
+                }
+
+
+
+                textarea {
+                    width: 100%;
+                    border: none;
+                    padding: 10px;
+                    outline: none;
+                    resize: none;
+                    background-color: transparent;
+                    color: $theme-font-dark;
+
+                    &:focus::placeholder {
+                        color: transparent;
+                    }
+
+                }
+            }
+
+            .submit {
+                border: none;
+            }
+
+
+        }
+    }
+
+    .feedback-submit {
+        margin-top: auto;
+        /* 让按钮始终靠底部 */
+        margin-top: 5px;
+
+        .submit-btn {
+            gap: 10px;
+            display: flex;
+
+            button {
+                padding: 3px 20px;
+                background-color: $theme-primary;
+                border: none;
+                color: $theme-font-light;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: rgba($theme-primary, 10%);
+                }
+            }
+        }
+
+        .submit-success {
+            width: 100%;
+            position: relative;
+            padding: 10px 0;
+
+            /* 飞机样式 */
+            .airplane {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                font-size: 20px;
+                animation: flyIn 1.2s linear forwards, float 1.5s ease-in-out infinite;
+            }
+
+            .success-text {
+                color: $theme-font-gray;
+                font-size: 14px;
+                animation: fadeRight 0.2s ease-in-out;
+            }
+
+        }
+    }
+
+
+
+}

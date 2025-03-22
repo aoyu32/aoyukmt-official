@@ -389,3 +389,55 @@
         transform: scale(1);
     }
 }
+
+//反馈卡片向左滑入动画
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(300px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+
+/* 定义飞机飞入动画 */
+@keyframes flyIn {
+    0% {
+        right: -20%;
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1; // 让它一直保持可见
+    }
+
+    90% {
+        opacity: 1; // 让它一直保持可见
+    }
+
+
+    100% {
+        right: 100%;
+        opacity: 0; // 在最后逐渐消失
+    }
+}
+
+
+/* 定义飞机上下浮动的波浪线效果 */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(-50%) translateY(0);
+        /* 初始位置 */
+    }
+
+    50% {
+        transform: translateY(-50%) translateY(-6px);
+        /* 向上浮动 */
+    }
+}
