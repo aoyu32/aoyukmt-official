@@ -45,7 +45,7 @@ title.value = computed(() => {
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: aliceblue;
+    background: $theme-background;
     border: 2px solid $theme-primary;
     position: relative;
 

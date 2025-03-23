@@ -1,5 +1,5 @@
 <template>
-    <div class="input-box">
+    <div class="assistant-input">
         <div id="preview-container" class="preview-container" ref="previewContainer"></div>
         <div class="chat-input-area" id="chat-input-area" ref="chatInputBox">
             <textarea id="chat-input" :placeholder="placeholderValue" rows="1" @focus="textareaFocus"

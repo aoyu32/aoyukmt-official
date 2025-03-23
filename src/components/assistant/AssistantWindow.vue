@@ -1,12 +1,12 @@
 <template>
-    <div class="chat-window lenis" id="chat-window" ref="chatWindow">
+    <div class="assistant-window" id="chat-window" ref="chatWindow">
         <Message :messageContent="tipContext" :isShowMessage="assistantStore.showTip" :messagePosition="'absolute'" />
-        <ChatMessage v-for="(item, index) in assistantStore.chatMessages" :key="index" :messageData="item" />
+        <AssistantMessage v-for="(item, index) in assistantStore.chatMessages" :key="index" :messageData="item" />
     </div>
 </template>
 <script setup>
 import { ref, onMounted, watch, nextTick } from 'vue';
-import ChatMessage from './ChatMessage.vue';
+import AssistantMessage from './AssistantMessage.vue';
 import { useAssistantStore } from "@/stores/assistant";
 import Message from '../common/Message.vue';
 import { scrollTo } from '@/utils/scroll';
@@ -44,7 +44,7 @@ const scrollToBottom = () => {
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
 
-.chat-window {
+.assistant-window {
     flex-grow: 1;
     padding: 1rem;
     overflow-y: auto;

@@ -1,0 +1,90 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
+.forum-input {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    // animation: slideUp 0.3s ease-in-out;
+
+    .input-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid $theme-primary;
+        border-radius: 10px;
+        overflow: hidden; // 确保滚动条在容器内
+
+        .input-icons {
+            width: 100%;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+
+            .icons {
+                display: flex;
+                gap: 10px;
+            }
+
+            .font-counter {
+                font-size: 13px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $theme-font-gray;
+
+                .eye {
+                    // opacity: 0.5;
+                    font-size: 13px;
+                }
+            }
+        }
+
+        .input-textarea {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; // 滚动条出现在外部容器
+
+            .textarea {
+                width: 100%;
+                min-height: 55px; // 设置最小高度
+                max-height: 90px;
+                outline: none;
+                resize: vertical; // 允许用户垂直调整高度
+                padding: 5px 15px;
+                background-color: transparent;
+                border: none;
+                resize: none;
+                color: $theme-font-dark;
+                overflow-y: auto; // 隐藏 textarea 的滚动条
+
+                &:focus::placeholder {
+                    color: transparent;
+                }
+            }
+
+
+        }
+
+        .input-send {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 5px 0;
+            margin-right: 10px;
+
+            button {
+                border: none;
+                padding: 5px 15px;
+                background-color: $theme-primary;
+                border-radius: 5px;
+                color: $theme-font-light;
+            }
+        }
+    }
+}

@@ -174,7 +174,6 @@ const resetContent = () => {
 };
 
 // 自动设置textarea高度
-// 修改autoResize函数
 const autoResize = () => {
     const textarea = feedbackTextarea.value;
     if (textarea) {

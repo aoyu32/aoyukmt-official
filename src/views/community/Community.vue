@@ -3,7 +3,7 @@
         <div class="main-content">
             <div class="community-nav">
                 <!-- Nav content -->
-                <div class="nav">
+                <div class="nav" :style="{ 'height': navHeight, 'border-radius': navBorderRadius }">
                     <CommunitySidebar />
                 </div>
             </div>
@@ -20,9 +20,32 @@
 </template>
 
 <script setup>
+import { ref, watchEffect } from 'vue'
 import CommunitySidebar from '@/components/community/CommunitySidebar.vue';
+import { useRoute } from 'vue-router';
 
-// Script logic
+const route = useRoute();
+const navHeight = ref("95%")
+const navBorderRadius = ref("12px")
+watchEffect(() => {
+    const currentRoute = route.path
+    if (currentRoute === "/community/forum") {
+        navHeight.value = '98%'
+        navBorderRadius.value = '10px'
+    }
+    if (currentRoute === "/community/assistant") {
+        navHeight.value = '95%'
+        navBorderRadius.value = '12px'
+    }
+
+    if (currentRoute === "/community/feedback") {
+        navHeight.value = '95%'
+        navBorderRadius.value = '0'
+    }
+
+})
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -34,33 +57,37 @@ import CommunitySidebar from '@/components/community/CommunitySidebar.vue';
     display: flex;
     width: 100%;
     height: 100vh;
-    // background-color: antiquewhite;
     background-color: $theme-primary-lt;
     padding-top: $distance-top;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
     .main-content {
-        width: 100%; // 改为 100% 以填充父容器
-        max-width: 1300px; // 限制最大宽度
+        width: 100%;
+        max-width: 1300px;
         height: 100%;
-        // background-color: rgb(97, 97, 97);
         display: flex;
         align-items: center;
         justify-content: center;
 
         .community-nav {
-            width: 100px; // 固定宽度
-            height: 95%;
-
-            // background-color: rgb(77, 77, 76);
-            flex-shrink: 0; // 防止 nav 被压缩
-            padding-right: 10px;
+            width: 100px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 10px;
 
 
             .nav {
                 height: 100%;
+                width: 100%;
                 animation: fadeRight 0.3s ease-in-out;
+                border-radius: 12px;
+                border: 2px solid $theme-primary;
+                background-color: $theme-background;
             }
         }
 

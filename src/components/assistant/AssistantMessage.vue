@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
+  <div class="assistant-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
     <div class=" avatar" @click="ModifyUserInfo">
       <img :src="messageData.isUser ? assistantStore.user.avatar : aoyukmtAvatar" alt="">
     </div>

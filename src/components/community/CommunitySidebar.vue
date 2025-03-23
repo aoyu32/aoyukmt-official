@@ -1,13 +1,12 @@
 <template>
     <div class="sidebar">
-
         <!-- 上半部分：头像和用户名 -->
         <div class="sidebar-top">
             <div class="user-info">
                 <div class="avatar">
-                    <img :src="assistantStore.user.avatar" alt="User Avatar" />
+                    <img :src="userData.user.avatar" alt="User Avatar" />
                 </div>
-                <p class="username">{{ assistantStore.user.name }}</p>
+                <p class="username">{{ userData.user.name }}</p>
             </div>
         </div>
 
@@ -16,7 +15,7 @@
         <div class="sidebar-bottom">
             <router-link v-for="(item, index) in menuItems" :key="index" :to="item.link" class="menu-item"
                 :title="item.name" :class="{ 'active': currentIndex === index }" @click="currentIndex = index">
-                <div class="menu-icon">{{ item.icon }}</div>
+                <div class="menu-icon"><span>{{ item.icon }}</span></div>
             </router-link>
         </div>
     </div>
@@ -24,16 +23,19 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAssistantStore } from '@/stores/assistant';
-const assistantStore = useAssistantStore()
-const currentIndex = ref(null)
+import { userStore } from '@/stores/user';
+const userData = userStore()
+const currentIndex = ref(0)
 
 // 菜单项数据
 const menuItems = [
     { name: "人机客服🐔", icon: "🐻‍❄️", link: "/community/assistant" },
-    { name: "群聊论坛☠️", icon: "🐧", link: "/community/forum" },
     { name: "意见反馈🐼", icon: "👻", link: "/community/feedback" },
+    { name: "群聊论坛☠️", icon: "🐚", link: "/community/forum" },
+
 ];
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -46,12 +48,9 @@ const menuItems = [
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: $theme-background;
+
     padding: 20px 10px;
-    border: 2px solid $theme-primary;
     box-sizing: border-box;
-    border-radius: 12px;
-    border: 2px solid $theme-primary;
 
     a {
         text-decoration: none;
@@ -145,20 +144,30 @@ const menuItems = [
             .menu-icon {
                 width: 40px;
                 height: 40px;
+                display: flex;
                 font-size: 16px;
-                text-align: center;
-                line-height: 40px;
-                transition: 0.3s ease-in-out;
+                align-items: center;
+                justify-content: center;
+
+
+                span {
+                    width: 100%;
+                    // background-color: aqua;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease-in-out;
+                }
 
 
             }
 
 
             &:not(.active):hover {
-             
+
                 border: 2px solid $theme-primary;
 
-                .menu-icon {
+                span {
                     transform: scale(1.3);
                 }
             }

@@ -25,22 +25,23 @@ const router = createRouter({
           path: '/community',
           component: () => import('@/views/community/Community.vue'),
 
-          children:[
+          children: [
             {
               path: '',
+              component: () => import('@/views/assistant/Assistant.vue'),
+              redirect: '/community/assistant'
+            },
+            {
+              path: 'assistant',
               component: () => import('@/views/assistant/Assistant.vue')
             },
             {
-              path:'assistant',
-              component:()=>import('@/views/assistant/Assistant.vue')
+              path: 'forum',
+              component: () => import('@/views/forum/Forum.vue')
             },
             {
-              path:'forum',
-              component:()=>import('@/views/forum/Forum.vue')
-            },
-            {
-              path:'feedback',
-              component:()=>import('@/views/feedback/Feedback.vue')
+              path: 'feedback',
+              component: () => import('@/views/feedback/Feedback.vue')
             }
           ]
 

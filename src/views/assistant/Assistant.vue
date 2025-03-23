@@ -2,8 +2,8 @@
     <div class="assistant">
         <div class="main-content" id="main-content" @dragover="handleImageDragover" @drop="handleImageDrop">
             <div class="chat-container active">
-                <ChatWindow />
-                <ChatInput :files="files" @receiveUserMessage="handleUserMessage" v-aos="{
+                <AssistantWindow />
+                <AssistantInput :files="files" @receiveUserMessage="handleUserMessage" v-aos="{
                     duration: 400,
                     once: true,
                     animation: 'fade-up',
@@ -16,8 +16,8 @@
 <script setup>
 import { ref, onMounted } from "vue"
 
-import ChatWindow from '@/components/assistant/ChatWindow.vue';
-import ChatInput from '@/components/assistant/ChatInput.vue';
+import AssistantWindow from '@/components/assistant/AssistantWindow.vue';
+import AssistantInput from '@/components/assistant/AssistantInput.vue';
 import { fetchChatStream } from "@/api/coze";
 import { useAssistantStore } from "@/stores/assistant";
 import Tools from "@/utils/tools";
@@ -119,9 +119,6 @@ onMounted(() => {
         display: flex;
         width: 100%;
         height: 100%;
-        // background-color: hsla(0, 100%, 67%, 0.345);
-        // background-color: $theme-primary-lt;
-        // padding-top: $distance-top;
         align-items: center;
         justify-content: center;
 
@@ -133,9 +130,7 @@ onMounted(() => {
             flex-direction: column;
             background: $theme-background;
             border-radius: 12px;
-            /* position: relative; */
             border: 2px solid $theme-primary;
-            // box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
             overflow: hidden;
             animation: breathing-border 5s infinite alternate;
         }
