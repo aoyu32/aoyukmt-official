@@ -1,12 +1,12 @@
 <template>
-    <div class="feedback-window">
+    <div class="feedback-window" ref="feedbackWindowRef">
         <Message :messageContent="tipContext" :isShowMessage="feedbackStore.showTip" :topOffset="'70px'" />
         <!-- 反馈会话区域 -->
         <div v-for="session in feedbackStore.feedbackSessions" :key="session.id">
             <!-- 反馈选择组件 -->
             <div class="feedback-left">
                 <FeedbackSelect @setSelectOption="(option) => handleSelectOption(session.id, option)"
-                    :currentOption="session.selectedOption" />
+                    :currentOption="session.selectedOption" :isSubmit="session.isSubmit" />
             </div>
 
             <!-- 反馈表单组件，仅在有选择时显示 -->
@@ -14,20 +14,34 @@
                 <FeedbackForm :formData="session.formData" :feedbackType="session.selectedOption"
                     :defaultUserName="userData.user.name" @update-form="(data) => updateFormData(session.id, data)"
                     @reset-form="() => resetForm(session.id)" @submit-form="() => submitForm(session.id)"
-                    @show-tip="showTip" />
+                    @show-tip="showTip" :isFormSubmit="session.isSubmit" />
+            </div>
+            <!-- 反馈提交时间 -->
+            <div class="feedback-time" v-if="session.submitTime">
+                <CurrentTime :currentTime="session.submitTime" />
+            </div>
+            <!-- 继续反馈 -->
+            <div class="add-feedback" v-if="feedbackStore.showAddButton">
+                <button @click="addFeedbackSession">
+                    再次反馈😄
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick, watch } from 'vue';
 import { useFeedbackStore } from '@/stores/feedback';
 import FeedbackSelect from './FeedbackSelect.vue';
 import FeedbackForm from './FeedbackForm.vue';
 import { userStore } from '@/stores/user';
 import Message from '../common/Message.vue';
+import CurrentTime from '../common/CurrentTime.vue';
+import tools from '@/utils/tools';
+import { scrollTo } from '@/utils/scroll';
 
+const feedbackWindowRef = ref(null)
 
 const feedbackStore = useFeedbackStore();
 const userData = userStore()
@@ -36,15 +50,27 @@ onMounted(() => {
     // 页面加载时，如果没有会话，创建一个新会话
     if (feedbackStore.hasNoSessions) {
         feedbackStore.createSession();
+
     }
+
+    nextTick(() => {
+        scrollTo('bottom', 150, feedbackWindowRef.value)
+    });
 });
+
+//监听窗口里的内容将窗口滚动到底部
+watch(() => feedbackStore.feedbackSessions, () => {
+    // 使用 nextTick 确保 DOM 更新完成后再滚动
+    nextTick(() => {
+        scrollTo('bottom', 150, feedbackWindowRef.value)
+    });
+}, { deep: true })
 
 //是否显示提示内容
 const tipContext = ref("")
 const showTip = (value) => {
     feedbackStore.setShowTip()
     tipContext.value = value
-
 }
 
 // 处理选择反馈类型
@@ -64,14 +90,18 @@ const resetForm = (sessionId) => {
 
 // 提交表单
 const submitForm = (sessionId) => {
-    // 处理表单提交逻辑，例如发送到服务器
-    const session = feedbackStore.feedbackSessions[sessionId];
+    feedbackStore.setFormSubmit(sessionId)
     setTimeout(() => {
-        // 提交成功后，可以创建新的会话
-        // feedbackStore.createSession();
-    },2000)
-
+        feedbackStore.setFormSubmitTime(sessionId, tools.getFormatDate('yyyy-mm-dd HH:MM:SS'))
+        feedbackStore.setAddButton(true)
+    }, 1600)
 };
+
+//添加一个反馈会话
+const addFeedbackSession = () => {
+    feedbackStore.createSession()
+    feedbackStore.setAddButton(false)
+}
 </script>
 
 <style scoped lang="scss">
@@ -86,15 +116,14 @@ const submitForm = (sessionId) => {
     justify-content: start;
     flex-direction: column;
     padding: 10px 15px;
-
-    @media (max-width: 768px) {
-        max-width: 100%;
-    }
+    overflow: hidden;
+    overflow-y: auto;
 
     .feedback-left {
         width: 100%;
         display: flex;
         justify-content: start;
+        margin-bottom: 10px;
     }
 
     .feedback-right {
@@ -102,6 +131,32 @@ const submitForm = (sessionId) => {
         display: flex;
         justify-content: end;
         padding: 5px 0;
+    }
+
+    .add-feedback {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 15px;
+        animation: floating 3s ease-in-out infinite;
+
+        button {
+            padding: 5px 15px;
+            border: none;
+            color: $theme-font-light;
+            background-color: $theme-primary;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+                cursor: pointer;
+                background-color: $theme-primary-hover-dark;
+            }
+        }
+
+
+
+
+
     }
 }
 </style>

@@ -6,9 +6,9 @@
     width: 100%;
     padding: 10px;
     border: 1px solid $theme-primary;
-    margin-bottom: 20px;
     background-color: rgba($theme-primary, 0.05);
     max-width: 50%;
+    animation: slideRight 0.3s ease-in-out;
 
     @media (max-width: 480px) {
         padding: 5px;

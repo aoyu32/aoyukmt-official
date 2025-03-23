@@ -3,7 +3,7 @@
     <div class="main-content">
       <!-- 头部 -->
       <div class="feedback-header">
-        <h2>意见 📭 反馈</h2>
+        <h2>{{ title }}</h2>
         <p>感谢您的访问，请告诉我们您的想法或遇到的问题。</p>
       </div>
       <!-- 聊天窗口容器 -->
@@ -16,8 +16,14 @@
   </div>
 </template>
 <script setup>
+import { ref, onMounted, computed, watch } from 'vue'
 import FeedbackWindow from '@/components/feedback/FeedbackWindow.vue';
-
+import { useFeedbackStore } from '@/stores/feedback';
+const title = ref("意见 📭 反馈")
+const feedbackStore = useFeedbackStore()
+title.value = computed(() => {
+  return feedbackStore.submitFeedbackCount > 0 ? "意见 📬 反馈" : "意见 📭 反馈"
+})
 
 </script>
 
@@ -41,6 +47,7 @@ import FeedbackWindow from '@/components/feedback/FeedbackWindow.vue';
     flex-direction: column;
     background-color: aliceblue;
     border: 2px solid $theme-primary;
+    position: relative;
 
     .feedback-header {
       width: 100%;
@@ -68,7 +75,6 @@ import FeedbackWindow from '@/components/feedback/FeedbackWindow.vue';
       display: flex;
       flex: 7;
       overflow: hidden;
-      overflow-y: auto;
 
       .window {
         width: 100%;

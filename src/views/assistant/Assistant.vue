@@ -62,12 +62,7 @@ const handleUserMessage = (msg) => {
     const prompt = "你是一个aoyukmt官网的助手"
     const stream = new GeminiAssistant().chat(prompt, msg)
     const reader = stream.getReader();
-
     readStream(reader);
-    console.log("hhhh");
-
-
-
 };
 
 async function readStream(reader) {
@@ -87,8 +82,6 @@ async function readStream(reader) {
 
         // 更新当前流式消息
         if (assistantStore.replying) {
-            console.log('hffffhhh');
-
             assistantStore.updateCurrentOfficialMessage(fullMessage);
         }
     }

@@ -1,8 +1,5 @@
 <template>
-    <div class="feedback-select" v-aos="{
-        animation: 'slide-right',
-        duration: 300
-    }">
+    <div class="feedback-select">
         <div class="message">{{ greetings }}</div>
         <div class="select">
             <p>
@@ -10,7 +7,7 @@
             </p>
             <div class="select-option">
                 <button v-for="(item, index) in options" :key="index" @click="handleSelectOption(item, index)"
-                    :class="{ 'active': currentOption === item || currentOptionIndex === index }">
+                    :class="{ 'active': currentOption === item || currentOptionIndex === index }" :disabled="isSubmit">
                     {{ item }}
                 </button>
             </div>
@@ -26,6 +23,10 @@ const props = defineProps({
     currentOption: {
         type: String,
         default: ""
+    },
+    isSubmit: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -54,15 +55,15 @@ const handleSelectOption = (item, index) => {
     emit('setSelectOption', item);
 };
 
-// 当props.currentOption变化时，更新currentOptionIndex
-watch(() => props.currentOption, (newOption) => {
-    if (newOption) {
-        const index = options.value.findIndex(option => option === newOption);
-        if (index !== -1) {
-            currentOptionIndex.value = index;
-        }
-    }
-}, { immediate: true });
+// // 当props.currentOption变化时，更新currentOptionIndex
+// watch(() => props.currentOption, (newOption) => {
+//     if (newOption) {
+//         const index = options.value.findIndex(option => option === newOption);
+//         if (index !== -1) {
+//             currentOptionIndex.value = index;
+//         }
+//     }
+// }, { immediate: true });
 </script>
 
 <style scoped lang="scss">
