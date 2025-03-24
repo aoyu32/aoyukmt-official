@@ -8,7 +8,7 @@
       <div class="message-content">
         <!-- 显示图片 -->
         <div v-if="hasImages" class="message-content-img" :style="messageTextStyle">
-          <img v-for="(item, index) in messageData.img" :src="item.src" :key="index" alt="">
+          <img v-for="(item, index) in messageData.img" :src="item" :key="index" alt="">
         </div>
         <!-- 显示文本，动态计算 padding -->
 

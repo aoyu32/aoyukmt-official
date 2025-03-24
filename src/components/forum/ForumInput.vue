@@ -3,8 +3,7 @@
         animation: 'slide-up',
         duration: 300,
     }">
-        <div id="preview-container" class="preview-container" ref="previewContainer">
-        </div>
+        <FilePreview :fileList="forumStore.uploadFiles" @removeFile="handleRemoveFile" />
         <!-- 输入区域 -->
         <div class="input-container">
             <!-- 图标区域（左上角） -->
@@ -12,10 +11,17 @@
                 <div class="icons">
                     <span class="icon emoji">😀</span>
                     <span class="icon more" @click="triggerUploadFile">🗂️</span>
-                    <input type="file" multiple hidden @change="handleUpload" ref="uploadInputRef" @paste="handleImagePaste">
+                    <input type="file" :accept="acceptFile" multiple hidden @change="handleUpload" ref="uploadInputRef"
+                        @paste="handleImagePaste">
                 </div>
                 <div class="font-counter">
-                    <span><span class="eye">🧿</span>{{ charNumber }}</span>
+                    <div class="eye">
+                        🧿
+                    </div>
+                    <div class="number">
+                        <span>{{ charNumber }}</span>
+                    </div>
+
                 </div>
             </div>
             <!-- 输入框区域 -->
@@ -36,7 +42,14 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import FilePreview from '../common/FilePreview.vue';
+import { useForumStore } from '@/stores/forum';
+const forumStore = useForumStore()
+//输入框
 const textareaRef = ref(null)
+//上传文件的类型
+const acceptFile = ref("image/*,.md")
+
 
 //监听输入框输入
 const userInputText = ref("")
@@ -69,13 +82,10 @@ const handleUpload = (event) => {
     const files = Array.from(event.target.files);
     // 遍历每个选中的文件
     Array.from(files).forEach((file) => {
-        createImageWrapper(file)
+        handleUploadFile(file)
     });
 
 }
-
-//图片预览
-const previewContainer = ref(null)
 
 //监听文件粘贴
 const handleImagePaste = (event) => {
@@ -85,50 +95,35 @@ const handleImagePaste = (event) => {
         const item = items[i];
         if (item.type.startsWith('image/')) {
             const file = item.getAsFile(); // 获取粘贴的图片文件
-            createImageWrapper(file)
+            handleUploadFile(file)
         }
     }
 }
 
-//创建文件预览
-const createImageWrapper = (file) => {
-    console.log("选择的文件:", file);
 
-    const reader = new FileReader();
+//处理上传的图片文件，并存入store
+const handleUploadFile = (file) => {
+    if (!file.type.startsWith("image")) {
+        forumStore.setUploadFiles({
+            type: "file",
+            value: file.name
+        })
+        return
+    }
+    const reader = new FileReader()
     reader.onload = (e) => {
-        const imageWrapper = document.createElement('div');
-        imageWrapper.classList.add('image-wrapper'); // 包裹图片和删除按钮
-
-        const img = document.createElement('img');
-        img.src = e.target.result; // 将文件转为图片地址
-
-        // 图片加载完成后移除灰度和遮罩效果
-        img.onload = () => {
-            img.style.filter = 'grayscale(0%)';
-            img.style.maskImage = 'none';
-            img.style.webkitMaskImage = 'none';
-        };
-
-        // 创建删除按钮
-        const deleteBtn = document.createElement('button');
-        deleteBtn.classList.add('delete-btn');
-        deleteBtn.innerHTML = '<i class="iconfont icon-close"></i>'; // 删除按钮的内容
-        deleteBtn.addEventListener('click', () => {
-            imageWrapper.remove(); // 删除整个图片和按钮的容器
-        });
-
-        // 将图片和删除按钮添加到容器
-        imageWrapper.appendChild(img);
-        imageWrapper.appendChild(deleteBtn)
-
-        // 将图片容器添加到预览区
-        previewContainer.value.appendChild(imageWrapper);
-    };
-
-
-    reader.readAsDataURL(file); // 读取文件并生成预览
+        forumStore.setUploadFiles({
+            type: "image",
+            value: e.target.result
+        })
+    }
+    reader.readAsDataURL(file)
 }
 
+//移除某个index位置的文件
+const handleRemoveFile = (index) => {
+    forumStore.removeUploadFiles(index)
+}
 
 //动态调整输入框的高度
 const adjustHeight = () => {
@@ -153,6 +148,6 @@ const adjustHeight = () => {
 }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @use "@/assets/styles/forum/input.scss" as *;
 </style>

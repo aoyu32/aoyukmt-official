@@ -1,13 +1,13 @@
 <template>
     <div class="assistant-input">
-        <div id="preview-container" class="preview-container" ref="previewContainer"></div>
+        <FilePreview :fileList="assistantStore.images" @removeFile="handleRemoveFile" />
         <div class="chat-input-area" id="chat-input-area" ref="chatInputBox">
             <textarea id="chat-input" :placeholder="placeholderValue" rows="1" @focus="textareaFocus"
                 @blur="textareaBlur" @input="handleInput" @paste="handleImagePaste" ref="chatTextarea"
                 v-model="message"></textarea>
             <div class="upload">
-                <input type="file" id="image-upload" multiple accept="image/*" hidden ref="imageUploadInput"
-                    v-on:change="handleImageSelection" />
+                <input type="file" id="image-upload" multiple hidden ref="imageUploadInput"
+                    @change="handleImageSelection" />
                 <label for="image-upload" class="upload-icon" @mouseenter="handleHover(1)"
                     @mouseleave="handleHover(0)">{{ lableText }}</label>
                 <button id="send-button" @mouseenter="handleHover(2)" @mouseleave="handleHover(0)"
@@ -21,6 +21,7 @@
 </template>
 <script setup>
 import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
+import FilePreview from '../common/FilePreview.vue'
 import { useAssistantStore } from '@/stores/assistant'
 import Tools from '@/utils/tools'
 const assistantStore = useAssistantStore()
@@ -31,6 +32,8 @@ const props = defineProps({
         default: []
     }
 })
+
+
 
 //输入框内文本
 const placeholderValue = "你可以向我咨询任何应用有关问题..."
@@ -95,7 +98,6 @@ const handleHover = (isHover) => {
 }
 
 //图片预览
-const previewContainer = ref(null)
 const imageUploadInput = ref(null)
 
 //监听文件选择
@@ -103,7 +105,9 @@ const handleImageSelection = () => {
     const files = event.target.files;
     // 遍历每个选中的文件
     Array.from(files).forEach((file) => {
-        createImageWrapper(file)
+        console.log("选择的文件：", file);
+        handleUploadFile(file)
+
     });
 }
 
@@ -115,7 +119,7 @@ const handleImagePaste = (event) => {
         const item = items[i];
         if (item.type.startsWith('image/')) {
             const file = item.getAsFile(); // 获取粘贴的图片文件
-            createImageWrapper(file)
+            handleUploadFile(file)
         }
     }
 }
@@ -130,60 +134,11 @@ watch(() => props.files, (newFiles) => {
         // 处理每个新文件
         newFiles.forEach(file => {
             if (file.type.startsWith('image/')) {
-                createImageWrapper(file);
+                handleUploadFile(file)
             }
         });
     }
 }, { deep: true });
-
-//创建图片预览
-const createImageWrapper = (file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const imageWrapper = document.createElement('div');
-        imageWrapper.classList.add('image-wrapper'); // 包裹图片和删除按钮
-
-        const img = document.createElement('img');
-        img.src = e.target.result; // 将文件转为图片地址
-
-        // 图片加载完成后移除灰度和遮罩效果
-        img.onload = () => {
-            img.style.filter = 'grayscale(0%)';
-            img.style.maskImage = 'none';
-            img.style.webkitMaskImage = 'none';
-        };
-
-        // 添加图片到store
-        const imageIndex = assistantStore.addImage({
-            src: e.target.result,
-            type: file.type,
-            size: file.size
-        });
-        imageWrapper.dataset.storeIndex = imageIndex;
-        // 创建删除按钮
-        const deleteBtn = document.createElement('button');
-        deleteBtn.classList.add('delete-btn');
-        deleteBtn.innerHTML = '<i class="iconfont icon-close"></i>'; // 删除按钮的内容
-        deleteBtn.addEventListener('click', () => {
-
-            assistantStore.removeImage(imageIndex)
-            imageWrapper.remove(); // 删除整个图片和按钮的容器
-
-
-        });
-
-        // 将图片和删除按钮添加到容器
-        imageWrapper.appendChild(img);
-        imageWrapper.appendChild(deleteBtn);
-
-        // 将图片容器添加到预览区
-        previewContainer.value.appendChild(imageWrapper);
-    };
-
-
-    reader.readAsDataURL(file); // 读取文件并生成预览
-}
-
 
 //发送消息
 const message = ref('')//用户输入
@@ -208,18 +163,16 @@ const sendMessage = async () => {
     assistantStore.isReplaying(true)
     //清空输入的数据 
     message.value = ''
-    previewContainer.value.innerHTML = ''
     assistantStore.clearAll()
     textareaBlur()
     resetHeight()
 
 }
 
+//停止回复
 const stopReplyingMessage = () => {
-
     assistantStore.isReplaying(false)
     assistantStore.currentOfficialMessageIndex = -1
-
 }
 
 //监听官方消息是否回复完成
@@ -248,6 +201,25 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown)
 })
 
+//读取上传的图片文件
+const handleUploadFile = (file) => {
+    if (!file.type.startsWith("image")) {
+        return
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => {
+        assistantStore.addImage({
+            type: 'image',
+            value: e.target.result
+        })
+    }
+    reader.readAsDataURL(file)
+}
+
+//移除图片
+const handleRemoveFile = (index) => {
+    assistantStore.removeImage(index)
+}
 </script>
 <style lang="scss">
 @use "@/assets/styles/assistant/input.scss" as *;

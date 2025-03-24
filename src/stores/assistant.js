@@ -32,23 +32,13 @@ export const useAssistantStore = defineStore('assistant', () => {
 
     // 添加图片
     const addImage = (img) => {
-        // 生成唯一id
-        const imageId = Date.now() + Math.random().toString(36).substr(2, 9);
-        const imageWithId = {
-            ...img,
-            id: imageId
-        };
-        images.value.push(imageWithId);
-        return imageId;
+        images.value.push(img);
     };
 
     // 移除图片
-    const removeImage = (imageId) => {
+    const removeImage = (index) => {
         // 通过ID查找索引并删除
-        const index = images.value.findIndex(img => img.id === imageId);
-        if (index !== -1) {
-            images.value.splice(index, 1);
-        }
+        images.value.splice(index, 1);
     };
 
     // 清除用户输入的消息和图片
@@ -88,7 +78,7 @@ export const useAssistantStore = defineStore('assistant', () => {
     const startStreamingOfficialMessage = () => {
         // const loadingGif = `<img src="${loadingGifSrc}" alt="思考中" style="width: 40px; height: 40px; display: block; margin: 0 auto;" />`;
 
-        
+
         const officialMsg = { text: '', img: [], date: new Date().toLocaleString(), isUser: false };
         officialMessage.value.push(officialMsg);
         chatMessages.value.push(officialMsg);
