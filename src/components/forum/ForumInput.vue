@@ -4,12 +4,19 @@
         duration: 300,
     }">
         <FilePreview :fileList="forumStore.uploadFiles" @removeFile="handleRemoveFile" />
+        <!-- 表情列表区域 -->
+        <div class="emoji-list">
+            <div class="emoji-box" v-show="isShowEmoji" @mouseenter="handleMouseEmojiBox"
+                @mouseleave="handleMouseEmojiBoxLeave">
+                <span v-for="(item, index) in emojisArray" @click="inputEmoji(item)">{{ item }}</span>
+            </div>
+        </div>
         <!-- 输入区域 -->
         <div class="input-container">
             <!-- 图标区域（左上角） -->
             <div class="input-icons">
                 <div class="icons">
-                    <span class="icon emoji">😀</span>
+                    <span class="icon emoji" @mouseenter="handleMouseEmoji">😀</span>
                     <span class="icon more" @click="triggerUploadFile">🗂️</span>
                     <input type="file" :accept="acceptFile" multiple hidden @change="handleUpload" ref="uploadInputRef"
                         @paste="handleImagePaste">
@@ -44,6 +51,10 @@
 import { ref, computed } from 'vue';
 import FilePreview from '../common/FilePreview.vue';
 import { useForumStore } from '@/stores/forum';
+import { emojis } from '@/data/emojis';
+
+//表情字体
+const emojisArray = ref(emojis)
 const forumStore = useForumStore()
 //输入框
 const textareaRef = ref(null)
@@ -145,6 +156,30 @@ const adjustHeight = () => {
             textareaRef.value.style.overflowY = 'hidden'; // 内容未超出时隐藏滚动条
         }
     }
+}
+//是否显示表情列表
+const isShowEmoji = ref(false)
+
+//监听鼠标悬浮在输入表情按钮上
+const handleMouseEmoji = () => {
+    isShowEmoji.value = true
+}
+
+
+//监听鼠标离开输入表情按钮上
+const handleMouseEmojiBoxLeave = () => {
+
+    isShowEmoji.value = false
+}
+
+//监听鼠标进入表情列表盒子
+const handleMouseEmojiBox = () => {
+    isShowEmoji.value = true
+}
+
+//输入表情
+const inputEmoji = (value) => {
+    userInputText.value = userInputText.value + value
 }
 
 </script>
