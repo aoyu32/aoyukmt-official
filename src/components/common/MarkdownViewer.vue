@@ -32,7 +32,6 @@ marked.setOptions({
 // 渲染 Markdown 文件内容
 const htmlContent = ref('');
 const renderMarkdown = async (docsUrl) => {
-  console.log("文档url:", docsUrl);
   try {
     const response = await fetch(docsUrl);
     if (!response.ok) {
@@ -44,7 +43,6 @@ const renderMarkdown = async (docsUrl) => {
     await nextTick();
     hljs.highlightAll()
     extractHeadings();
-
   } catch (error) {
     console.error('Error rendering markdown:', error);
     htmlContent.value = `<p>Unable to load document: ${error.message}</p>`;

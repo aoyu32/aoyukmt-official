@@ -1,0 +1,55 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
+.forum-message {
+    display: flex;
+    max-width: 90%;
+    gap: 5px;
+
+    //头像
+    .avatar {
+        width: 40px;
+        height: 40px;
+
+        img {
+            width: 40px;
+            height: 40px;
+            border: 1px solid $theme-primary;
+            border-radius: 50%;
+        }
+    }
+
+    //消息
+    .message {
+        .name-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 5px;
+
+            span {
+                color: $theme-font-gray;
+                font-size: 16px;
+            }
+        }
+
+        .message-container {
+            padding: 10px;
+            border: 1px solid $theme-primary;
+            border-radius: 5px;
+            background-color: $theme-secondary-lt;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            span {
+                color: $theme-font-dark;
+            }
+
+        }
+    }
+
+
+}

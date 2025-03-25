@@ -18,22 +18,44 @@
                 </div>
             </div>
             <!-- 聊天窗口 -->
-            <div class="forum-body">
+            <div class="forum-body" @scroll="handleScroll" ref="forumBodyRef">
                 <ForumWindow />
             </div>
             <!-- 输入窗口  -->
-            <div class="forum-footer">
+            <div class="forum-footer" >
                 <ForumInput />
-                <!-- <AssistantInput/> -->
             </div>
+
         </div>
     </div>
 </template>
 <script setup>
-import AssistantInput from '@/components/assistant/AssistantInput.vue';
+import { ref } from 'vue'
 import ForumInput from '@/components/forum/ForumInput.vue';
 import ForumWindow from '@/components/forum/ForumWindow.vue';
+const forumBodyRef = ref(null);
 
+
+const isScroll = ref(true)
+const lastScrollTop = ref(0); // 记录上次滚动位置
+//监听聊天窗口滚动
+const handleScroll = () => {
+    if (!forumBodyRef.value) return;
+    const currentScrollTop = forumBodyRef.value.scrollTop;
+    if (currentScrollTop > lastScrollTop.value) {
+        isScroll.value = false
+    } else if (currentScrollTop < lastScrollTop.value) {
+        isScroll.value = true
+    }
+    lastScrollTop.value = currentScrollTop;
+}
+
+// 判断是否滚动到底部
+const isScrolledToBottom = () => {
+    if (!forumBodyRef.value) return false;
+    const { scrollTop, scrollHeight, clientHeight } = forumBodyRef.value;
+    return scrollTop + clientHeight >= scrollHeight - 1; // 允许 1px 误差
+};
 
 </script>
 <style lang="scss" scoped>
@@ -57,6 +79,10 @@ import ForumWindow from '@/components/forum/ForumWindow.vue';
         flex-direction: column;
         border: 2px solid $theme-primary;
         background: $theme-background;
+        position: relative;
+
+
+
 
         .forum-header {
             width: 100%;
@@ -84,11 +110,36 @@ import ForumWindow from '@/components/forum/ForumWindow.vue';
 
         .forum-body {
             width: 100%;
-            flex: 9;
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        .footer-control {
+            position: absolute;
+            bottom: 10px;
+            left: 16px;
+
+            button {
+                background-color: transparent;
+                border: none;
+                font-size: 20px;
+                transition: all 0.2s ease-in-out;
+
+                &:hover {
+                    transform: scale(1.3);
+                }
+            }
+
         }
 
         .forum-footer {
             width: 100%;
+        }
+
+        .show {
+            position: absolute;
+            bottom: 0;
         }
     }
 }

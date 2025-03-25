@@ -2,12 +2,13 @@
     <div class="forum-input" v-aos="{
         animation: 'slide-up',
         duration: 300,
-    }">
-        <FilePreview :fileList="forumStore.uploadFiles" @removeFile="handleRemoveFile" />
+    }" v-if="isHidden">
+        <FilePreview :fileList="forumStore.uploadFiles" @removeFile="handleRemoveFile"
+            v-if="!forumStore.isUploadFilesEmpty" />
         <!-- 表情列表区域 -->
-        <div class="emoji-list">
-            <div class="emoji-box" v-show="isShowEmoji" @mouseenter="handleMouseEmojiBox"
-                @mouseleave="handleMouseEmojiBoxLeave">
+        <div class="emoji-list" v-show="showEmojiBox" @mouseenter="handleEmojiBoxEnter"
+            @mouseleave="handleEmojiBoxLeave">
+            <div class="emoji-box">
                 <span v-for="(item, index) in emojisArray" @click="inputEmoji(item)">{{ item }}</span>
             </div>
         </div>
@@ -16,19 +17,20 @@
             <!-- 图标区域（左上角） -->
             <div class="input-icons">
                 <div class="icons">
-                    <span class="icon emoji" @mouseenter="handleMouseEmoji">😀</span>
-                    <span class="icon more" @click="triggerUploadFile">🗂️</span>
+                    <button class="icon" @click="isHidden = false">⚓</button>
+                    <button class="icon emoji" @mouseenter="handleEmojiButtonEnter" @mouseleave="handleEmojiButtonLeave"
+                        @click="textareaRef.focus()">😀</button>
+                    <button class="icon more" @click="triggerUploadFile">🗂️</button>
                     <input type="file" :accept="acceptFile" multiple hidden @change="handleUpload" ref="uploadInputRef"
                         @paste="handleImagePaste">
                 </div>
                 <div class="font-counter">
-                    <div class="eye">
+                    <div class="eye" @click="userInputText = ''">
                         🧿
                     </div>
                     <div class="number">
                         <span>{{ charNumber }}</span>
                     </div>
-
                 </div>
             </div>
             <!-- 输入框区域 -->
@@ -39,80 +41,97 @@
             </div>
             <!-- 发送按钮区域 -->
             <div class="input-send">
-                <button>
-                    发送
-                </button>
+                <div class="input-control">
+                    <label class="mini-switch">
+                        <input type="checkbox" v-model="isSwitchOn" hidden>
+                        <span class="slider">
+                            <span class="slider-dot"></span>
+                        </span>
+                    </label>
+                </div>
+                <div class="send-button">
+                    <button>发送</button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import FilePreview from '../common/FilePreview.vue';
 import { useForumStore } from '@/stores/forum';
 import { emojis } from '@/data/emojis';
 
-//表情字体
-const emojisArray = ref(emojis)
-const forumStore = useForumStore()
-//输入框
-const textareaRef = ref(null)
-//上传文件的类型
-const acceptFile = ref("image/*,.md")
+const isSwitchOn = ref(false);
+const emojisArray = ref(emojis);
+const forumStore = useForumStore();
+const textareaRef = ref(null);
+const acceptFile = ref("image/*,.md");
+const isHidden = ref(true);
+const userInputText = ref("");
+const uploadInputRef = ref(null);
 
+// Emoji box control
+const showEmojiBox = ref(false);
+let emojiBoxTimeout = null;
 
-//监听输入框输入
-const userInputText = ref("")
+const handleEmojiButtonEnter = () => {
+    clearTimeout(emojiBoxTimeout);
+    showEmojiBox.value = true;
+};
+
+const handleEmojiButtonLeave = () => {
+    emojiBoxTimeout = setTimeout(() => {
+        showEmojiBox.value = false;
+    }, 300);
+};
+
+const handleEmojiBoxEnter = () => {
+    clearTimeout(emojiBoxTimeout);
+    showEmojiBox.value = true;
+};
+
+const handleEmojiBoxLeave = () => {
+    showEmojiBox.value = false;
+};
+
 const handleInput = () => {
     adjustHeight()
 }
 
-//计算输入内容的字符数
 const charNumber = computed(() => {
     if (!userInputText.value) {
         return
     }
-
     if (Array.from(userInputText.value).length > 15000) {
         return '字数超过上限'
     }
     return Array.from(userInputText.value).length;
 })
 
-const uploadInputRef = ref(null)
-//触发文件上传
 const triggerUploadFile = () => {
-    console.log(uploadInputRef);
-
     uploadInputRef.value.click()
 }
 
-//文件上传
 const handleUpload = (event) => {
     const files = Array.from(event.target.files);
-    // 遍历每个选中的文件
     Array.from(files).forEach((file) => {
         handleUploadFile(file)
     });
-
 }
 
-//监听文件粘贴
 const handleImagePaste = (event) => {
     const items = event.clipboardData.items;
-    // 遍历粘贴的内容，查找是否包含图片
     for (let i = 0; i < items.length; i++) {
         const item = items[i];
         if (item.type.startsWith('image/')) {
-            const file = item.getAsFile(); // 获取粘贴的图片文件
+            const file = item.getAsFile();
             handleUploadFile(file)
         }
     }
 }
 
-
-//处理上传的图片文件，并存入store
 const handleUploadFile = (file) => {
     if (!file.type.startsWith("image")) {
         forumStore.setUploadFiles({
@@ -131,21 +150,14 @@ const handleUploadFile = (file) => {
     reader.readAsDataURL(file)
 }
 
-//移除某个index位置的文件
 const handleRemoveFile = (index) => {
     forumStore.removeUploadFiles(index)
 }
 
-//动态调整输入框的高度
 const adjustHeight = () => {
     if (textareaRef.value) {
-        // 先重置高度，确保正确计算
         textareaRef.value.style.height = 'auto';
-
-        // 获取内容高度
         const scrollHeight = textareaRef.value.scrollHeight;
-
-        // 设置新高度，确保不超过最大高度
         const maxHeight = 90;
 
         if (scrollHeight > maxHeight) {
@@ -153,36 +165,33 @@ const adjustHeight = () => {
             textareaRef.value.style.overflowY = 'auto';
         } else {
             textareaRef.value.style.height = scrollHeight + 'px';
-            textareaRef.value.style.overflowY = 'hidden'; // 内容未超出时隐藏滚动条
+            textareaRef.value.style.overflowY = 'hidden';
         }
     }
 }
-//是否显示表情列表
-const isShowEmoji = ref(false)
 
-//监听鼠标悬浮在输入表情按钮上
-const handleMouseEmoji = () => {
-    isShowEmoji.value = true
-}
-
-
-//监听鼠标离开输入表情按钮上
-const handleMouseEmojiBoxLeave = () => {
-
-    isShowEmoji.value = false
-}
-
-//监听鼠标进入表情列表盒子
-const handleMouseEmojiBox = () => {
-    isShowEmoji.value = true
-}
-
-//输入表情
 const inputEmoji = (value) => {
-    userInputText.value = userInputText.value + value
-}
+    const start = textareaRef.value.selectionStart;
+    const end = textareaRef.value.selectionEnd;
 
+    const startPart = userInputText.value.slice(0, start)
+    const endPart = userInputText.value.slice(end)
+
+    userInputText.value = startPart + value + endPart
+
+
+
+
+    // 移动光标
+    const newPos = start + value.length;
+    nextTick(() => {
+        textareaRef.value.setSelectionRange(newPos, newPos);
+    });
+
+    showEmojiBox.value = false;
+}
 </script>
+
 <style lang="scss" scoped>
 @use "@/assets/styles/forum/input.scss" as *;
 </style>
