@@ -2,7 +2,7 @@
     <div class="forum-input" v-aos="{
         animation: 'slide-up',
         duration: 300,
-    }" v-if="isHidden">
+    }">
         <FilePreview :fileList="forumStore.uploadFiles" @removeFile="handleRemoveFile"
             v-if="!forumStore.isUploadFilesEmpty" />
         <!-- 表情列表区域 -->
@@ -15,11 +15,12 @@
         <!-- 输入区域 -->
         <div class="input-container">
             <!-- 图标区域（左上角） -->
-            <div class="input-icons">
+            <div class="input-icons" @mousedown.prevent>
                 <div class="icons">
-                    <button class="icon" @click="isHidden = false">⚓</button>
+                    <button class="icon input-control" @click="hiddenInput">⚓</button>
+
                     <button class="icon emoji" @mouseenter="handleEmojiButtonEnter" @mouseleave="handleEmojiButtonLeave"
-                        @click="textareaRef.focus()">😀</button>
+                        @mousedown.prevent>😀</button>
                     <button class="icon more" @click="triggerUploadFile">🗂️</button>
                     <input type="file" :accept="acceptFile" multiple hidden @change="handleUpload" ref="uploadInputRef"
                         @paste="handleImagePaste">
@@ -40,7 +41,7 @@
                     v-model="userInputText"></textarea>
             </div>
             <!-- 发送按钮区域 -->
-            <div class="input-send">
+            <div class="input-send" @mousedown.prevent>
                 <div class="input-control">
                     <label class="mini-switch">
                         <input type="checkbox" v-model="isSwitchOn" hidden>
@@ -50,7 +51,7 @@
                     </label>
                 </div>
                 <div class="send-button">
-                    <button>发送</button>
+                    <button @click="sendMessage">发送</button>
                 </div>
             </div>
         </div>
@@ -62,17 +63,44 @@ import { ref, computed, nextTick } from 'vue';
 import FilePreview from '../common/FilePreview.vue';
 import { useForumStore } from '@/stores/forum';
 import { emojis } from '@/data/emojis';
+import { userStore } from "@/stores/user";
 
+const userInfo = userStore()
 const isSwitchOn = ref(false);
 const emojisArray = ref(emojis);
 const forumStore = useForumStore();
 const textareaRef = ref(null);
 const acceptFile = ref("image/*,.md");
-const isHidden = ref(true);
 const userInputText = ref("");
 const uploadInputRef = ref(null);
 
-// Emoji box control
+
+const sendMessage = () => {
+
+    if (userInputText.value.trim() === '' && forumStore.isUploadFilesEmpty) {
+        forumStore.setShowTip()
+        return
+    }
+
+    forumStore.addMessage({
+        user: userInfo.user,
+        content: {
+            files: forumStore.uploadFiles,
+            text: userInputText.value.trim()
+        }
+    })
+    resetInput()//重置输入框
+    forumStore.clearUploadFiles()//清理上传的文件
+}
+
+
+//重置输入框
+const resetInput = () => {
+    userInputText.value = ''
+    adjustHeight()
+}
+
+
 const showEmojiBox = ref(false);
 let emojiBoxTimeout = null;
 
@@ -88,6 +116,7 @@ const handleEmojiButtonLeave = () => {
 };
 
 const handleEmojiBoxEnter = () => {
+
     clearTimeout(emojiBoxTimeout);
     showEmojiBox.value = true;
 };
@@ -155,6 +184,8 @@ const handleRemoveFile = (index) => {
 }
 
 const adjustHeight = () => {
+    console.log("reset");
+
     if (textareaRef.value) {
         textareaRef.value.style.height = 'auto';
         const scrollHeight = textareaRef.value.scrollHeight;
@@ -185,10 +216,17 @@ const inputEmoji = (value) => {
     // 移动光标
     const newPos = start + value.length;
     nextTick(() => {
+        textareaRef.value.focus();
         textareaRef.value.setSelectionRange(newPos, newPos);
     });
 
     showEmojiBox.value = false;
+}
+
+//隐藏输入框
+const emit = defineEmits(["set-footer-hide"])
+const hiddenInput = () => {
+    emit('set-footer-hide', false)
 }
 </script>
 

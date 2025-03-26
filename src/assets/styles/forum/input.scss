@@ -11,6 +11,7 @@
     justify-content: center;
     flex-direction: column;
     position: relative;
+    background-color: transparent;
 
     .emoji-list {
         width: 100%;
@@ -18,14 +19,12 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        position: relative; // 添加相对定位，作为绝对定位子元素的参考
 
         .emoji-box {
             position: absolute; // 改为绝对定位
             bottom: 100%; // 定位在父元素上方
-            left: 0;
+            left: 10;
             width: 100%;
-            margin-bottom: 5px;
             max-width: 400px;
             overflow-y: auto; // 添加滚动条以防内容过多
             display: grid;
@@ -33,7 +32,7 @@
             background-color: $theme-background-light;
             padding: 5px;
             border-radius: 10px;
-            animation: EmojiFadeUp 0.3s ease-in-out;
+            animation: EmojiFadeDown 0.3s ease-in-out;
             gap: 4px;
             z-index: 10; // 确保显示在其他元素上方
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); // 可选：添加阴影增强视觉效果
@@ -73,18 +72,21 @@
             .icons {
                 display: flex;
                 gap: 10px;
-            }
 
-            .icon {
-                border: none;
-                background-color: transparent;
-                transition: all 0.2s ease-in-out;
-                font-size: 16px;
+                .icon {
+                    border: none;
+                    background-color: transparent;
+                    transition: all 0.2s ease-in-out;
+                    font-size: 15px;
 
-                &:hover {
-                    cursor: pointer;
+                    &:hover {
+                        cursor: pointer;
+                    }
+
                 }
+
             }
+
 
             .font-counter {
                 font-size: 13px;
@@ -103,11 +105,8 @@
                     justify-content: center;
                     line-height: 15px;
                     font-size: 14px;
-                    transition: all 0.2s ease-in-out;
 
                     &:hover {
-                        // transform: rotate(180deg);
-                        transform: scale(1.2);
                         cursor: pointer;
                     }
 
@@ -115,7 +114,6 @@
 
                     &::after {
                         content: "点击清除输入⚔️";
-                        /* 提示文本 */
                         position: absolute;
                         top: 0;
                         right: 120%;

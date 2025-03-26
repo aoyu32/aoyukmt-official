@@ -1,6 +1,7 @@
 <template>
     <div class="forum">
         <div class="main-content">
+            <Message :messageContent="tipContext" :isShowMessage="forumStore.showTip" :messagePosition="'absolute'" />
             <!-- 聊天窗口头部 -->
             <div class="forum-header">
                 <!-- 窗口标题 -->
@@ -15,15 +16,19 @@
                     <div class="online">
                         <span>🪆123</span>
                     </div>
+
                 </div>
             </div>
             <!-- 聊天窗口 -->
-            <div class="forum-body" @scroll="handleScroll" ref="forumBodyRef">
-                <ForumWindow />
+            <!-- <div class="forum-body" @scroll="handleScroll" ref="forumBodyRef"> -->
+            <ForumWindow />
+            <!-- </div> -->
+            <div class="footer-control" v-if="!isHide">
+                <button @click="isHide = true">⚓</button>
             </div>
             <!-- 输入窗口  -->
-            <div class="forum-footer" >
-                <ForumInput />
+            <div class="forum-footer" v-if="isHide">
+                <ForumInput @setFooterHide="handleHidFooter" />
             </div>
 
         </div>
@@ -31,9 +36,18 @@
 </template>
 <script setup>
 import { ref } from 'vue'
+import Message from '@/components/common/Message.vue'
 import ForumInput from '@/components/forum/ForumInput.vue';
 import ForumWindow from '@/components/forum/ForumWindow.vue';
+import { useForumStore } from '@/stores/forum';
+const forumStore = useForumStore()
+const tipContext = ref("请先输入消息，不输入消息休想发送!😁")
 const forumBodyRef = ref(null);
+const isHide = ref(true)
+//隐藏输入框
+const handleHidFooter = (flag) => {
+    isHide.value = flag
+}
 
 
 const isScroll = ref(true)
@@ -69,6 +83,7 @@ const isScrolledToBottom = () => {
     display: flex;
     align-items: center;
     justify-content: center;
+    
 
 
     .main-content {
@@ -78,11 +93,9 @@ const isScrolledToBottom = () => {
         border-radius: 10px;
         flex-direction: column;
         border: 2px solid $theme-primary;
+        overflow: hidden;
         background: $theme-background;
         position: relative;
-
-
-
 
         .forum-header {
             width: 100%;
@@ -112,29 +125,26 @@ const isScrolledToBottom = () => {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            overflow-y: auto;
         }
 
         .footer-control {
             position: absolute;
-            bottom: 10px;
-            left: 16px;
+            bottom: 5px;
+            left: 5px;
+            transform: rotate(180deg);
 
             button {
                 background-color: transparent;
                 border: none;
-                font-size: 20px;
+                font-size: 16px;
                 transition: all 0.2s ease-in-out;
-
-                &:hover {
-                    transform: scale(1.3);
-                }
             }
 
         }
 
         .forum-footer {
             width: 100%;
+            background-color: transparent;
         }
 
         .show {

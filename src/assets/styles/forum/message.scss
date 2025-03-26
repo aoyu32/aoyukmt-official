@@ -5,51 +5,122 @@
 .forum-message {
     display: flex;
     max-width: 90%;
-    gap: 5px;
+    gap: 12px;
+    margin-bottom: 16px;
 
     //头像
     .avatar {
         width: 40px;
         height: 40px;
+        flex-shrink: 0;
 
         img {
-            width: 40px;
-            height: 40px;
+            width: 100%;
+            height: 100%;
             border: 1px solid $theme-primary;
             border-radius: 50%;
+            object-fit: cover;
         }
     }
 
     //消息
     .message {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        flex-grow: 1;
+        min-width: 0;
+
         .name-container {
-            width: 100%;
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            gap: 8px;
 
-            span {
+            .status {
+                font-size: 12px;
                 color: $theme-font-gray;
-                font-size: 16px;
+                font-weight: 500;
+            }
+
+            .name {
+                font-size: 15px;
+                color: $theme-font-gray;
+                font-weight: 600;
             }
         }
 
         .message-container {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid $theme-primary;
-            border-radius: 5px;
+            border-radius: 12px;
             background-color: $theme-secondary-lt;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            max-width: 75%;
 
-            span {
-                color: $theme-font-dark;
+            .file {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(100px, 2fr));
+                max-width: 100%;
+                gap: 10px;
+
+                .image {
+                    padding-bottom: 10px;
+
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                        border-radius: 10px;
+                    }
+                }
+
+                .document {
+                    padding: 8px 12px;
+                    background-color: rgba($theme-primary, 0.1);
+                    border-radius: 6px;
+                    color: $theme-font-dark;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+
+                    &::before {
+                        content: "📄";
+                        margin-right: 4px;
+                    }
+                }
             }
 
+            .text {
+                color: $theme-font-dark;
+                font-size: 14px;
+                line-height: 1.5;
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
         }
     }
 
+    // 多图片时的特殊处理
+    .message-container .file {
 
+        // 当有多个图片时，横向排列并自动换行
+        &:has(.image:not(:only-child)) {
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            .image img {
+                max-width: 150px; // 多图时缩小尺寸
+                max-height: 150px;
+            }
+        }
+
+        // 单张图片时放大显示
+        &:has(.image:only-child) {
+            .image img {
+                max-width: 300px;
+                max-height: 300px;
+            }
+        }
+    }
 }

@@ -61,6 +61,7 @@ const removeFile = (index) => {
         margin-bottom: 5px;
         flex-wrap: wrap;
         gap: $assistant-preview-gap;
+        background-color: none;
 
         .wrapper {
 
