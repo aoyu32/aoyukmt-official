@@ -1,6 +1,6 @@
 <template>
     <div class="assistant-input">
-        <FilePreview :fileList="assistantStore.images" @removeFile="handleRemoveFile" />
+        <FilePreview :imgList="assistantStore.images" @remove-file="handleRemoveFile" />
         <div class="chat-input-area" id="chat-input-area" ref="chatInputBox">
             <textarea id="chat-input" :placeholder="placeholderValue" rows="1" @focus="textareaFocus"
                 @blur="textareaBlur" @input="handleInput" @paste="handleImagePaste" ref="chatTextarea"
@@ -128,9 +128,6 @@ const handleImagePaste = (event) => {
 // 监听props.files的变化，当有新文件时处理它们
 watch(() => props.files, (newFiles) => {
     if (newFiles && newFiles.length > 0) {
-        // 清空已有的预览
-        // previewContainer.value.innerHTML = '';
-
         // 处理每个新文件
         newFiles.forEach(file => {
             if (file.type.startsWith('image/')) {
@@ -203,15 +200,9 @@ onUnmounted(() => {
 
 //读取上传的图片文件
 const handleUploadFile = (file) => {
-    if (!file.type.startsWith("image")) {
-        return
-    }
     const reader = new FileReader()
     reader.onload = (e) => {
-        assistantStore.addImage({
-            type: 'image',
-            value: e.target.result
-        })
+        assistantStore.addImage(e.target.result)
     }
     reader.readAsDataURL(file)
 }

@@ -1,37 +1,53 @@
 import { defineStore } from "pinia";
-import { ref, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import tools from "@/utils/tools";
 
 export const useForumStore = defineStore('forum', () => {
 
-    //存储用户上传的文件
-    const uploadFiles = ref([])
+    //上传的文件
+    const uploadDocuments = ref([])
+    //上传的图片
+    const uploadImages = ref([])
     //存储用户发送的消息
     const messages = ref([])
     //控制是否显示提示消失
     const showTip = ref(false)
 
-    //判断上传的文件是否为空
-    const isUploadFilesEmpty = computed(() => uploadFiles.value.length === 0)
-
-
     //判断消息是否为空
     const isMessagesEmpty = computed(() => messages.value.length === 0)
 
-    //添加一个文件
-    const setUploadFiles = (file) => {
-        uploadFiles.value.push(file)
-    }
+    //判断是否上传了文档
+    const isuploadDocumentEmpty = computed(() => uploadDocuments.value.length === 0)
 
-    //根据index移除一个文件
-    const removeUploadFiles = (index) => {
-        uploadFiles.value.splice(index, 1)
-    }
+    //判断是否上传了图片
+    const isUploadImageEmpty = computed(() => uploadImages.value.length === 0)
 
     //清理所有上传的文件
     const clearUploadFiles = () => {
-        uploadFiles.value = []
+        uploadDocuments.value = []
+        uploadImages.value = []
     }
+
+    //添加一个文档
+    const addDocument = (document) => {
+        uploadDocuments.value.push(document)
+    }
+
+    //移除一个文档
+    const removeDocument = (index) => {
+        uploadDocuments.value.splice(index, 1)
+    }
+
+    //添加一个图片
+    const addImage = (image) => {
+        uploadImages.value.push(image)
+    }
+
+    //移除一个图片
+    const removeImage = (index) => {
+        uploadImages.value.splice(index, 1)
+    }
+
 
     //设置显示消息
     const setShowTip = () => {
@@ -53,14 +69,18 @@ export const useForumStore = defineStore('forum', () => {
     }
 
     return {
-        uploadFiles,
-        isUploadFilesEmpty,
         messages,
         showTip,
         isMessagesEmpty,
+        uploadImages,
+        uploadDocuments,
+        isuploadDocumentEmpty,
+        isUploadImageEmpty,
         addMessage,
-        setUploadFiles,
-        removeUploadFiles,
+        addImage,
+        addDocument,
+        removeImage,
+        removeDocument,
         setShowTip,
         clearUploadFiles
 

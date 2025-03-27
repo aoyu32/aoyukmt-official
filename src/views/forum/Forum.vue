@@ -20,9 +20,9 @@
                 </div>
             </div>
             <!-- 聊天窗口 -->
-            <!-- <div class="forum-body" @scroll="handleScroll" ref="forumBodyRef"> -->
-            <ForumWindow />
-            <!-- </div> -->
+            <div class="forum-body" ref="forumBodyRef">
+                <ForumWindow/>
+            </div>
             <div class="footer-control" v-if="!isHide">
                 <button @click="isHide = true">⚓</button>
             </div>
@@ -50,20 +50,6 @@ const handleHidFooter = (flag) => {
 }
 
 
-const isScroll = ref(true)
-const lastScrollTop = ref(0); // 记录上次滚动位置
-//监听聊天窗口滚动
-const handleScroll = () => {
-    if (!forumBodyRef.value) return;
-    const currentScrollTop = forumBodyRef.value.scrollTop;
-    if (currentScrollTop > lastScrollTop.value) {
-        isScroll.value = false
-    } else if (currentScrollTop < lastScrollTop.value) {
-        isScroll.value = true
-    }
-    lastScrollTop.value = currentScrollTop;
-}
-
 // 判断是否滚动到底部
 const isScrolledToBottom = () => {
     if (!forumBodyRef.value) return false;
@@ -83,7 +69,7 @@ const isScrolledToBottom = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
 
 
     .main-content {

@@ -45,7 +45,8 @@
         }
 
         .message-content {
-            background: $theme-primary;
+            // background: $theme-primary;
+            background-color: $theme-background-light;
             color: $theme-font-light;
             border-color: $theme-primary;
             padding: $assistant-msg-padding;
@@ -54,6 +55,7 @@
                 width: 100%;
                 font-size: 15px;
                 color: $theme-font-light;
+                color: $theme-font-dark;
             }
 
             .loadding {
@@ -76,7 +78,8 @@
         }
 
         .message-content {
-            background: $theme-primary;
+            background-color: $theme-background-light;
+            // background: $theme-primary;
             color: $theme-font-light;
             border-color: $theme-primary;
             padding: 0.6rem;
@@ -86,6 +89,7 @@
                 font-size: 15px;
                 color: $theme-font-light;
                 display: flex;
+                color: $theme-font-dark;
                 white-space: pre-wrap;
             }
         }
@@ -117,7 +121,7 @@
 
     .message-content {
         background: $theme-background;
-        border: 2px solid $theme-primary;
+        // border: 2px solid $theme-primary;
         border-radius: 7px;
         position: relative;
         width: 100%;

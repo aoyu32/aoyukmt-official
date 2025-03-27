@@ -3,8 +3,8 @@
         animation: 'slide-up',
         duration: 300,
     }">
-        <FilePreview :fileList="forumStore.uploadFiles" @removeFile="handleRemoveFile"
-            v-if="!forumStore.isUploadFilesEmpty" />
+        <FilePreview :imgList="forumStore.uploadImages" :fileList="forumStore.uploadDocuments"
+            @removeFile="handleRemoveFile" />
         <!-- 表情列表区域 -->
         <div class="emoji-list" v-show="showEmojiBox" @mouseenter="handleEmojiBoxEnter"
             @mouseleave="handleEmojiBoxLeave">
@@ -18,7 +18,6 @@
             <div class="input-icons" @mousedown.prevent>
                 <div class="icons">
                     <button class="icon input-control" @click="hiddenInput">⚓</button>
-
                     <button class="icon emoji" @mouseenter="handleEmojiButtonEnter" @mouseleave="handleEmojiButtonLeave"
                         @mousedown.prevent>😀</button>
                     <button class="icon more" @click="triggerUploadFile">🗂️</button>
@@ -77,18 +76,30 @@ const uploadInputRef = ref(null);
 
 const sendMessage = () => {
 
-    if (userInputText.value.trim() === '' && forumStore.isUploadFilesEmpty) {
+    if (userInputText.value.trim() === '' && forumStore.isuploadDocumentEmpty && forumStore.isUploadImageEmpty) {
         forumStore.setShowTip()
         return
     }
 
-    forumStore.addMessage({
-        user: userInfo.user,
-        content: {
-            files: forumStore.uploadFiles,
-            text: userInputText.value.trim()
-        }
-    })
+
+    if (!forumStore.isuploadDocumentEmpty) {
+        forumStore.addMessage({
+            user: userInfo.user,
+            content: forumStore.uploadDocuments
+        })
+    }
+
+    if (userInputText.value.trim() !== '' || !forumStore.isUploadImageEmpty) {
+        forumStore.addMessage({
+            user: userInfo.user,
+            content: {
+                img: forumStore.uploadImages,
+                text: userInputText.value.trim()
+            },
+        })
+    }
+
+
     resetInput()//重置输入框
     forumStore.clearUploadFiles()//清理上传的文件
 }
@@ -150,42 +161,32 @@ const handleUpload = (event) => {
     });
 }
 
-const handleImagePaste = (event) => {
-    const items = event.clipboardData.items;
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        if (item.type.startsWith('image/')) {
-            const file = item.getAsFile();
-            handleUploadFile(file)
-        }
-    }
-}
+// const handleImagePaste = (event) => {
+//     const items = event.clipboardData.items;
+//     for (let i = 0; i < items.length; i++) {
+//         const item = items[i];
+//         if (item.type.startsWith('image/')) {
+//             const file = item.getAsFile();
+//             handleUploadFile(file)
+//         }
+//     }
+// }
 
 const handleUploadFile = (file) => {
     if (!file.type.startsWith("image")) {
-        forumStore.setUploadFiles({
-            type: "file",
-            value: file.name
-        })
+        const document = file.name
+        forumStore.addDocument(document)
         return
     }
     const reader = new FileReader()
     reader.onload = (e) => {
-        forumStore.setUploadFiles({
-            type: "image",
-            value: e.target.result
-        })
+        const image = e.target.result
+        forumStore.addImage(image)
     }
     reader.readAsDataURL(file)
 }
 
-const handleRemoveFile = (index) => {
-    forumStore.removeUploadFiles(index)
-}
-
 const adjustHeight = () => {
-    console.log("reset");
-
     if (textareaRef.value) {
         textareaRef.value.style.height = 'auto';
         const scrollHeight = textareaRef.value.scrollHeight;
@@ -209,10 +210,6 @@ const inputEmoji = (value) => {
     const endPart = userInputText.value.slice(end)
 
     userInputText.value = startPart + value + endPart
-
-
-
-
     // 移动光标
     const newPos = start + value.length;
     nextTick(() => {
@@ -221,6 +218,16 @@ const inputEmoji = (value) => {
     });
 
     showEmojiBox.value = false;
+}
+
+//删除预览图片
+const handleRemoveFile = (type, index) => {
+    if (type === 'img') {
+        forumStore.removeImage(index)
+    }
+    if (type === 'file') {
+        forumStore.removeDocument(index)
+    }
 }
 
 //隐藏输入框

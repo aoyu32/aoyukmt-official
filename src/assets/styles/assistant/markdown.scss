@@ -14,6 +14,7 @@
     margin-bottom: 0.5rem; // 调整标题间距，使内容更紧凑
     font-weight: 600;
     color: $theme-font-light;
+    color: $theme-font-dark;
 }
 
 .content :deep(h1) {
@@ -50,6 +51,7 @@
     margin-bottom: 0.6rem; // 调整段落间距，使内容更紧凑
     margin-top: 0.6rem; // 调整段落间距，使内容更紧凑
     color: $theme-font-light;
+    color: $theme-font-dark;
     line-height: 2; // 调整行高，使内容更紧凑
 }
 
@@ -84,6 +86,7 @@
     padding-left: 1rem;
     font-style: italic;
     color: $theme-font-gray;
+    color: $theme-font-dark;
     background-color: $theme-background-light;
 }
 
@@ -102,6 +105,7 @@
     background-color: transparent;
     line-height: 1.7;
     color: $theme-font-light;
+    color: $theme-font-dark;
     word-wrap: break-word;
 
 }
@@ -112,6 +116,7 @@
     // border-radius: 4px;
     font-family: "Courier New", Courier, monospace;
     color: $theme-font-light;
+    color: $theme-font-dark;
     word-wrap: break-word;
 }
 
@@ -167,6 +172,7 @@
         margin-bottom: 0.6rem; // 调整段落间距，使内容更紧凑
         margin-top: 0.6rem; // 调整段落间距，使内容更紧凑
         color: $theme-font-light;
+        color: $theme-font-dark;
         line-height: 2; // 调整行高，使内容更紧凑
     }
 

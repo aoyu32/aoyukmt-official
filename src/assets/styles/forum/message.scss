@@ -4,11 +4,11 @@
 
 .forum-message {
     display: flex;
-    max-width: 90%;
     gap: 12px;
     margin-bottom: 16px;
+    width: 70%;
 
-    //头像
+    // 头像样式
     .avatar {
         width: 40px;
         height: 40px;
@@ -23,104 +23,76 @@
         }
     }
 
-    //消息
+    // 消息主体
     .message {
         display: flex;
-        align-items: flex-start;
         flex-direction: column;
-        flex-grow: 1;
-        min-width: 0;
+        flex-grow: 0;
 
+        // 用户名容器
         .name-container {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 6px;
             gap: 8px;
+            margin-bottom: 6px;
+
 
             .status {
                 font-size: 12px;
                 color: $theme-font-gray;
-                font-weight: 500;
             }
 
             .name {
                 font-size: 15px;
-                color: $theme-font-gray;
                 font-weight: 600;
+                color: $theme-font-gray;
             }
         }
 
+        // 消息容器
         .message-container {
-            padding: 12px;
-            border: 1px solid $theme-primary;
-            border-radius: 12px;
-            background-color: $theme-secondary-lt;
-            max-width: 75%;
+            border-radius: 7px;
+            // background-color: $theme-secondary;
+            background-color: $theme-background-light;
+            display: inline-block;
+            width: fit-content;
+            padding: 10px;
+            // border: 1px solid $theme-primary;
 
-            .file {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(100px, 2fr));
-                max-width: 100%;
-                gap: 10px;
 
-                .image {
-                    padding-bottom: 10px;
+            .message-content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-                    img {
-                        max-width: 100%;
-                        height: auto;
-                        border-radius: 10px;
-                    }
-                }
-
-                .document {
-                    padding: 8px 12px;
-                    background-color: rgba($theme-primary, 0.1);
-                    border-radius: 6px;
-                    color: $theme-font-dark;
-                    font-size: 14px;
+                .text-img {
                     display: flex;
-                    align-items: center;
-                    gap: 6px;
+                    flex-direction: column;
 
-                    &::before {
-                        content: "📄";
-                        margin-right: 4px;
+                    .img {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                        gap: 10px;
+
+                        img {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 10px;
+                        }
+
                     }
+
+                    .text {
+                        width: 100%;
+                        height: 100%;
+                        white-space: pre-wrap;
+                        color: $theme-font-dark-gray;
+                    }
+
                 }
+
             }
 
-            .text {
-                color: $theme-font-dark;
-                font-size: 14px;
-                line-height: 1.5;
-                white-space: pre-wrap;
-                word-break: break-word;
-            }
-        }
-    }
-
-    // 多图片时的特殊处理
-    .message-container .file {
-
-        // 当有多个图片时，横向排列并自动换行
-        &:has(.image:not(:only-child)) {
-            flex-direction: row;
-            flex-wrap: wrap;
-
-            .image img {
-                max-width: 150px; // 多图时缩小尺寸
-                max-height: 150px;
-            }
-        }
-
-        // 单张图片时放大显示
-        &:has(.image:only-child) {
-            .image img {
-                max-width: 300px;
-                max-height: 300px;
-            }
         }
     }
 }

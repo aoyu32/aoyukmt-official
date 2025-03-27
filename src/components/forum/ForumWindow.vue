@@ -1,5 +1,5 @@
 <template>
-    <div class="forum-window" ref="forumWindowRef">
+    <div class="forum-window" ref="forumWindowRef" @scroll="handleScroll">
         <div class="message-item" v-for="(item, index) in forumStore.messages" :key="index">
             <ForumMessage :message="item" />
         </div>
@@ -14,9 +14,8 @@ const forumStore = useForumStore()
 const forumWindowRef = ref(null)
 
 watch(() => forumStore.messages, (value) => {
-    scrollTo('bottom', 150,forumWindowRef.value)
-    console.log(value);
-
+    console.log("用户发生的消息列表：", value);
+    scrollTo('bottom', 150, forumWindowRef.value)
 }, { deep: true })
 
 </script>
