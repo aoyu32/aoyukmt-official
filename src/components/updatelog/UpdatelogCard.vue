@@ -8,7 +8,7 @@
             <div class="log-content">
                 <h3>{{ versionData.description }}</h3>
                 <!-- <div class="content-markdown"> -->
-                <MarkdownViewer :docsUrl="versionData.changelogUrl" />
+                <MarkdownViewer :markdownUrl="versionData.changelogUrl" />
                 <!-- </div> -->
             </div>
             <div class="log-download">

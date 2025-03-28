@@ -76,23 +76,32 @@ const uploadInputRef = ref(null);
 
 const sendMessage = () => {
 
+    //判断是否上传文档或输入消息
     if (userInputText.value.trim() === '' && forumStore.isuploadDocumentEmpty && forumStore.isUploadImageEmpty) {
         forumStore.setShowTip()
         return
     }
 
-
+    //判断是否上传了文档
     if (!forumStore.isuploadDocumentEmpty) {
-        forumStore.addMessage({
-            user: userInfo.user,
-            content: forumStore.uploadDocuments
+        forumStore.uploadDocuments.forEach((el) => {
+            forumStore.addMessage({
+                user: userInfo.user,
+                content: {
+                    type: 'docs',
+                    docs: el,
+                    text: userInputText.value.trim()
+                }
+            })
         })
     }
 
+    //判断是否上传了图片或输入了消息
     if (userInputText.value.trim() !== '' || !forumStore.isUploadImageEmpty) {
         forumStore.addMessage({
             user: userInfo.user,
             content: {
+                type: 'img',
                 img: forumStore.uploadImages,
                 text: userInputText.value.trim()
             },
@@ -103,7 +112,6 @@ const sendMessage = () => {
     resetInput()//重置输入框
     forumStore.clearUploadFiles()//清理上传的文件
 }
-
 
 //重置输入框
 const resetInput = () => {
@@ -161,21 +169,9 @@ const handleUpload = (event) => {
     });
 }
 
-// const handleImagePaste = (event) => {
-//     const items = event.clipboardData.items;
-//     for (let i = 0; i < items.length; i++) {
-//         const item = items[i];
-//         if (item.type.startsWith('image/')) {
-//             const file = item.getAsFile();
-//             handleUploadFile(file)
-//         }
-//     }
-// }
-
 const handleUploadFile = (file) => {
     if (!file.type.startsWith("image")) {
-        const document = file.name
-        forumStore.addDocument(document)
+        forumStore.addDocument(file)
         return
     }
     const reader = new FileReader()
@@ -202,6 +198,7 @@ const adjustHeight = () => {
     }
 }
 
+//插入表情
 const inputEmoji = (value) => {
     const start = textareaRef.value.selectionStart;
     const end = textareaRef.value.selectionEnd;
@@ -220,7 +217,7 @@ const inputEmoji = (value) => {
     showEmojiBox.value = false;
 }
 
-//删除预览图片
+//删除预览图片或文档
 const handleRemoveFile = (type, index) => {
     if (type === 'img') {
         forumStore.removeImage(index)
@@ -235,6 +232,7 @@ const emit = defineEmits(["set-footer-hide"])
 const hiddenInput = () => {
     emit('set-footer-hide', false)
 }
+
 </script>
 
 <style lang="scss" scoped>

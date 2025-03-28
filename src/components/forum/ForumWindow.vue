@@ -13,8 +13,8 @@ import { scrollTo } from '@/utils/scroll';
 const forumStore = useForumStore()
 const forumWindowRef = ref(null)
 
+//发送消息滚动条滚动到底部
 watch(() => forumStore.messages, (value) => {
-    console.log("用户发生的消息列表：", value);
     scrollTo('bottom', 150, forumWindowRef.value)
 }, { deep: true })
 
@@ -22,10 +22,10 @@ watch(() => forumStore.messages, (value) => {
 <style scoped lang="scss">
 .forum-window {
     width: 100%;
+
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     overflow-y: auto;
 
     .message-item {

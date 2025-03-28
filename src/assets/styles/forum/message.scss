@@ -96,3 +96,12 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .forum-message {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+        width: 95%;
+    }
+}

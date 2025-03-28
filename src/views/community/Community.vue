@@ -64,14 +64,14 @@ watchEffect(() => {
     overflow: hidden;
 
     .main-content {
-        width: 100%;
-        max-width: 1300px;
+        width: 1300px;
+        max-width: 100%;
         height: 100%;
         display: flex;
-        align-items: center;
         justify-content: center;
 
         .community-nav {
+
             width: 100px;
             height: 100%;
             display: flex;
@@ -98,10 +98,27 @@ watchEffect(() => {
             flex-grow: 1; // 占据剩余空间
             height: 100%;
 
-            // background-color: aquamarine;
             .content {
                 width: 100%;
                 height: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 1300px) {
+    .community {
+        .main-content {
+            padding: 0 16px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .community {
+        .main-content {
+            .community-nav {
+                display: none;
             }
         }
     }

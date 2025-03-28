@@ -17,7 +17,7 @@
                 <div class="document-markdown">
                     <!-- 文档内容 -->
                     <!-- 传递Markdown文本或文件路径 -->
-                    <MarkdownViewer :docsUrl="store.activeDocsUrl" @getHeadings="handleHeadings" v-aos="{
+                    <MarkdownViewer :markdown-url="store.activeDocsUrl" @getHeadings="handleHeadings" v-aos="{
                         animation: 'fade-down',
                         duration: 250
                     }" />

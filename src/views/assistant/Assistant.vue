@@ -135,13 +135,6 @@ onMounted(() => {
             animation: breathing-border 5s infinite alternate;
         }
 
-        @media (max-width: 1250px) {
-            .chat-container {
-                width: $percentage-width;
-            }
-
-        }
-
     }
 }
 </style>

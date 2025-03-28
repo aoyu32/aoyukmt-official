@@ -316,3 +316,9 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .feedback-card {
+        max-width: 100%;
+    }
+}

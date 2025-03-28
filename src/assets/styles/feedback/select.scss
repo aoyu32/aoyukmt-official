@@ -10,10 +10,6 @@
     max-width: 50%;
     animation: slideRight 0.3s ease-in-out;
 
-    @media (max-width: 480px) {
-        padding: 5px;
-    }
-
     .message {
         margin-bottom: 5px;
         color: $theme-font-dark;
@@ -52,4 +48,10 @@
             }
         }
     }
+}
+
+@media (max-width: 768px) {
+.feedback-select{
+    max-width: 100%;
+}
 }

@@ -21,7 +21,7 @@
             </div>
             <!-- 聊天窗口 -->
             <div class="forum-body" ref="forumBodyRef">
-                <ForumWindow/>
+                <ForumWindow />
             </div>
             <div class="footer-control" v-if="!isHide">
                 <button @click="isHide = true">⚓</button>

@@ -1,6 +1,5 @@
 <template>
     <div class="forum-message">
-
         <!-- 头像 -->
         <div class=" avatar">
             <img :src="message.user.avatar">
@@ -17,7 +16,7 @@
                 <!-- 消息内容 -->
                 <div class="message-content">
                     <!-- 文本和图片容器 -->
-                    <div class="text-img" :style="textImgStyle">
+                    <div class="text-img" :style="textImgStyle" v-if="contentType">
                         <!-- 图片 -->
                         <div class="img single-img" v-if="!isImgEmpty">
                             <img :src="img" alt="" v-for="(img, index) in message.content.img" :key="index"
@@ -29,8 +28,8 @@
                         </div>
                     </div>
                     <!-- 文档 -->
-                    <div class="document">
-
+                    <div class="document" v-else>
+                        <MarkdownViewer :markdown-file="message.content.docs"/>
                     </div>
                 </div>
             </div>
@@ -52,8 +51,13 @@ const isImgEmpty = computed(() => {
     return props.message.content.img.length === 0
 })
 
-const imageStyle = computed(() => {
 
+//判断发送的是否是文本+图片类型的消息
+const contentType = computed(() => {
+    return props.message.content.type === 'img'
+})
+
+const imageStyle = computed(() => {
     const onlyOneImg = props.message.content.img.length === 1
     return {
         width: onlyOneImg ? '300px' : 'auto'
@@ -61,6 +65,7 @@ const imageStyle = computed(() => {
 })
 
 const messageContainerStyle = computed(() => {
+    if (!contentType.value) return
     const onlyOneImg = props.message.content.img.length === 1
     const hasText = props.message.content.text === ''
     return {
@@ -79,6 +84,8 @@ const textImgStyle = computed(() => {
 
 
 onMounted(() => {
+
+
     console.log("父组件 传递来的消息数据：", props.message.content);
 })
 </script>
