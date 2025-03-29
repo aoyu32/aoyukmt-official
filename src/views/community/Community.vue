@@ -1,12 +1,16 @@
 <template>
     <div class="community">
+        <button class="sidebar-toggle" :class="{ 'rotated': isShowNav }" @click="toggleNav">
+            <i class="iconfont icon-arrow-right-bold"></i>
+        </button>
         <div class="main-content">
-            <div class="community-nav">
-                <!-- Nav content -->
+            <div class="community-nav" :class="{ 'show': isShowNav }">
+                <!-- 导航栏 -->
                 <div class="nav" :style="{ 'height': navHeight, 'border-radius': navBorderRadius }">
-                    <CommunitySidebar />
+                    <CommunitySidebar @display-user-card="isDisplay = true" />
                 </div>
             </div>
+            <!-- 界面 -->
             <div class="community-content">
                 <!-- Content -->
                 <div class="content">
@@ -14,16 +18,30 @@
                     </router-view>
                 </div>
             </div>
-
+        </div>
+        <div class="user-info-card">
+            <UserIDCard :userData="user" @close-user-card="isDisplay = false" v-if="isDisplay" />
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
 import CommunitySidebar from '@/components/community/CommunitySidebar.vue';
 import { useRoute } from 'vue-router';
+import UserIDCard from '@/components/community/UserIDCard.vue';
+import { userStore } from '@/stores/user';
+import { storeToRefs } from 'pinia';
+const userData = userStore()
+const { user } = storeToRefs(userData)
 
+//显示用户信息卡
+const isDisplay = ref(false)
+onMounted(() => {
+    console.log(user);
+})
+
+//控制侧边栏高度
 const route = useRoute();
 const navHeight = ref("95%")
 const navBorderRadius = ref("12px")
@@ -45,6 +63,15 @@ watchEffect(() => {
 
 })
 
+//控制显示隐藏导航栏
+const isShowNav = ref(false)
+const toggleNav = () => {
+    isShowNav.value = !isShowNav.value
+
+
+}
+
+
 
 </script>
 
@@ -62,6 +89,7 @@ watchEffect(() => {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
 
     .main-content {
         width: 1300px;
@@ -75,6 +103,7 @@ watchEffect(() => {
             width: 100px;
             height: 100%;
             display: flex;
+            // display: none;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
@@ -89,7 +118,10 @@ watchEffect(() => {
                 border: 2px solid $theme-primary;
                 background-color: $theme-background;
             }
+
+
         }
+
 
         .community-content {
             display: flex;
@@ -116,10 +148,47 @@ watchEffect(() => {
 
 @media (max-width: 768px) {
     .community {
+        .sidebar-toggle {
+            display: block;
+        }
+
         .main-content {
             .community-nav {
                 display: none;
             }
+
+            .show {
+                display: flex;
+                width: 55px;
+            }
+
+        }
+
+
+    }
+
+
+}
+
+.sidebar-toggle {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    background-color: transparent;
+    border: none;
+    color: $theme-primary;
+    cursor: pointer;
+
+    .iconfont {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+        display: block;
+    }
+
+    &.rotated {
+        .iconfont {
+            transform: rotate(180deg);
         }
     }
 }

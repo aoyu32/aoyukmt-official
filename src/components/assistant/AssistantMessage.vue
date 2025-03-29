@@ -1,17 +1,16 @@
 <template>
   <div class="assistant-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
     <div class=" avatar" @click="ModifyUserInfo">
-      <img :src="messageData.isUser ? assistantStore.user.avatar : aoyukmtAvatar" alt="">
+      <img :src="messageData.isUser ? user.avatar : aoyukmtAvatar" alt="">
     </div>
     <div class="message-wrapper">
-      <div class="name">{{ messageData.isUser ? "🪶" + assistantStore.user.name : officialName }}</div>
+      <div class="name">{{ messageData.isUser ? "🪶" + user.name : officialName }}</div>
       <div class="message-content">
         <!-- 显示图片 -->
         <div v-if="hasImages" class="message-content-img" :style="messageTextStyle">
           <img v-for="(item, index) in messageData.img" :src="item" :key="index" alt="">
         </div>
         <!-- 显示文本，动态计算 padding -->
-
         <div class="content" v-if="hasText" ref="messageContainer" v-html="messageContent"></div>
         <div class="loadding" v-else>
           <!-- <img :src="loadding" alt=""> -->
@@ -35,6 +34,9 @@ import aoyukmtAvatar from '@/assets/avatar/aoyukmt-avatar.svg'
 import hljs from 'highlight.js';
 import "highlight.js/styles/atom-one-light.css";
 import Loadding from "@/components/common/Loadding.vue";
+import { userStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+const { user } = storeToRefs(userStore())
 
 const assistantStore = useAssistantStore()
 const officialName = ref("AOYUKMT智能助手📫")

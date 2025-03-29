@@ -13,7 +13,7 @@ import { scrollTo } from '@/utils/scroll';
 
 const chatWindow = ref(null)
 const assistantStore = useAssistantStore()
-const tipContext = ref('不输入内容休想发送消息! 😛')
+const tipContext = ref('不输入内容休想发送消息!😛')
 //提示消息状态
 onMounted(() => {
     scrollToBottom()
@@ -33,9 +33,7 @@ watch(
 );
 
 const scrollToBottom = () => {
-    // setTimeout(() => {
     scrollTo('bottom', 150, chatWindow.value)
-    // }, 50); // 短暂延迟确保 DOM 已更新
 };
 
 </script>

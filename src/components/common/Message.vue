@@ -1,7 +1,9 @@
 <template>
     <div class="message-tip" ref="messageRef" :class="{ 'show': localShowMessage, 'hide': !localShowMessage }"
         :style="{ 'position': messagePosition, 'top': topOffset }">
-        {{ messageContent }}
+        <div class="message-container">
+            <p> {{ messageContent }}</p>
+        </div>
     </div>
 </template>
 <script setup>
@@ -51,19 +53,30 @@ onMounted(() => {
     left: 50%;
     top: 0;
     height: 45px;
-    padding: 0 20px;
     transform: translateX(-50%);
-    background-color: $theme-secondary-dark;
-    color: $theme-font-light;
-    border-radius: 8px;
     font-size: 16px;
     text-align: center;
     line-height: 45px;
     font-weight: bold;
-    max-width: 80%;
     opacity: 0;
     z-index: 10;
     box-shadow: 1px 5px 10px $theme-deep-shadow;
+
+    .message-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $theme-font-light;
+        background-color: $theme-secondary-dark;
+        margin: 0 auto;
+        padding: 0 20px;
+        border-radius: 8px;
+
+        p {
+            white-space: nowrap;
+        }
+
+    }
 }
 
 /* 通过弹出和收回动画显示/隐藏提示框 */

@@ -3,7 +3,7 @@
         <!-- 上半部分：头像和用户名 -->
         <div class="sidebar-top">
             <div class="user-info">
-                <div class="avatar">
+                <div class="avatar" @click="displayUserIDCard">
                     <img :src="userData.user.avatar" alt="User Avatar" />
                 </div>
                 <p class="username">{{ userData.user.name }}</p>
@@ -34,6 +34,12 @@ const menuItems = [
     { name: "群聊论坛☠️", icon: "🐚", link: "/community/forum" },
 
 ];
+
+//显示用户身份证卡片
+const emit = defineEmits(["display-user-card"])
+const displayUserIDCard = () => {
+    emit("display-user-card")
+}
 
 
 </script>
@@ -184,6 +190,31 @@ const menuItems = [
 
         }
 
+    }
+}
+
+@media (max-width:786px) {
+    .sidebar {
+        padding: 10px 10px 20px 10px;
+
+        .sidebar-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+
+            .user-info {
+                .avatar {
+                    width: 40px;
+                    height: 40px;
+                }
+
+                .username {
+                    display: none;
+                }
+            }
+        }
 
     }
 }

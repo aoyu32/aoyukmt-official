@@ -6,7 +6,7 @@
                 @blur="textareaBlur" @input="handleInput" @paste="handleImagePaste" ref="chatTextarea"
                 v-model="message"></textarea>
             <div class="upload">
-                <input type="file" id="image-upload" multiple hidden ref="imageUploadInput"
+                <input type="file" id="image-upload" multiple accept="image/*" hidden ref="imageUploadInput"
                     @change="handleImageSelection" />
                 <label for="image-upload" class="upload-icon" @mouseenter="handleHover(1)"
                     @mouseleave="handleHover(0)">{{ lableText }}</label>
@@ -105,10 +105,9 @@ const handleImageSelection = () => {
     const files = event.target.files;
     // 遍历每个选中的文件
     Array.from(files).forEach((file) => {
-        console.log("选择的文件：", file);
         handleUploadFile(file)
-
     });
+    imageUploadInput.value.value = ''
 }
 
 //监听文件粘贴
@@ -122,6 +121,7 @@ const handleImagePaste = (event) => {
             handleUploadFile(file)
         }
     }
+    imageUploadInput.value.value = ''
 }
 
 //处理父组件文件拖动事件
@@ -134,6 +134,7 @@ watch(() => props.files, (newFiles) => {
                 handleUploadFile(file)
             }
         });
+        imageUploadInput.value.value = ''
     }
 }, { deep: true });
 
@@ -163,6 +164,7 @@ const sendMessage = async () => {
     assistantStore.clearAll()
     textareaBlur()
     resetHeight()
+    imageUploadInput.value = ''
 
 }
 

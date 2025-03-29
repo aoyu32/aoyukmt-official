@@ -21,12 +21,18 @@ import AssistantInput from '@/components/assistant/AssistantInput.vue';
 import { fetchChatStream } from "@/api/coze";
 import { useAssistantStore } from "@/stores/assistant";
 import Tools from "@/utils/tools";
-import ModalDialog from "@/components/assistant/ModalDialog.vue";
+import ModalDialog from "@/components/community/ModalDialog.vue";
 import { callDashScopeStream } from "@/api/aliyun";
 import SparkAIService from '@/api/spark'
 import { GeminiAssistant } from '@/api/gemini'
+import { userStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
+
 
 const assistantStore = useAssistantStore()
+const userData = userStore()
+
 
 //监听文件拖动，将拖动到聊天窗口的图片传递给聊天输入框组件
 //存储拖动的文件
@@ -87,20 +93,8 @@ async function readStream(reader) {
     }
 }
 
-//随机生成用户信息
-const initUser = () => {
-    assistantStore.setUser({
-        id: Tools.getRandomId(),
-        name: Tools.getRandomName('user-'),
-        avatar: Tools.getRandomAvatar()
-
-    })
-}
-
 onMounted(() => {
-
     if (localStorage.getItem('user') === null) {
-        initUser()
         handleUserMessage("你好,你是谁")
     }
 })

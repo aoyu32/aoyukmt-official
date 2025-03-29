@@ -12,7 +12,7 @@
             <!-- 文件类型预览 -->
             <div class="file-wrapper" v-for="(file, index) in fileList" :key="index">
                 <div class="file-name">
-                    <i class="iconfont icon-wenjianicon-md"></i>{{ file }}
+                    <i class="iconfont icon-wenjianicon-md"></i>{{ file.name }}
                 </div>
                 <button class="delete-btn" @click="removeFile('file', index)">
                     <i class="iconfont icon-close"></i>

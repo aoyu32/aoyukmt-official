@@ -158,5 +158,5 @@ const ConfirmModify = () => {
 
 </script>
 <style lang="scss" scoped>
-@use "@/assets/styles/assistant/dialog.scss" as *;
+@use "@/assets/styles/community/dialog.scss" as *;
 </style>

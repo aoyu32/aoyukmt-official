@@ -1,0 +1,209 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
+/* 弹框的遮罩层 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+// 用户身份证
+.user-id-card {
+    width: 500px;
+    padding: 15px;
+    background: $theme-background;
+    border-radius: $assistant-diglog-radius;
+    box-shadow: 0 4px 8px $theme-deep-shadow;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $theme-primary;
+
+    // 头部 start
+    .card-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-self: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid $theme-primary-dt; // Header separation like ID cards
+
+        .header-left {
+            h3 {
+                color: $theme-primary-dark;
+                font-weight: bold;
+                margin: 0;
+            }
+        }
+
+        .header-right {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .close-btn {
+                background-color: $theme-primary-dark;
+                width: $assistant-dialog-close;
+                height: $assistant-dialog-close;
+                color: $theme-font-light;
+                border: none;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background: $theme-secondary;
+                }
+
+                .iconfont {
+                    font-size: 12px;
+                    font-weight: $font-weight;
+                }
+            }
+        }
+    }
+
+    // 身体 start
+    .card-body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        padding: 15px 0;
+
+        // 左边用户信息区域
+        .body-left-content {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 14px;
+
+            .username-box,
+            .sex-box,
+            .create-time-box {
+                display: flex;
+                align-items: center;
+
+                .name-lable,
+                .sex-lable,
+                .create-time-lable {
+                    width: 90px;
+                    color: $theme-primary;
+                    font-weight: bold;
+                }
+
+                .username,
+                .sex,
+                .create-time {
+                    flex: 1;
+                    color: $theme-font-light;
+
+                    span {
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        color: $theme-font-gray;
+                        font-weight: 550;
+                    }
+
+
+                }
+
+            }
+
+            .resume-box {
+
+                display: flex;
+                align-items: center;
+
+                .resume-lable {
+                    width: 90px;
+                    color: $theme-primary;
+                    font-weight: bold;
+                    display: flex;
+                    align-self: start;
+                }
+
+                .resume {
+                    flex: 1;
+
+
+                    p {
+                        padding: 0px 8px;
+                        border-radius: 4px;
+                        color: $theme-font-gray;
+                        font-weight: 550;
+                        overflow-wrap: break-word;
+                        word-wrap: break-word;
+                        /* 兼容旧浏览器 */
+                        word-break: break-word;
+                    }
+                }
+
+
+
+
+            }
+        }
+
+        // 右边用户头像区域
+        .body-right-avatar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .avatar {
+                img {
+                    width: 120px; // Slightly larger for balance
+                    height: 120px;
+                    object-fit: cover;
+                    border: 1px solid $theme-primary;
+                    border-radius: 4px; // Subtle rounding like ID photos
+                }
+            }
+        }
+    }
+
+    // 页脚
+    .card-footer {
+        width: 100%;
+        padding-top: 10px;
+        border-top: 1px solid $theme-primary-dt;
+
+        .user-id-box {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+
+            .user-id-lable {
+                width: 140px;
+                color: $theme-primary;
+                font-weight: bold;
+            }
+
+            .user-id {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                color: $theme-font-gray;
+                font-weight: 550;
+                letter-spacing: 1px;
+            }
+        }
+    }
+}

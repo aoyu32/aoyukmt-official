@@ -106,7 +106,7 @@ export default class tools {
     }
 
     //生成随机头像
-    static getRandomAvatar() {
+    static getRandomAvatar(radius) {
         // 随机背景色数组
         const backgroundColors = [
             'FFB6C1', 'FFE4E1', 'E6E6FA', 'F0FFF0', 'F0F8FF',  // 浅色系
@@ -163,7 +163,7 @@ export default class tools {
         const avatar = createAvatar(randomStyle.style, {
             seed: Math.random().toString(36).substring(2, 10),
             backgroundColor: [randomBgColor],
-            radius: 50,
+            radius: radius,
             size: 256,
             scale: 100,
             options: randomStyle.options

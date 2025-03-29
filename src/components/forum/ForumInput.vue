@@ -167,6 +167,7 @@ const handleUpload = (event) => {
     Array.from(files).forEach((file) => {
         handleUploadFile(file)
     });
+    uploadInputRef.value.value = '';
 }
 
 const handleUploadFile = (file) => {
