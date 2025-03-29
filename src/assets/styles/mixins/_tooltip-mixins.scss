@@ -1,0 +1,77 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
+// 工具提示 Mixin
+@mixin tooltip($content: "",
+    $position-x: right,//x轴方向位置，左|右
+    $distance-x: 0,//x轴方向偏移
+    $position-y: right,//y轴方向位置，上|下
+    $distance-y: 0,//y轴方向偏移
+    $height: auto,//气泡高度
+    $bg-color: $theme-primary-hover-dark,//气泡背景颜色
+    $text-color: $theme-font-light,//气泡内文本颜色
+) {
+    position: relative;
+
+    &::after {
+        content: $content;
+        position: absolute;
+        transform: translateX(-50%);
+        background-color: $bg-color;
+        color: $text-color;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        display: none;
+        height: $height;
+        line-height: $height;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        white-space: nowrap;
+        z-index: 1000;
+
+        @if $position-x =='top' {
+            top: $distance-x
+        }
+
+        @else if $position-x =='bottom' {
+            bottom: $distance-x
+        }
+
+        @else if $position-x =='right' {
+            right: $distance-x
+        }
+
+        @else if $position-x =='left' {
+            left: $distance-x
+        }
+
+
+        @if $position-y =='top' {
+            top: $distance-y
+        }
+
+        @else if $position-y =='bottom' {
+            bottom: $distance-y
+        }
+
+        @else if $position-y =='right' {
+            right: $distance-y
+        }
+
+        @else if $position-y =='left' {
+            left: $distance-y
+        }
+    }
+
+
+
+
+    &:hover::after {
+        display: block;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-10px);
+        animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1.2s forwards;
+    }
+}

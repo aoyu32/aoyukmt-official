@@ -12,6 +12,7 @@ export const userStore = defineStore('user', () => {
         name: tempUserName,
         avatar: tempAvatar,
         sex: '未知',
+        status:'🔋',
         createTime: tempDate,
         resume: '该用户未填写任何简述！'
     })

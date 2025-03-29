@@ -1,6 +1,7 @@
 @use "@/assets/styles/common/_theme.scss" as *;
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_tooltip-mixins.scss" as *;
 
 .assistant-input {
     width: 100%;
@@ -73,38 +74,7 @@
             position: relative;
             display: inline-block;
             cursor: pointer;
-
-
-            /* 上传按钮的提示气泡 */
-            &::after {
-                content: $assistant-hover-text;
-                /* 提示文本 */
-                position: absolute;
-                bottom: -20px;
-                left: 120%;
-                transform: translateX(-50%);
-                background-color: $theme-primary-hover-dark;
-                color: $theme-font-light;
-                padding: 8px 12px;
-                border-radius: 5px;
-                font-size: 14px;
-                display: none;
-                /* 默认隐藏 */
-                opacity: 1;
-                transition: opacity 0.3s ease, transform 0.3s ease;
-                white-space: nowrap;
-                z-index: 1000;
-
-
-            }
-
-            &:hover::after {
-                display: block;
-                opacity: 1;
-                transform: translateX(-50%) translateY(-10px);
-                animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1.2s forwards;
-            }
-
+            @include tooltip($assistant-hover-text, left, 120%, bottom, -20px)
         }
 
         /* 为发送按钮添加提示气泡样式 */
@@ -112,34 +82,7 @@
             position: relative;
             display: inline-block;
 
-            &::after {
-                content: attr(data-tooltip);
-                /* 提示文本 */
-                position: absolute;
-                bottom: -20px;
-                right: 120%;
-                transform: translateX(-50%);
-                background-color: $theme-primary-hover-dark;
-                color: $theme-font-light;
-                padding: 8px 12px;
-                border-radius: 5px;
-                font-size: 14px;
-                display: none;
-                /* 默认隐藏 */
-                opacity: 0;
-                transition: opacity 0.3s ease, transform 0.3s ease;
-                white-space: nowrap;
-                z-index: 1000;
-            }
-
-            &:hover::after {
-                display: block;
-                opacity: 1;
-                transform: translateX(-50%) translateY(-10px);
-                animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1s forwards;
-            }
-
-
+            @include tooltip(attr(data-tooltip), right, 120%, bottom, -20px) 
         }
 
         // 红色边框阴影呼吸灯效果
@@ -157,13 +100,13 @@
     .input-box {
         .preview-container {
             .image-wrapper {
-                width: 100px; // Adjust the width for smaller screens
+                width: 100px; 
             }
         }
 
         .chat-input-area {
             textarea {
-                min-height: auto; // Allow the textarea to adjust its height dynamically on smaller screens
+                min-height: auto; 
             }
         }
     }

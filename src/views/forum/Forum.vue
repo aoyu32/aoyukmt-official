@@ -16,7 +16,6 @@
                     <div class="online">
                         <span>🪆123</span>
                     </div>
-
                 </div>
             </div>
             <!-- 聊天窗口 -->
@@ -24,13 +23,12 @@
                 <ForumWindow />
             </div>
             <div class="footer-control" v-if="!isHide">
-                <button @click="isHide = true">⚓</button>
+                <button @click="isHide = true">🛥️</button>
             </div>
             <!-- 输入窗口  -->
             <div class="forum-footer" v-if="isHide">
                 <ForumInput @setFooterHide="handleHidFooter" />
             </div>
-
         </div>
     </div>
 </template>
@@ -62,6 +60,7 @@ const isScrolledToBottom = () => {
 @use "@/assets/styles/common/_theme.scss" as *;
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_tooltip-mixins.scss" as *;
 
 .forum {
     width: 100%;
@@ -69,6 +68,7 @@ const isScrolledToBottom = () => {
     display: flex;
     align-items: center;
     justify-content: center;
+
 
 
 
@@ -117,13 +117,15 @@ const isScrolledToBottom = () => {
             position: absolute;
             bottom: 5px;
             left: 5px;
-            transform: rotate(180deg);
+
 
             button {
                 background-color: transparent;
                 border: none;
-                font-size: 16px;
-                transition: all 0.2s ease-in-out;
+                font-size: 20px;
+                cursor: pointer;
+                @include tooltip("点击显示输入框😶", left, 90%, bottom, 15px, auto, $theme-secondary-light);
+
             }
 
         }

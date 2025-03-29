@@ -1,0 +1,155 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_tooltip-mixins.scss" as *;
+
+.sidebar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px 10px;
+    box-sizing: border-box;
+
+    a {
+        text-decoration: none;
+    }
+
+    .sidebar-top {
+        position: relative;
+
+        .user-info {
+            text-align: center;
+
+            .avatar {
+                width: 50px;
+                height: 50px;
+                border: 1px solid $theme-primary;
+                border-radius: 50%;
+                overflow: hidden;
+                margin: 0 auto 10px;
+                transition: all 0.3s ease-in-out;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    border: 1px solid $theme-secondary-light;
+                    box-shadow: 0 0 2px 4px $theme-secondary-lt;
+                }
+
+
+
+            }
+
+
+            .username {
+                font-size: 14px;
+                color: $theme-font-gray;
+                word-wrap: break-word;
+            }
+        }
+    }
+
+    .sidebar-middle {
+        flex-grow: 1;
+    }
+
+    .sidebar-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+
+        .menu-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid $theme-primary;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            line-height: 40px;
+            transition: background-color 0.3s ease;
+
+            @include tooltip(attr(title), left, 120%, bottom, 0px, 20px, $theme-secondary-light);
+
+            .menu-icon {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                font-size: 16px;
+                align-items: center;
+                justify-content: center;
+
+
+                span {
+                    width: 100%;
+                    // background-color: aqua;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease-in-out;
+                }
+
+
+            }
+
+
+            &:not(.active):hover {
+
+                border: 2px solid $theme-primary;
+
+                span {
+                    transform: scale(1.3);
+                }
+            }
+
+            &.active {
+                border: 2px solid $theme-primary;
+                box-shadow: 0 0 7px $theme-primary-shadow;
+
+                .menu-icon {
+                    display: inline-block;
+                    animation: fontSize 2s infinite ease-in-out;
+                }
+            }
+
+        }
+
+    }
+}
+
+@media (max-width:786px) {
+    .sidebar {
+        padding: 10px 10px 20px 10px;
+
+        .sidebar-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .user-info {
+                .avatar {
+                    width: 40px;
+                    height: 40px;
+                }
+
+                .username {
+                    display: none;
+                }
+            }
+        }
+
+    }
+}

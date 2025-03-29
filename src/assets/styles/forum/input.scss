@@ -1,17 +1,20 @@
 @use "@/assets/styles/common/_theme.scss" as *;
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_tooltip-mixins.scss" as *;
 
 .forum-input {
     display: flex;
     width: 100%;
     max-height: $assistant-textarea-max-height;
+    // height: 600px;
     padding: 0 10px 10px 10px;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    position: relative;
     background-color: transparent;
+    position: relative; // 确保成为定位上下文
+    overflow: visible; // 允许内容溢出
 
     .emoji-list {
         width: 100%;
@@ -61,7 +64,8 @@
         border-radius: 10px;
         flex: 1;
         overflow: hidden; // 确保滚动条在容器内
-        position: relative;
+        overflow: visible; // 允许tooltip溢出容器
+
 
         .input-icons {
             width: 100%;
@@ -69,9 +73,11 @@
             display: flex;
             justify-content: space-between;
 
+
             .icons {
                 display: flex;
                 gap: 10px;
+
 
                 .icon {
                     border: none;
@@ -85,8 +91,20 @@
 
                 }
 
-            }
+                #hide-input {
+                    @include tooltip("点击隐藏输入框😶", left, 0, top, -45px, auto, $theme-secondary-light)
+                }
 
+                #show-emoji {
+                    @include tooltip("点击显示或隐藏表情列表😺", left, 0, top, -45px, auto, $theme-secondary-light)
+                }
+
+                #file-upload {
+                    @include tooltip("发送图片或md文档，其他格式不支持哦!😬", left, 0, top, -45px, auto, $theme-secondary-light)
+                }
+
+
+            }
 
             .font-counter {
                 font-size: 13px;
@@ -110,38 +128,8 @@
                         cursor: pointer;
                     }
 
-
-
-                    &::after {
-                        content: "点击清除输入⚔️";
-                        position: absolute;
-                        top: 0;
-                        right: 120%;
-                        transform: translateX(-50%);
-                        background-color: $theme-primary-hover-dark;
-                        color: $theme-font-light;
-                        padding: 6px 10px;
-                        border-radius: 5px;
-                        font-size: 12px;
-                        display: none;
-                        opacity: 0;
-                        transition: opacity 0.3s ease, transform 0.3s ease;
-                        white-space: nowrap;
-                        z-index: 1000;
-                    }
-
-                    &:hover::after {
-                        display: block;
-                        opacity: 1;
-                        transform: translateX(-50%) translateY(-10px);
-                        animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1s forwards;
-                    }
-
-
-
+                    @include tooltip("点击清除输入⚔️", right, 120%, bottom, -100%)
                 }
-
-
 
                 .number {
                     display: flex;
@@ -151,11 +139,6 @@
                     line-height: 15px;
                     font-size: 13px;
                 }
-
-
-
-
-
             }
         }
 
@@ -199,6 +182,8 @@
             gap: 10px;
 
             .input-control {
+                @include tooltip("开启或关闭解析输入的markdown语法文本内容📑", left, 120%, bottom, -10px);
+
                 .mini-switch {
                     display: inline-block;
                     position: relative;
@@ -257,7 +242,10 @@
 
                 &:hover {
                     background-color: $theme-primary-hover-dark;
+
                 }
+
+                @include tooltip("点击或按下Shift+Enter键发送消息!😇", right, 120%, bottom, -10px)
             }
         }
     }

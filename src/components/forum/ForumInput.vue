@@ -6,8 +6,7 @@
         <FilePreview :imgList="forumStore.uploadImages" :fileList="forumStore.uploadDocuments"
             @removeFile="handleRemoveFile" />
         <!-- 表情列表区域 -->
-        <div class="emoji-list" v-show="showEmojiBox" @mouseenter="handleEmojiBoxEnter"
-            @mouseleave="handleEmojiBoxLeave">
+        <div class="emoji-list" v-show="showEmojiList">
             <div class="emoji-box">
                 <span v-for="(item, index) in emojisArray" @click="inputEmoji(item)">{{ item }}</span>
             </div>
@@ -17,10 +16,9 @@
             <!-- 图标区域（左上角） -->
             <div class="input-icons" @mousedown.prevent>
                 <div class="icons">
-                    <button class="icon input-control" @click="hiddenInput">⚓</button>
-                    <button class="icon emoji" @mouseenter="handleEmojiButtonEnter" @mouseleave="handleEmojiButtonLeave"
-                        @mousedown.prevent>😀</button>
-                    <button class="icon more" @click="triggerUploadFile">🗂️</button>
+                    <button class="icon" id="hide-input" @click="hiddenInput">⚓</button>
+                    <button class="icon" id="show-emoji" @click="handleDisplayEmojiList">😀</button>
+                    <button class="icon" id="file-upload" @click="triggerUploadFile">🗂️</button>
                     <input type="file" :accept="acceptFile" multiple hidden @change="handleUpload" ref="uploadInputRef"
                         @paste="handleImagePaste">
                 </div>
@@ -37,7 +35,7 @@
             <div class="input-textarea">
                 <!-- 文本输入区域 -->
                 <textarea placeholder="请输入内容..." class="textarea" ref="textareaRef" @input="handleInput"
-                    v-model="userInputText"></textarea>
+                    v-model="userInputText" @keydown="handleSendKeyDown"></textarea>
             </div>
             <!-- 发送按钮区域 -->
             <div class="input-send" @mousedown.prevent>
@@ -50,7 +48,7 @@
                     </label>
                 </div>
                 <div class="send-button">
-                    <button @click="sendMessage">发送</button>
+                    <button @click="sendMessage" ref="sendMsgBtnRef">发送</button>
                 </div>
             </div>
         </div>
@@ -74,6 +72,7 @@ const userInputText = ref("");
 const uploadInputRef = ref(null);
 
 
+//点击发送消息
 const sendMessage = () => {
 
     //判断是否上传文档或输入消息
@@ -113,36 +112,26 @@ const sendMessage = () => {
     forumStore.clearUploadFiles()//清理上传的文件
 }
 
+//按下shift+enter发送消息
+const sendMsgBtnRef = ref(null)
+const handleSendKeyDown = (e) => {
+    if (e.shiftKey && e.key === 'Enter') {
+        e.preventDefault()
+        sendMsgBtnRef.value.click()
+    }
+}
+
 //重置输入框
 const resetInput = () => {
     userInputText.value = ''
     adjustHeight()
 }
 
-
-const showEmojiBox = ref(false);
-let emojiBoxTimeout = null;
-
-const handleEmojiButtonEnter = () => {
-    clearTimeout(emojiBoxTimeout);
-    showEmojiBox.value = true;
-};
-
-const handleEmojiButtonLeave = () => {
-    emojiBoxTimeout = setTimeout(() => {
-        showEmojiBox.value = false;
-    }, 300);
-};
-
-const handleEmojiBoxEnter = () => {
-
-    clearTimeout(emojiBoxTimeout);
-    showEmojiBox.value = true;
-};
-
-const handleEmojiBoxLeave = () => {
-    showEmojiBox.value = false;
-};
+//显示表情列表
+const showEmojiList = ref(false);
+const handleDisplayEmojiList = () => {
+    showEmojiList.value = !showEmojiList.value
+}
 
 const handleInput = () => {
     adjustHeight()
@@ -215,7 +204,7 @@ const inputEmoji = (value) => {
         textareaRef.value.setSelectionRange(newPos, newPos);
     });
 
-    showEmojiBox.value = false;
+    showEmojiList.value = false;
 }
 
 //删除预览图片或文档

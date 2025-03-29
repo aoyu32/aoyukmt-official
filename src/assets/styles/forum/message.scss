@@ -4,7 +4,7 @@
 
 .forum-message {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 16px;
     width: 70%;
 
@@ -33,7 +33,7 @@
         .name-container {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 2px;
             margin-bottom: 6px;
 
 
@@ -43,8 +43,7 @@
             }
 
             .name {
-                font-size: 15px;
-                font-weight: 600;
+                font-size: 14px;
                 color: $theme-font-gray;
             }
         }
