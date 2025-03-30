@@ -425,17 +425,17 @@
     }
 
     80% {
-        opacity: 1; // 让它一直保持可见
+        opacity: 1;
     }
 
     90% {
-        opacity: 1; // 让它一直保持可见
+        opacity: 1; 
     }
 
 
     100% {
         right: 100%;
-        opacity: 0; // 在最后逐渐消失
+        opacity: 0; 
     }
 }
 
@@ -469,5 +469,17 @@
     100% {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

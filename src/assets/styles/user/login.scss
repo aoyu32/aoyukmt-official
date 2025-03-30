@@ -1,0 +1,233 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+
+/* 弹框的遮罩层 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.user-login {
+    width: 400px;
+    max-width: 90%;
+    border-radius: 12px;
+    padding: 30px;
+    background-color: $theme-background-light;
+    box-shadow: 0 10px 25px $theme-deep-shadow;
+    transform: translateY(0);
+    animation: fadeUp 0.1s ease-out;
+
+    .login-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+
+        .header-left {
+            h4 {
+                margin: 0;
+                font-size: 16px;
+                color: #666666;
+                font-weight: 500;
+            }
+        }
+
+        .header-right {
+            .close-button {
+                background-color: $theme-primary-dt;
+                width: $assistant-dialog-close;
+                height: $assistant-dialog-close;
+                color: $theme-font-light;
+                border: none;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: background-color 0.5s;
+
+                &:hover {
+                    background: $theme-secondary;
+                }
+
+                .iconfont {
+                    font-size: 12px;
+                    font-weight: $font-weight;
+                }
+            }
+        }
+    }
+
+    .login-body {
+        margin-bottom: 30px;
+
+        .body-title {
+            margin-bottom: 30px;
+
+
+            h2 {
+                font-size: 24px;
+                text-align: center;
+                color: $theme-font-gray;
+                margin: 0;
+                font-weight: 600;
+
+                span {
+                    color: $theme-primary;
+                }
+            }
+        }
+
+        .body-form {
+            form {
+
+                .form-account,
+                .form-password {
+                    margin-bottom: 25px;
+                    position: relative;
+
+                    .account-label,
+                    .password-label {
+                        margin-bottom: 8px;
+
+                        label {
+                            font-size: 14px;
+                            color: #555555;
+                            font-weight: 500;
+                        }
+                    }
+
+                    .account-input,
+                    .password-input {
+                        position: relative;
+
+                        input {
+                            width: 100%;
+                            height: 45px;
+                            padding: 0 15px;
+                            border: 1px solid $theme-secondary-light;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            color: $theme-font-dark;
+                            letter-spacing: 0.5px;
+                            background-color: $theme-background;
+                            transition: all 0.3s;
+                            padding-right: 40px; // 为图标留出空间
+
+                            &:focus {
+                                outline: none;
+                                border-color: $theme-primary-hover-dark;
+                                box-shadow: 0 0 0 3px $theme-primary-hover;
+                                background-color: #ffffff;
+
+                                &::placeholder {
+                                    opacity: 0;
+                                    transition: opacity 0.2s ease;
+                                }
+                            }
+
+                            &::placeholder {
+                                color: #bbbbbb;
+                                letter-spacing: normal;
+                                transition: opacity 0.2s ease;
+                            }
+                        }
+
+                        .clear-icon,
+                        .password-icon {
+                            position: absolute;
+                            right: 15px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            color: #bbbbbb;
+                            cursor: pointer;
+                            transition: color 0.2s;
+
+                            &:hover {
+                                color: $theme-secondary;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .login-footer {
+        .footer-submit {
+            margin-bottom: 20px;
+
+            button {
+                width: 100%;
+                height: 48px;
+                background-color: $theme-primary;
+                color: $theme-font-light;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: $theme-secondary;
+                }
+            }
+        }
+
+        .footer-register-reset {
+            display: flex;
+            justify-content: space-between;
+
+            .register,
+            .reset {
+                button {
+                    background: none;
+                    border: none;
+                    color: #666666;
+                    font-size: 14px;
+                    cursor: pointer;
+                    padding: 0;
+                    transition: color 0.2s;
+
+                    &:hover {
+                        color: $theme-secondary;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/* 适配小屏幕 */
+// @media (max-width: 576px) {
+//     .user-login {
+//         padding: 20px;
+
+//         .login-body {
+//             .body-title {
+//                 h2 {
+//                     font-size: 20px;
+//                 }
+//             }
+//         }
+
+//         .login-footer {
+//             .footer-register-reset {
+//                 align-items: center;
+//                 gap: 10px;
+//             }
+//         }
+//     }
+// }

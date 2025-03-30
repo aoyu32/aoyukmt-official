@@ -3,7 +3,7 @@
         <!-- 上半部分：头像和用户名 -->
         <div class="sidebar-top">
             <div class="user-info">
-                <div class="avatar" @click="displayUserIDCard">
+                <div class="avatar" @click="hanldeAvatarClick">
                     <img :src="userData.user.avatar" alt="User Avatar" />
                 </div>
                 <p class="username">{{ userData.user.name }}</p>
@@ -36,9 +36,15 @@ const menuItems = [
 ];
 
 //显示用户身份证卡片
-const emit = defineEmits(["display-user-card"])
-const displayUserIDCard = () => {
-    emit("display-user-card")
+const emit = defineEmits(["display-user-card", "display-dialog"])
+
+//显示未登录对话框
+const hanldeAvatarClick = () => {
+    if (userData.token !== '') {
+        emit("display-user-card")
+    } else {
+        emit("display-dialog")
+    }
 }
 
 

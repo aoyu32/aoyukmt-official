@@ -29,7 +29,7 @@
                     </div>
                     <!-- 文档 -->
                     <div class="document" v-else>
-                        <MarkdownViewer :markdown-file="message.content.docs"/>
+                        <MarkdownViewer :markdown-file="message.content.docs" />
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@ const props = defineProps({
 })
 
 //判断是否发送了图片
-const isImgEmpty = computed(() => {
+const isimgempty = computed(() => {
     return props.message.content.img.length === 0
 })
 
@@ -78,14 +78,12 @@ const messageContainerStyle = computed(() => {
 const textImgStyle = computed(() => {
     const hasText = props.message.content.text !== ''
     return {
-        gap: hasText ? '10px' : '0px'
+        gap: hasText ? '0px' : '10px'
     }
 })
 
 
 onMounted(() => {
-
-
     console.log("父组件 传递来的消息数据：", props.message.content);
 })
 </script>

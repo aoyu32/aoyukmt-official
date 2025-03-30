@@ -7,7 +7,7 @@
             <div class="community-nav" :class="{ 'show': isShowNav }">
                 <!-- 导航栏 -->
                 <div class="nav" :style="{ 'height': navHeight, 'border-radius': navBorderRadius }">
-                    <CommunitySidebar @display-user-card="isDisplay = true" />
+                    <CommunitySidebar @display-user-card="isDisplay = true" @display-dialog="isShowDialog = true" />
                 </div>
             </div>
             <!-- 界面 -->
@@ -22,6 +22,14 @@
         <div class="user-info-card">
             <UserIDCard :userData="user" @close-user-card="isDisplay = false" v-if="isDisplay" />
         </div>
+        <div class="dialog" v-if="isShowDialog">
+            <CommunityDialog @close-dialog="isShowDialog = false" @dialog-submit="handleDialogSubmit"
+                :title="dialogTitle" :content="dialogContent" :cancel-btn="dialogCancelBtn"
+                :submit-btn="dialogSubmitBtn" />
+        </div>
+        <div class="user-login" v-if="displayLogin">
+            <UserLogin @close-login="displayLogin = false" />
+        </div>
     </div>
 </template>
 
@@ -29,17 +37,28 @@
 import { ref, watchEffect, onMounted } from 'vue'
 import CommunitySidebar from '@/components/community/CommunitySidebar.vue';
 import { useRoute } from 'vue-router';
-import UserIDCard from '@/components/community/UserIDCard.vue';
+import UserIDCard from '@/components/user/UserIDCard.vue';
 import { userStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
+import CommunityDialog from '@/components/community/CommunityDialog.vue';
+import UserLogin from '@/components/user/UserLogin.vue';
 const userData = userStore()
 const { user } = storeToRefs(userData)
 
-//显示用户信息卡
+//显示对话框
+const dialogTitle = ref("📌 登录提示")
+const dialogContent = ref("抱歉！您还未登录，麻烦您先登录或注册！")
+const dialogCancelBtn = ref("我先再逛逛")
+const dialogSubmitBtn = ref("我要登录/注册")
+const isShowDialog = ref(false)
 const isDisplay = ref(false)
-onMounted(() => {
-    console.log(user);
-})
+const handleDialogSubmit = () => {
+    displayLogin.value = true
+    isShowDialog.value = false
+}
+
+//登录窗口
+const displayLogin = ref(false)
 
 //控制侧边栏高度
 const route = useRoute();
@@ -67,12 +86,7 @@ watchEffect(() => {
 const isShowNav = ref(false)
 const toggleNav = () => {
     isShowNav.value = !isShowNav.value
-
-
 }
-
-
-
 </script>
 
 <style lang="scss" scoped>

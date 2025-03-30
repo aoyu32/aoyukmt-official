@@ -63,10 +63,12 @@
             <div class="card-footer">
                 <div class="user-id-box">
                     <div class="user-id-lable">
-                        🧬 用户身份ID号码
+                        🧬 我绑定的邮箱
                     </div>
                     <div class="user-id">
-                        {{ userData.id }}
+                        <!-- {{ userData.id }} -->
+                        <!-- aoyu3399@gmail.com -->
+                        未绑定
                     </div>
                 </div>
             </div>
@@ -87,18 +89,7 @@ const closeUserCard = () => {
     emit("close-user-card")
 }
 
-onMounted(() => {
-    console.log(props.userData);
-
-})
-
-
-
-
-
-
-
 </script>
 <style scoped lang="scss">
-@use "@/assets/styles/community/card.scss" as *;
+@use "@/assets/styles/user/card.scss" as *;
 </style>

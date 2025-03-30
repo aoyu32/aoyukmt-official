@@ -9,289 +9,129 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: $theme-background-dark;
+    background: rgba(36, 36, 36, 0.322);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-
 }
 
-/* 弹框样式 */
-.dialog {
-    background: $theme-background;
-    border-radius: $assistant-diglog-radius;
-    width: $assistant-diglog-width;
-    box-shadow: 0 4px 8px $theme-deep-shadow;
-    position: relative;
-    overflow: hidden;
-    padding: $assistant-dialog-padding;
+.community-dialog {
 
-    &-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 200px;
+    width: 400px;
+    height: 200px;
+    background-color: $theme-background;
+    border-radius: 10px;
+    padding: 15px;
+
+    .dialog-header {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        margin-bottom: 20px;
-    }
+        padding-bottom: 10px;
+        border-bottom: 1px solid $theme-primary;
 
-    .username {
-        font-size: 15px;
-        font-weight: $font-weight;
-        color: $theme-primary;
-    }
-
-    /* 关闭按钮 */
-    .close-button {
-        background-color: $theme-primary-dt;
-        width: $assistant-dialog-close;
-        height: $assistant-dialog-close;
-        // background: transparent;
-        color: $theme-font-light;
-        border: none;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        transition: background-color 0.5s;
-
-
-        &:hover {
-            background: $theme-secondary;
+        .header-left {
+            h3 {
+                color: $theme-primary;
+            }
         }
 
-        .iconfont {
-            font-size: 12px;
-            font-weight: $font-weight;
+
+        .header-right {
+
+            /* 关闭按钮 */
+            .close-button {
+                background-color: $theme-primary-dt;
+                width: $assistant-dialog-close;
+                height: $assistant-dialog-close;
+                // background: transparent;
+                color: $theme-font-light;
+                border: none;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transition: background-color 0.5s;
+
+
+                &:hover {
+                    background: $theme-secondary;
+                }
+
+                .iconfont {
+                    font-size: 12px;
+                    font-weight: $font-weight;
+                }
+            }
+
         }
     }
 
-    /* 头像样式 */
-    .avatar-container {
-        position: relative;
-        width: 100%;
+    .dialog-body {
+
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 30px;
-    }
-
-    .avatar {
-        position: relative;
-        width: $assistant-dialog-avatar;
-        height: $assistant-dialog-avatar;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: $theme-font-light;
-        font-size: 32px;
-    }
-
-    /* 提示信息 */
-    .info {
-        display: flex;
-        justify-content: start;
-        text-align: center;
-        font-size: 16px;
-        font-weight: 600;
-        color: $theme-font-light-gray;
-        margin-bottom: 10px;
-    }
-
-    /* 输入框 */
-    input[type="text"] {
+        height: 100%;
         width: 100%;
-        margin: 0 auto 10px;
-        display: block;
-        padding: 10px;
-        border: 2px solid $theme-border-gray;
-        border-radius: 5px;
-        font-size: 16px;
-        outline: none;
-        background-color: $theme-background;
-        transition: border-color 0.3s;
-        color: $theme-font-gray;
+        gap: 10px;
 
-        &:focus {
-            border-color: $theme-primary;
-            &::placeholder {
-                color: transparent;
+        .body-icon {
+            font-size: 35px;
+        }
+
+        .body-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            p {
+                font-size: 16px;
+                color: $theme-font-dark-gray;
             }
         }
     }
 
-    /* 提示内容 */
-    .input-hint {
-        font-size: 12px;
-        color: $theme-secondary-light;
-        margin-bottom: 10px;
-        font-weight: 600;
-    }
-
-    /* 按钮组 */
-    .button-group {
+    .dialog-footer {
         display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin-top: 30px;
-    }
+        justify-content: flex-end;
+        gap: 20px;
 
-    button {
-        width: $assistant-dialog-btn;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+        button {
+            padding: 8px 15px;
+            font-weight: 550;
+            border-radius: 5px;
+            border: 1px solid $theme-primary;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
 
-    .confirm-button {
-        background: $theme-primary;
-        color: $theme-font-light;
+        .cancel {
+            color: $theme-font-light-gray;
+            background-color: transparent;
 
-        &:hover {
-            background: $theme-primary-hover-dark;
+            &:hover {
+                border: 1px solid $theme-primary-hover-dark;
+            }
+        }
+
+        .submit {
+            color: $theme-font-light;
+            background-color: $theme-secondary;
+
+            &:hover {
+
+                border: 1px solid $theme-primary-hover-dark;
+                background-color: $theme-secondary-light;
+            }
         }
     }
 
-    .cancel-button {
-        color: $theme-font-dark;
-        border: 1px solid $theme-primary;
-        background-color: $theme-background;
-
-        &:hover {
-            background: $theme-primary-hover;
-            color: $theme-font-dark;
-        }
-    }
-}
-
-.avatar-container {
-    .avatar-img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background: $theme-background;
-        border: 2px solid $theme-primary;
-
-        img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-    }
-}
-
-.avatar-upload {
-    position: absolute;
-    bottom: 1px;
-    right: 1px;
-    width: $assistant-avatar-btn;
-    height: $assistant-avatar-btn;
-    background: $theme-background;
-    border: 2px solid $theme-secondary;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: $theme-secondary-light;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-
-    &:hover {
-        border: 2px solid $theme-primary-hover-dark;
-        color: $theme-primary-hover-dark;
-    }
-
-    /* 上传按钮的提示气泡 */
-    &::after {
-        content: attr(data-avatar-tooltip);
-        width: 100px;
-        /* 使用固定宽度而不是max-width */
-        word-wrap: break-word;
-        /* 允许长单词换行 */
-        overflow-wrap: break-word;
-        /* 现代浏览器的换行属性 */
-        white-space: normal;
-        /* 允许文本自然换行 */
-        position: absolute;
-        bottom: -35px;
-        left: 120%;
-        transform: translateX(-50%);
-        background-color: $theme-primary-hover-dark;
-        color: $theme-font-light;
-        padding: 7px 10px;
-        border-radius: 9px;
-        font-size: 12px;
-        display: none;
-        /* 默认隐藏 */
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        z-index: 1000;
-    }
-
-    /* 鼠标悬浮时显示上传按钮的提示气泡 */
-    &:hover:not(.show-tooltip)::after {
-        display: block;
-        opacity: 1;
-        transform: translateX(-50%) translateY(-10px);
-        animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1.2s forwards;
-    }
-}
-
-// 控制是否显示tooltip
-.show-tooltip::after {
-    display: block;
-    opacity: 1;
-    transform: translateX(0%) translateY(-5px);
-    // animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1.2s forwards;
-}
-
-/* 确认按钮提示气泡 */
-.confirm-button {
-    position: relative;
-    display: inline-block;
-
-    /* 上传按钮的提示气泡 */
-    &::after {
-        content: attr(data-button-tooltip);
-        /* 提示文本 */
-        position: absolute;
-        top: -27px;
-        left: 100%;
-        transform: translateX(-50%);
-        background-color: $theme-primary-hover-dark;
-        color: white;
-        padding: 3px 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        display: none;
-        /* 使用 CSS 自定义属性控制显示 */
-        /* 默认隐藏 */
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        white-space: nowrap;
-        z-index: 1000;
-    }
-
-    /* 鼠标悬浮时显示上传按钮的提示气泡 */
-    &:hover::after {
-        display: block;
-        opacity: 1;
-        transform: translateX(-50%) translateY(-10px);
-        animation: slideIn 0.3s ease-in-out forwards, fadeOut 0.5s 1.2s forwards;
-    }
-}
-
-/* 没有动画时的样式 */
-.blink-name {
-    animation: blinkOfInput 0.5s infinite;
-}
-
-.blink-avatar {
-    animation: blinkOfAvatar 0.5s infinite;
 }
