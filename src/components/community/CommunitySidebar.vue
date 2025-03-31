@@ -7,6 +7,8 @@
                     <img :src="userData.user.avatar" alt="User Avatar" />
                 </div>
                 <p class="username">{{ userData.user.name }}</p>
+                <!-- <div class="login-button"><button><i class="iconfont icon-sign-out"></i></button></div> -->
+                <div class="login-button"><button><i class="iconfont icon-tuichudenglu"></i></button></div>
             </div>
         </div>
 
@@ -46,10 +48,7 @@ const hanldeAvatarClick = () => {
         emit("display-dialog")
     }
 }
-
-
 </script>
-
 <style lang="scss" scoped>
 @use "@/assets/styles/community/sidebar.scss" as *;
 </style>

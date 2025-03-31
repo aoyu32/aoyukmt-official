@@ -9,9 +9,20 @@ export const userStore = defineStore('user', () => {
     const tempDate = tools.getFormatDate('yyyy年mm月dd日')
     const token = ref("")
 
+    const userLoginForm = reactive({
+        account: '',
+        password: ''
+    })
+
+    const userRegisterForm = reactive({
+        username: '',
+        password: '',
+        confirmPassword: ''
+    })
+
     const user = reactive({
         id: tempId,
-        name: "未登录",
+        name: "aoyukmt1234567890",
         avatar: tempAvatar,
         sex: '未知',
         status: '🔋',
@@ -19,8 +30,27 @@ export const userStore = defineStore('user', () => {
         resume: '该用户未填写任何简述！'
     })
 
+    //设置用户登录表单数据
+    const setUserLoginForm = (form) => {
+        userLoginForm = form
+    }
+    //设置用户注册表单数据
+    const setUserRegisterForm = (form) => {
+        userRegisterForm = form
+    }
+    //设置用户数据
+    const setUser = (userData) => {
+        user = userData
+    }
+
+
     return {
         token,
-        user
+        user,
+        userLoginForm,
+        userRegisterForm,
+        setUser,
+        setUserLoginForm,
+        setUserRegisterForm
     }
 })

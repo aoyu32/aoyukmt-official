@@ -2,6 +2,7 @@
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
 
+/* 弹框的遮罩层 */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -15,23 +16,23 @@
     z-index: 1000;
 }
 
-.user-login {
+.user-register {
     width: 400px;
-
     max-width: 90%;
     border-radius: 12px;
     padding: 30px;
     background-color: $theme-background-light;
     box-shadow: 0 10px 25px $theme-deep-shadow;
+    transform: translateY(0);
     animation: fadeUp 0.1s ease-out;
 
-    .login-header {
+    .register-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 30px;
 
-        h4 {
+        .header-left h4 {
             margin: 0;
             font-size: 16px;
             color: #666666;
@@ -62,48 +63,48 @@
         }
     }
 
-    .login-body {
+    .register-body {
         margin-bottom: 30px;
 
-        .body-title {
-            margin-bottom: 30px;
+        .body-title h2 {
+            font-size: 24px;
+            text-align: center;
+            color: $theme-font-gray;
+            margin: 0 0 30px;
+            font-weight: 600;
 
-            h2 {
-                font-size: 24px;
-                text-align: center;
-                color: $theme-font-gray;
-                margin: 0;
-                font-weight: 600;
-
-                span {
-                    color: $theme-primary;
-                }
+            span {
+                color: $theme-primary;
             }
         }
 
-        .login-form {
+        .body-form {
             .form-group {
                 margin-bottom: 25px;
+                position: relative;
 
-                .form-label {
-                    display: block;
+                .form-label label {
                     font-size: 14px;
                     color: #555555;
                     font-weight: 500;
                     margin-bottom: 8px;
+                    display: block;
                 }
 
                 .input-wrapper {
+                    width: 100%;
+                    display: flex;
                     position: relative;
 
                     input {
                         width: 100%;
-                        height: 45px;
+                        height: 40px;
                         padding: 0 15px;
                         border: 1px solid $theme-secondary-light;
                         border-radius: 8px;
                         font-size: 14px;
                         color: $theme-font-dark;
+                        letter-spacing: 0.5px;
                         background-color: $theme-background;
                         transition: all 0.3s;
                         padding-right: 40px;
@@ -112,27 +113,29 @@
                             outline: none;
                             border-color: $theme-primary-hover-dark;
                             box-shadow: 0 0 0 3px $theme-primary-hover;
-                            background-color: #ffffff;
+                            background-color: $theme-font-light;
 
                             &::placeholder {
                                 opacity: 0;
+                                transition: opacity 0.2s ease;
                             }
                         }
 
                         &::placeholder {
                             color: #bbbbbb;
+                            letter-spacing: normal;
                             transition: opacity 0.2s ease;
                         }
                     }
 
                     .iconfont {
                         position: absolute;
+                        color: #bbbbbb;
+                        cursor: pointer;
                         right: 15px;
                         top: 50%;
                         transform: translateY(-50%);
-                        color: #bbbbbb;
-                        cursor: pointer;
-                        // transition: all 0.2s ease-in-out; 
+                        // transition: all 0.2s ease-in-out;
 
                         &:hover {
                             color: $theme-secondary;
@@ -141,20 +144,38 @@
                         &.active {
                             color: $theme-primary;
                         }
-                        
+
                     }
-                 
-                    
+                }
+
+                .form-tip {
+                    margin-top: 5px;
+                    width: 100%;
+                    color: #666666;
+                    height: 20px; // 固定高度防止跳动
+
+                    p {
+                        font-size: 12px;
+                        margin: 0;
+                    }
+
+                    &.error-tip {
+                        opacity: 0;
+                        color: #ff4d4f;
+                    }
+
+                    &.show {
+                        opacity: 1;
+                    }
                 }
             }
         }
     }
 
-    .login-footer {
-        .submit-button {
+    .register-footer {
+        .footer-submit button {
             width: 100%;
-            height: 48px;
-            margin-bottom: 20px;
+            height: 45px;
             background-color: $theme-primary;
             color: $theme-font-light;
             border: none;
@@ -168,40 +189,10 @@
                 background-color: $theme-secondary;
             }
         }
-
-        .footer-links {
-            display: flex;
-            justify-content: space-between;
-
-            .link-button {
-                background: none;
-                border: none;
-                color: #666666;
-                font-size: 14px;
-                cursor: pointer;
-                padding: 0;
-                transition: color 0.2s;
-
-                &:hover {
-                    color: $theme-secondary;
-                }
-            }
-        }
     }
+
 }
 
-// @media (max-width: 576px) {
-//     .user-login {
-//         padding: 20px;
-
-//         .login-body .body-title h2 {
-//             font-size: 20px;
-//         }
-
-//         .login-footer .footer-links {
-//             flex-direction: column;
-//             gap: 10px;
-//             align-items: center;
-//         }
-//     }
-// }
+.blink-name {
+    animation: blinkOfInput 0.5s infinite;
+}

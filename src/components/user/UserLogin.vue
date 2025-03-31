@@ -5,51 +5,38 @@
                 <div class="header-left">
                     <h4>☺️Hi，欢迎登录呀</h4>
                 </div>
-                <div class="header-right">
-                    <button class="close-button" @click="closeLogin">
-                        <i class="iconfont icon-close-bold"></i>
-                    </button>
-                </div>
+                <button class="close-button" @click="closeLogin">
+                    <i class="iconfont icon-close-bold"></i>
+                </button>
             </div>
             <div class="login-body">
                 <div class="body-title">
                     <h2><span>AOYUKMT交流中心</span></h2>
                 </div>
-                <div class="body-form">
-                    <form action="login-form">
-                        <div class="form-account">
-                            <div class="account-label">
-                                <label>请输入您的账号:</label>
-                            </div>
-                            <div class="account-input">
-                                <input type="text" placeholder="🐧 用户名/邮箱" v-model="account">
-                                <i class="iconfont icon-close clear-icon" @click="account = ''"></i>
-                            </div>
+                <form class="login-form">
+                    <div class="form-group">
+                        <label class="form-label">请输入您的账号:</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="🐧 用户名/邮箱" v-model="userData.userLoginForm.account">
+                            <i class="iconfont icon-close clear-icon" @click="account = ''"></i>
                         </div>
-                        <div class="form-password">
-                            <div class="password-label">
-                                <label>请输入您账号的密码：</label>
-                            </div>
-                            <div class="password-input">
-                                <input :type="showPassword ? 'text' : 'password'" placeholder="🔐 登录密码"
-                                    v-model="password">
-                                <i class="iconfont icon-browse password-icon" @click="showPassword = !showPassword"></i>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">请输入您账号的密码：</label>
+                        <div class="input-wrapper">
+                            <input :type="showPassword ? 'text' : 'password'" placeholder="🔐 登录密码"
+                                v-model="userData.userLoginForm.password">
+                            <i class="iconfont icon-browse password-icon" :class="{ 'active': showPassword }"
+                                @click="showPassword = !showPassword"></i>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
             <div class="login-footer">
-                <div class="footer-submit">
-                    <button>登录</button>
-                </div>
-                <div class="footer-register-reset">
-                    <div class="register">
-                        <button>🤓我要去注册账号</button>
-                    </div>
-                    <div class="reset">
-                        <button>😠我的密码忘记了</button>
-                    </div>
+                <button class="submit-button">{{ loginText }}</button>
+                <div class="footer-links">
+                    <button class="link-button" @click="toRegister">🤓我要去注册账号</button>
+                    <button class="link-button">😠我的密码忘记了</button>
                 </div>
             </div>
         </div>
@@ -58,16 +45,26 @@
 
 <script setup>
 import { ref } from 'vue';
-
+import { userStore } from '@/stores/user';
+import { useRoute } from 'vue-router';
+const userData = userStore()
 const account = ref('');
 const password = ref('');
 const showPassword = ref(false);
+const loginText = ref("登录")
 
 //关闭登录窗口
-const emit = defineEmits(["close-login"])
-const closeLogin = ()=>{
+const emit = defineEmits(["close-login", "display-register"])
+const closeLogin = () => {
     emit("close-login")
 }
+
+//去注册点击事件
+const toRegister = () => {
+    emit("display-register")
+}
+
+
 </script>
 
 <style lang="scss" scoped>

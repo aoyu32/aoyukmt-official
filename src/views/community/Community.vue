@@ -7,7 +7,8 @@
             <div class="community-nav" :class="{ 'show': isShowNav }">
                 <!-- 导航栏 -->
                 <div class="nav" :style="{ 'height': navHeight, 'border-radius': navBorderRadius }">
-                    <CommunitySidebar @display-user-card="isDisplay = true" @display-dialog="isShowDialog = true" />
+                    <CommunitySidebar @display-user-card="isDisplayLogin = true"
+                        @display-dialog="isShowDialog = true" />
                 </div>
             </div>
             <!-- 界面 -->
@@ -20,15 +21,18 @@
             </div>
         </div>
         <div class="user-info-card">
-            <UserIDCard :userData="user" @close-user-card="isDisplay = false" v-if="isDisplay" />
+            <UserIDCard :userData="user" @close-user-card="isDisplayUserCard = false" v-if="isDisplayUserCard" />
         </div>
         <div class="dialog" v-if="isShowDialog">
             <CommunityDialog @close-dialog="isShowDialog = false" @dialog-submit="handleDialogSubmit"
                 :title="dialogTitle" :content="dialogContent" :cancel-btn="dialogCancelBtn"
                 :submit-btn="dialogSubmitBtn" />
         </div>
-        <div class="user-login" v-if="displayLogin">
-            <UserLogin @close-login="displayLogin = false" />
+        <div class="user-login" v-if="isDisplayLogin">
+            <UserLogin @close-login="isDisplayLogin = false" @display-register="isDisplayRegister = true" />
+        </div>
+        <div class="user-register">
+            <UserRegister @close-register="isDisplayRegister = false" v-if="isDisplayRegister" />
         </div>
     </div>
 </template>
@@ -42,6 +46,7 @@ import { userStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import CommunityDialog from '@/components/community/CommunityDialog.vue';
 import UserLogin from '@/components/user/UserLogin.vue';
+import UserRegister from '@/components/user/UserRegister.vue';
 const userData = userStore()
 const { user } = storeToRefs(userData)
 
@@ -50,15 +55,16 @@ const dialogTitle = ref("📌 登录提示")
 const dialogContent = ref("抱歉！您还未登录，麻烦您先登录或注册！")
 const dialogCancelBtn = ref("我先再逛逛")
 const dialogSubmitBtn = ref("我要登录/注册")
-const isShowDialog = ref(false)
-const isDisplay = ref(false)
+const isShowDialog = ref(false)//是否显示对话框
+const isDisplayUserCard = ref(false)//是否显示用户卡片
+const isDisplayRegister = ref(false)//是否显示注册窗口
+const isDisplayLogin = ref(false)//是否显示登录窗口
+//监听是否点击对话框确认按钮
 const handleDialogSubmit = () => {
-    displayLogin.value = true
+    isDisplayLogin.value = true
     isShowDialog.value = false
 }
 
-//登录窗口
-const displayLogin = ref(false)
 
 //控制侧边栏高度
 const route = useRoute();

@@ -43,9 +43,6 @@
                     border: 1px solid $theme-secondary-light;
                     box-shadow: 0 0 2px 4px $theme-secondary-lt;
                 }
-
-
-
             }
 
 
@@ -53,6 +50,31 @@
                 font-size: 14px;
                 color: $theme-font-gray;
                 word-wrap: break-word;
+            }
+
+
+            .login-button {
+                width: 100%;
+                margin: 10px 0;
+                padding-top: 10px;
+                border-top: 1px solid $theme-primary;
+
+                button {
+                    cursor: pointer;
+                    background-color: transparent;
+                    border: none;
+
+                    i {
+                        font-size: 24px;
+                        color: $theme-primary;
+                        transition: all 0.3s ease-in-out;
+
+                        &:hover {
+                            color: $theme-secondary-dark;
+                        }
+                    }
+
+                }
             }
         }
     }
@@ -148,6 +170,27 @@
                 .username {
                     display: none;
                 }
+
+                .login-button {
+                    margin: 10px 0;
+                    border-top: 1px solid $theme-primary;
+                    padding: 10px;
+                    button {
+                        i {
+                            font-size: 16px;
+                            color: $theme-primary;
+                            transition: all 0.3s ease-in-out;
+
+                            &:hover {
+                                color: $theme-secondary-dark;
+                            }
+                        }
+
+                    }
+                }
+
+
+
             }
         }
 
