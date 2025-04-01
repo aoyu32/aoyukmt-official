@@ -38,10 +38,6 @@ const scrollToBottom = () => {
 
 </script>
 <style lang="scss" scoped>
-@use "@/assets/styles/common/_theme.scss" as *;
-@use "@/assets/styles/common/_variable.scss" as *;
-@use "@/assets/styles/common/_animation.scss" as *;
-
 .assistant-window {
     flex-grow: 1;
     padding: 1rem;

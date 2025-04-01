@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import tools from "@/utils/tools";
 
 export const userStore = defineStore('user', () => {
@@ -9,20 +9,20 @@ export const userStore = defineStore('user', () => {
     const tempDate = tools.getFormatDate('yyyy年mm月dd日')
     const token = ref("")
 
-    const userLoginForm = reactive({
+    const userLoginForm = ref({
         account: '',
         password: ''
     })
 
-    const userRegisterForm = reactive({
+    const userRegisterForm = ref({
         username: '',
         password: '',
         confirmPassword: ''
     })
 
-    const user = reactive({
+    const user = ref({
         id: tempId,
-        name: "aoyukmt1234567890",
+        name: tempUserName,
         avatar: tempAvatar,
         sex: '未知',
         status: '🔋',
@@ -30,19 +30,18 @@ export const userStore = defineStore('user', () => {
         resume: '该用户未填写任何简述！'
     })
 
-    //设置用户登录表单数据
+    // 直接替换整个对象
     const setUserLoginForm = (form) => {
-        userLoginForm = form
-    }
-    //设置用户注册表单数据
-    const setUserRegisterForm = (form) => {
-        userRegisterForm = form
-    }
-    //设置用户数据
-    const setUser = (userData) => {
-        user = userData
+        userLoginForm.value = form
     }
 
+    const setUserRegisterForm = (form) => {
+        userRegisterForm.value = form
+    }
+
+    const setUser = (userData) => {
+        user.value = userData
+    }
 
     return {
         token,

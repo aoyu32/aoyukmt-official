@@ -65,13 +65,18 @@
                     border: none;
 
                     i {
-                        font-size: 24px;
+                        font-size: 16px;
                         color: $theme-primary;
                         transition: all 0.3s ease-in-out;
 
                         &:hover {
+
                             color: $theme-secondary-dark;
+                            text-shadow: 0 0 1px $theme-primary;
                         }
+
+                        @include tooltip(attr(tip), left, 170%, top, -50%, 20px, $theme-secondary-light);
+
                     }
 
                 }
@@ -175,6 +180,7 @@
                     margin: 10px 0;
                     border-top: 1px solid $theme-primary;
                     padding: 10px;
+
                     button {
                         i {
                             font-size: 16px;

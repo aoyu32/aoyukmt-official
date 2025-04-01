@@ -13,7 +13,7 @@
             </div>
             <div class="register-body">
                 <div class="body-title">
-                    <h2><span>AOYUKMT注册</span></h2>
+                    <h2><span>AOYUKMT注册账户</span></h2>
                 </div>
                 <div class="body-form">
                     <form action="register-form">
@@ -154,8 +154,6 @@ const submitRegister = () => {
         }, 1500)
         return
     }
-
-
 }
 </script>
 

@@ -24,19 +24,21 @@
                     <div class="form-group">
                         <label class="form-label">请输入您账号的密码：</label>
                         <div class="input-wrapper">
-                            <input :type="showPassword ? 'text' : 'password'" placeholder="🔐 登录密码"
+                            <input :type="sowPassword ? 'text' : 'password'" placeholder="🔐 登录密码"
                                 v-model="userData.userLoginForm.password">
                             <i class="iconfont icon-browse password-icon" :class="{ 'active': showPassword }"
                                 @click="showPassword = !showPassword"></i>
                         </div>
+
                     </div>
+                    <SliderCaptcha />
                 </form>
             </div>
             <div class="login-footer">
-                <button class="submit-button">{{ loginText }}</button>
+                <button class="submit-button" @click="submitLogin">{{ loginText }}</button>
                 <div class="footer-links">
                     <button class="link-button" @click="toRegister">🤓我要去注册账号</button>
-                    <button class="link-button">😠我的密码忘记了</button>
+                    <button class="link-button" @click="toResetPassword">😠我的密码忘记了</button>
                 </div>
             </div>
         </div>
@@ -47,14 +49,22 @@
 import { ref } from 'vue';
 import { userStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
+import SliderCaptcha from '../common/SliderCaptcha.vue';
 const userData = userStore()
 const account = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const loginText = ref("登录")
 
+
+
+const submitLogin = () => {
+    console.log("表单提交成功！");
+};
+
+
 //关闭登录窗口
-const emit = defineEmits(["close-login", "display-register"])
+const emit = defineEmits(["close-login", "display-register", "display-reset"])
 const closeLogin = () => {
     emit("close-login")
 }
@@ -64,6 +74,10 @@ const toRegister = () => {
     emit("display-register")
 }
 
+//忘记密码点击事件
+const toResetPassword = () => {
+    emit("display-reset")
+}
 
 </script>
 

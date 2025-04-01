@@ -7,8 +7,8 @@
                     <img :src="userData.user.avatar" alt="User Avatar" />
                 </div>
                 <p class="username">{{ userData.user.name }}</p>
-                <!-- <div class="login-button"><button><i class="iconfont icon-sign-out"></i></button></div> -->
-                <div class="login-button"><button><i class="iconfont icon-tuichudenglu"></i></button></div>
+                <div class="login-button" @click="handleLoginButton"><button><i class="iconfont" :class="iconClass"
+                            :tip="isLogin ? '退出登录' : '点击登录'"></i></button></div>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { userStore } from '@/stores/user';
 const userData = userStore()
 const currentIndex = ref(0)
@@ -37,16 +37,36 @@ const menuItems = [
 
 ];
 
+//登录按钮
+const iconClass = computed(() =>
+    isLogin.value ? 'icon-tuichudenglu' : 'icon-denglu12'
+);
+
+//是否已登录
+const isLogin = ref(false)
+onMounted(() => {
+    if (userData.token !== '') {
+        isLogin.value = true
+    } else {
+        isLogin.value = false
+    }
+})
+
 //显示用户身份证卡片
-const emit = defineEmits(["display-user-card", "display-dialog"])
+const emit = defineEmits(["display-user-card", "display-dialog", "display-login"])
 
 //显示未登录对话框
 const hanldeAvatarClick = () => {
-    if (userData.token !== '') {
+    if (isLogin.value) {
         emit("display-user-card")
     } else {
         emit("display-dialog")
     }
+}
+
+//去登录按钮
+const handleLoginButton = () => {
+    emit("display-login")
 }
 </script>
 <style lang="scss" scoped>
