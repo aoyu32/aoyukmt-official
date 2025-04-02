@@ -2,7 +2,7 @@
 @use "@/assets/styles/common/_theme.scss" as *;
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
-
+@use "@/assets/styles/mixins/_common-mixins.scss" as *;
 /* 弹框的遮罩层 */
 .modal-overlay {
     position: fixed;
@@ -41,26 +41,7 @@
         }
 
         .close-button {
-            background-color: $theme-primary-dt;
-            width: $assistant-dialog-close;
-            height: $assistant-dialog-close;
-            color: $theme-font-light;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.5s;
-
-            &:hover {
-                background: $theme-secondary;
-            }
-
-            .iconfont {
-                font-size: 12px;
-                font-weight: $font-weight;
-            }
+            @include close-button
         }
     }
 
@@ -79,141 +60,43 @@
             }
         }
 
-        .body-form {
-            .form-group {
-                margin-bottom: 10px;
-                position: relative;
-
-                .form-label label {
-                    font-size: 14px;
-                    color: #555555;
-                    font-weight: 500;
-                    margin-bottom: 8px;
-                    display: block;
-                }
-
-                .input-wrapper {
-                    width: 100%;
-                    display: flex;
-                    position: relative;
-
-                    input {
-                        width: 100%;
-                        height: 40px;
-                        padding: 0 15px;
-                        border: 1px solid $theme-secondary-light;
-                        border-radius: 8px;
-                        font-size: 14px;
-                        color: $theme-font-dark;
-                        letter-spacing: 0.5px;
-                        background-color: $theme-background;
-                        transition: all 0.3s;
-                        padding-right: 40px;
-
-                        &:focus {
-                            outline: none;
-                            border-color: $theme-primary-hover-dark;
-                            box-shadow: 0 0 0 3px $theme-primary-hover;
-                            background-color: $theme-font-light;
-
-                            &::placeholder {
-                                opacity: 0;
-                                transition: opacity 0.2s ease;
-                            }
-                        }
-
-                        &::placeholder {
-                            color: #bbbbbb;
-                            letter-spacing: normal;
-                            transition: opacity 0.2s ease;
-                        }
-                    }
-
-                    .iconfont {
-                        position: absolute;
-                        color: #bbbbbb;
-                        cursor: pointer;
-                        right: 15px;
-                        top: 50%;
-                        transform: translateY(-50%);
-
-                        &:hover {
-                            color: $theme-secondary;
-                        }
-
-                        &.active {
-                            color: $theme-primary;
-                        }
-
-                        &.clear-icon {
-                            &:hover {
-                                color: $theme-secondary-dark;
-                            }
-                        }
-                    }
-                }
-
-                .input-btn {
-                    display: flex;
-
-                    .input-wrapper {
-                        flex: 1;
-                    }
-
-                    .send-btn {
-                        height: 100%;
-                        margin-left: 10px;
-                        border: none;
-                        background-color: $theme-primary;
-                        padding: 10px;
-                        color: $theme-font-light;
-                        border-radius: 5px;
-                    }
-                }
-
-                .form-tip {
-                    margin-top: 5px;
-                    width: 100%;
-                    color: #666666;
-                    height: 20px;
-                    opacity: 0;
-
-                    p {
-                        font-size: 12px;
-                        margin: 0;
-                    }
-
-
-                    &.show {
-                        opacity: 1;
-                        color: #ff4d4f;
-                    }
+        .reset-form {
+            .form-verfiy-code {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                button{
+                    height: 45px;
+                    padding: 0 10px;
+                    border: none;
+                    background-color: $theme-primary;
+                    border-radius: 5px;
+                    color: $theme-font-light;
                 }
             }
-
         }
     }
 
     .reset-footer {
         .footer-submit button {
-            width: 100%;
-            height: 45px;
-            background-color: $theme-primary;
-            color: $theme-font-light;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-
-            &:hover {
-                background-color: $theme-secondary;
-            }
+           @include submit-button
         }
     }
 }
 
 .blink-name {
     animation: blinkOfInput 0.5s infinite;
+}
+
+.slider-captcha-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }

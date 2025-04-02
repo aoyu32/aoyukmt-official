@@ -14,24 +14,12 @@
                     <h2><span>AOYUKMT交流中心</span></h2>
                 </div>
                 <form class="login-form">
-                    <div class="form-group">
-                        <label class="form-label">请输入您的账号:</label>
-                        <div class="input-wrapper">
-                            <input type="text" placeholder="🐧 用户名/邮箱" v-model="userData.userLoginForm.account">
-                            <i class="iconfont icon-close clear-icon" @click="account = ''"></i>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">请输入您账号的密码：</label>
-                        <div class="input-wrapper">
-                            <input :type="sowPassword ? 'text' : 'password'" placeholder="🔐 登录密码"
-                                v-model="userData.userLoginForm.password">
-                            <i class="iconfont icon-browse password-icon" :class="{ 'active': showPassword }"
-                                @click="showPassword = !showPassword"></i>
-                        </div>
-
-                    </div>
-                    <SliderCaptcha />
+                    <FormInput label="请输入您的账号：" placeholder="🐧 用户名/邮箱" v-model="loginFormData.account"
+                        @icon-click="loginFormData.account = ''" />
+                    <FormInput label="请输入您账号的密码：" placeholder="🔐 登录密码" v-model="loginFormData.password"
+                        :type="showPassword ? 'text' : 'password'" icon="icon-browse"
+                        autocomplete-text="current-password" @icon-click="showPassword = !showPassword"
+                        :icon-active="showPassword ? 'active' : ''" />
                 </form>
             </div>
             <div class="login-footer">
@@ -46,21 +34,45 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { userStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
-import SliderCaptcha from '../common/SliderCaptcha.vue';
-const userData = userStore()
-const account = ref('');
-const password = ref('');
-const showPassword = ref(false);
+import { ref, reactive } from 'vue';
+import FormInput from '../common/FormInput.vue';
 const loginText = ref("登录")
 
+const showPassword = ref(false)
 
+//表单数据
+const loginFormData = reactive({
+    account: "",
+    password: ""
+})
 
 const submitLogin = () => {
+
+    const errorMessage =
+        !loginFormData.account && !loginFormData.password
+            ? "请输入账号和密码😑"
+            : !loginFormData.account
+                ? "账号不能为空😑"
+                : !loginFormData.password
+                    ? "请输入密码😑"
+                    : "";
+
+    if (errorMessage) {
+        modifyLoginText(errorMessage);
+        return;
+    }
+
     console.log("表单提交成功！");
 };
+
+const modifyLoginText = (value) => {
+    loginText.value = value
+    setTimeout(() => {
+        loginText.value = "登 录"
+    }, 1500)
+
+}
+
 
 
 //关闭登录窗口

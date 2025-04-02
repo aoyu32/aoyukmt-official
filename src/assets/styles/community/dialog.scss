@@ -1,6 +1,7 @@
 @use "@/assets/styles/common/_theme.scss" as *;
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_common-mixins.scss" as *;
 
 /* 弹框的遮罩层 */
 .modal-overlay {
@@ -45,28 +46,7 @@
 
             /* 关闭按钮 */
             .close-button {
-                background-color: $theme-primary-dt;
-                width: $assistant-dialog-close;
-                height: $assistant-dialog-close;
-                // background: transparent;
-                color: $theme-font-light;
-                border: none;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                transition: background-color 0.5s;
-
-
-                &:hover {
-                    background: $theme-secondary;
-                }
-
-                .iconfont {
-                    font-size: 12px;
-                    font-weight: $font-weight;
-                }
+               @include close-button
             }
 
         }

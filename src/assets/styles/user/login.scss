@@ -1,6 +1,7 @@
 @use "@/assets/styles/common/_theme.scss" as *;
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_common-mixins.scss" as *;
 
 .modal-overlay {
     position: fixed;
@@ -17,7 +18,6 @@
 
 .user-login {
     width: 400px;
-
     max-width: 90%;
     border-radius: 12px;
     padding: 30px;
@@ -39,26 +39,7 @@
         }
 
         .close-button {
-            background-color: $theme-primary-dt;
-            width: $assistant-dialog-close;
-            height: $assistant-dialog-close;
-            color: $theme-font-light;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.5s;
-
-            &:hover {
-                background: $theme-secondary;
-            }
-
-            .iconfont {
-                font-size: 12px;
-                font-weight: $font-weight;
-            }
+            @include close-button
         }
     }
 
@@ -82,91 +63,16 @@
         }
 
         .login-form {
-            .form-group {
-                margin-bottom: 25px;
-
-                .form-label {
-                    display: block;
-                    font-size: 14px;
-                    color: #555555;
-                    font-weight: 500;
-                    margin-bottom: 8px;
-                }
-
-                .input-wrapper {
-                    position: relative;
-
-                    input {
-                        width: 100%;
-                        height: 45px;
-                        padding: 0 15px;
-                        border: 1px solid $theme-secondary-light;
-                        border-radius: 8px;
-                        font-size: 14px;
-                        color: $theme-font-dark;
-                        background-color: $theme-background;
-                        transition: all 0.3s;
-                        padding-right: 40px;
-
-                        &:focus {
-                            outline: none;
-                            border-color: $theme-primary-hover-dark;
-                            box-shadow: 0 0 0 3px $theme-primary-hover;
-                            background-color: #ffffff;
-
-                            &::placeholder {
-                                opacity: 0;
-                            }
-                        }
-
-                        &::placeholder {
-                            color: #bbbbbb;
-                            transition: opacity 0.2s ease;
-                        }
-                    }
-
-                    .iconfont {
-                        position: absolute;
-                        right: 15px;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        color: #bbbbbb;
-                        cursor: pointer;
-                        // transition: all 0.2s ease-in-out; 
-
-                        &:hover {
-                            color: $theme-secondary;
-                        }
-
-                        &.active {
-                            color: $theme-primary;
-                        }
-                        
-                    }
-                 
-                    
-                }
-            }
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
     }
 
     .login-footer {
         .submit-button {
-            width: 100%;
-            height: 48px;
+            @include submit-button;
             margin-bottom: 20px;
-            background-color: $theme-primary;
-            color: $theme-font-light;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-
-            &:hover {
-                background-color: $theme-secondary;
-            }
         }
 
         .footer-links {
@@ -189,19 +95,3 @@
         }
     }
 }
-
-// @media (max-width: 576px) {
-//     .user-login {
-//         padding: 20px;
-
-//         .login-body .body-title h2 {
-//             font-size: 20px;
-//         }
-
-//         .login-footer .footer-links {
-//             flex-direction: column;
-//             gap: 10px;
-//             align-items: center;
-//         }
-//     }
-// }

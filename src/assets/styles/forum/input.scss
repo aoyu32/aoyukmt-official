@@ -191,7 +191,7 @@
                     height: 18px; // 缩小高度
                     cursor: pointer;
 
-                    .slider {
+                    .switch-slider {
                         position: absolute;
                         top: 0;
                         left: 0;
@@ -215,7 +215,7 @@
                         }
                     }
 
-                    input:checked+.slider {
+                    input:checked+.switch-slider {
                         background-color: $theme-primary;
 
                         &::before {

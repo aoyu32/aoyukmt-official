@@ -42,7 +42,7 @@
                 <div class="input-control">
                     <label class="mini-switch">
                         <input type="checkbox" v-model="isSwitchOn" hidden>
-                        <span class="slider">
+                        <span class="switch-slider">
                             <span class="slider-dot"></span>
                         </span>
                     </label>
