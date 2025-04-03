@@ -4,17 +4,17 @@
             <label>{{ label }}</label>
         </div>
         <div class="input-wrapper">
-            <input :type="type" :placeholder="placeholder" :value="modelValue" @input="update"
+            <input :type="type" :placeholder="placeholder" :value="modelValue" @input="update" @blur="handleBlur"
                 :autocomplete="autocompleteText">
             <i :class="['iconfont', icon, iconActive]" @click="handleIconClick"></i>
         </div>
-        <div class="input-tip" v-if="rule">
+        <div class="input-tip" :class="{ 'show': tipContent }">
             <p>{{ tipContent }}</p>
         </div>
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 const props = defineProps({
     //输入框标签
     label: {
@@ -46,30 +46,33 @@ const props = defineProps({
         type: String,
         default: ""
     },
-    //校验规则函数
-    rule: {
-        type: Object,
+    //提示消息
+    tipContent: {
+        type: String,
+        default: ""
     },
     //自动填充
     autocompleteText: {
         type: String,
         default: "username"
-    }
+    },
 })
 
-const tipContent = ref("")
-
 //更新输入的值
-const emit = defineEmits(["update:modelValue", "icon-click"])
+const emit = defineEmits(["update:modelValue", "icon-click", "blur"])
+
 const update = (event) => {
     emit("update:modelValue", event.target.value)
+}
+
+const handleBlur = () => {
+    emit("blur", props.modelValue)
 }
 
 //右侧图标点击事件
 const handleIconClick = () => {
     emit("icon-click")
 }
-
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/_theme.scss" as *;
@@ -143,16 +146,13 @@ const handleIconClick = () => {
         width: 100%;
         color: #666666;
         height: 20px; // 固定高度防止跳动
+        opacity: 0;
 
         p {
             font-size: 12px;
             margin: 0;
         }
 
-        &.error-tip {
-            opacity: 0;
-            color: #ff4d4f;
-        }
 
         &.show {
             opacity: 1;

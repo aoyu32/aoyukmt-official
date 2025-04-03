@@ -50,11 +50,11 @@ const submitLogin = () => {
 
     const errorMessage =
         !loginFormData.account && !loginFormData.password
-            ? "请输入账号和密码😑"
+            ? "请输入账号和密码!😑"
             : !loginFormData.account
-                ? "账号不能为空😑"
+                ? "账号不能为空!😑"
                 : !loginFormData.password
-                    ? "请输入密码😑"
+                    ? "请输入密码!😑"
                     : "";
 
     if (errorMessage) {
@@ -62,7 +62,6 @@ const submitLogin = () => {
         return;
     }
 
-    console.log("表单提交成功！");
 };
 
 const modifyLoginText = (value) => {
@@ -70,7 +69,6 @@ const modifyLoginText = (value) => {
     setTimeout(() => {
         loginText.value = "登 录"
     }, 1500)
-
 }
 
 
