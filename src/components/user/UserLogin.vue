@@ -30,15 +30,26 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="aj-captcha" v-if="isShowSliderCaptcha">
+        <Verify @success="success" :mode="'fixed'" :captchaType="'blockPuzzle'"
+            :imgSize="{ width: '330px', height: '155px' }"></Verify>
     </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue';
 import FormInput from '../common/FormInput.vue';
+import Verify from '../verifition/Verify.vue';
 const loginText = ref("登录")
-
+const isShowSliderCaptcha = ref(false)
 const showPassword = ref(false)
+
+const success = (param)=>{
+    console.log(param);
+    
+}
 
 //表单数据
 const loginFormData = reactive({
@@ -61,6 +72,8 @@ const submitLogin = () => {
         modifyLoginText(errorMessage);
         return;
     }
+
+    isShowSliderCaptcha.value = true
 
 };
 
