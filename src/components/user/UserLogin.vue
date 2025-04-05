@@ -32,23 +32,27 @@
         </div>
 
     </div>
-    <div class="aj-captcha" v-if="isShowSliderCaptcha">
-        <Verify @success="success" :mode="'fixed'" :captchaType="'blockPuzzle'"
-            :imgSize="{ width: '330px', height: '155px' }"></Verify>
-    </div>
+    <VerifyWindow @on-success="handleVerifySuccess" @on-close="handleCloseVerify" v-if="isShowSliderCaptcha" />
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue';
 import FormInput from '../common/FormInput.vue';
-import Verify from '../verifition/Verify.vue';
+import VerifyWindow from '../verifition/VerifyWindow.vue';
 const loginText = ref("登录")
 const isShowSliderCaptcha = ref(false)
 const showPassword = ref(false)
 
-const success = (param)=>{
+
+//校验成功
+const handleVerifySuccess = (param) => {
     console.log(param);
-    
+    isShowSliderCaptcha.value = false
+}
+
+//关闭校验
+const handleCloseVerify = () => {
+    isShowSliderCaptcha.value = false
 }
 
 //表单数据
@@ -75,8 +79,11 @@ const submitLogin = () => {
 
     isShowSliderCaptcha.value = true
 
+
+
 };
 
+//修改登录按钮文本
 const modifyLoginText = (value) => {
     loginText.value = value
     setTimeout(() => {

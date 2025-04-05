@@ -39,15 +39,48 @@
                     <button @click="submitRegister">{{ registerText }}</button>
                 </div>
             </div>
+            <VerifyWindow @on-success="handleVerifySuccess" @on-close="handleCloseVerify" v-if="isShowSliderCaptcha" />
         </div>
     </div>
 </template>
 <script setup>
 import { ref, reactive, watch } from 'vue'
 import FormInput from '../common/FormInput.vue'
+import VerifyWindow from '../verifition/VerifyWindow.vue'
+import { apis } from '@/api/api'
+import { errorMessages } from 'vue/compiler-sfc'
 const registerText = ref("注 册")//注册按钮文本
 const showPassword = ref(false)//是否显示输入的密码
 const showConfirmPassword = ref(false)//是否显示输入的确认密码
+const isShowSliderCaptcha = ref(false)
+
+//校验成功
+const handleVerifySuccess = (param) => {
+    console.log(param);
+    isShowSliderCaptcha.value = false
+    register(param.captchaVerification)
+}
+
+
+const register = async (vcode) => {
+    const { username, password } = registerFormData
+    const data = {
+        username: username,
+        password: password,
+        verifyCode: vcode
+    }
+    try {
+        await apis.register(data)
+    } catch (error) {
+        modifyRegisterText("注册失败，" + error.message)
+    }
+}
+
+
+//关闭校验
+const handleCloseVerify = () => {
+    isShowSliderCaptcha.value = false
+}
 
 //注册表单数据
 const registerFormData = reactive({
@@ -161,14 +194,19 @@ const submitRegister = () => {
         validationResults.confirmPassword;
 
     if (allValid) {
-        // 执行注册逻辑
-        console.log("注册信息验证通过，提交注册");
+        //开启人机校验
+        isShowSliderCaptcha.value = true
     } else {
-        registerText.value = "请完善注册信息呀！😑"
-        setTimeout(()=>{
-            registerText.value = "注 册"    
-        },1500)
+        modifyRegisterText("请完善注册信息呀！😑")
     }
+}
+
+//修改注册按钮文本
+const modifyRegisterText = (value) => {
+    registerText.value = value
+    setTimeout(() => {
+        registerText.value = "注 册"
+    }, 1500)
 }
 </script>
 <style lang="scss" scoped>

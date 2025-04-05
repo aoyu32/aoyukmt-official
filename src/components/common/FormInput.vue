@@ -34,7 +34,7 @@ const props = defineProps({
     //右边的按钮图标
     icon: {
         type: String,
-        default: "icon-close"
+        default: "icon-close-bold"
     },
     //改变icon按钮颜色
     iconActive: {
