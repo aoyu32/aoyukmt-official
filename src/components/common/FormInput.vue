@@ -8,7 +8,7 @@
                 :autocomplete="autocompleteText">
             <i :class="['iconfont', icon, iconActive]" @click="handleIconClick"></i>
         </div>
-        <div class="input-tip" :class="{ 'show': tipContent }">
+        <div class="input-tip" :class="{ 'show': tipContent, 'blink-name': blink }">
             <p>{{ tipContent }}</p>
         </div>
     </div>
@@ -56,6 +56,11 @@ const props = defineProps({
         type: String,
         default: "username"
     },
+    //提示文本闪烁
+    blink: {
+        type: Boolean,
+        default: false
+    }
 })
 
 //更新输入的值
@@ -156,6 +161,11 @@ const handleIconClick = () => {
 
         &.show {
             opacity: 1;
+        }
+
+        &.blink-name {
+            color: rgba(255, 0, 0, 0.833);
+            animation: blinkOfInput 0.5s infinite;
         }
     }
 }

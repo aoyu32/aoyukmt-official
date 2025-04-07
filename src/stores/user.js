@@ -1,14 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from 'vue'
 import tools from "@/utils/tools";
-
+import unloginAvatar from '@/assets/unlogin-avatar.svg'
 export const userStore = defineStore('user', () => {
-    const tempId = tools.getRandomId()
-    const tempUserName = tools.getRandomName()
-    const tempAvatar = tools.getRandomAvatar(0)
-    const tempDate = tools.getFormatDate('yyyy年mm月dd日')
     const token = ref("")
-
     const userLoginForm = ref({
         account: '',
         password: ''
@@ -21,13 +16,14 @@ export const userStore = defineStore('user', () => {
     })
 
     const user = ref({
-        id: tempId,
-        name: tempUserName,
-        avatar: tempAvatar,
-        sex: '未知',
-        status: '🔋',
-        createTime: tempDate,
-        resume: '该用户未填写任何简述！'
+        uid: "",
+        nickname: "未登录",
+        avatar: unloginAvatar,
+        gender: '未知',
+        activeStatus: '🔋',
+        registrationTime: "",
+        bio: '',
+        ipInfo: ''
     })
 
     // 直接替换整个对象
@@ -43,13 +39,26 @@ export const userStore = defineStore('user', () => {
         user.value = userData
     }
 
+    const setToken = (tokenValue) => {
+        token.value = tokenValue
+    }
+
     return {
         token,
         user,
         userLoginForm,
         userRegisterForm,
         setUser,
+        setToken,
         setUserLoginForm,
         setUserRegisterForm
     }
-})
+},
+    {
+        persist: {
+            key: 'user_token',
+            pick: ['token']
+        }
+    }
+
+)

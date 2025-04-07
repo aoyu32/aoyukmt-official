@@ -6,11 +6,15 @@
                 width: setSize.imgWidth,
                 height: setSize.imgHeight,
             }">
-                <img src="http://localhost:8080/img/1.webp" alt="" v-if="!backImgBase"
-                    style="width:100%;height:100%;display:block">
-                <img :src="'data:image/png;base64,' + backImgBase" alt="" style="width:100%;height:100%;display:block"
-                    v-else>
-                <div class="verify-refresh" @click="refresh" v-show="showRefresh"><i class="iconfont icon-refresh"></i>
+                <div class="loaddingContainer" v-if="!backImgBase"
+                    style="width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;">
+                    <img src="..\..\assets\loadding2.gif" alt="" style="width: 100px;height: 100px;">
+                </div>
+                <div class="backgroundImageContainer" style="width:100%;height:100%;display:block" v-else>
+                    <img :src="'data:image/png;base64,' + backImgBase" alt=""
+                        style="width:100%;height:100%;display:block">
+                </div>
+                <div class="verify-refresh" @click="refresh" v-show="showRefresh" v-if="backImgBase"><i class="iconfont icon-refresh"></i>
                 </div>
                 <transition name="tips">
                     <span class="verify-tips" v-if="tipWords" :class="passFlag ? 'suc-bg' : 'err-bg'">{{ tipWords
@@ -23,7 +27,8 @@
             width: setSize.imgWidth,
             height: barSize.height,
             'line-height': barSize.height
-        }">
+            
+        }" v-if="backImgBase">
             <span class="verify-msg" v-text="text"></span>
             <div class="verify-left-bar"
                 :style="{ width: (leftBarWidth !== undefined) ? leftBarWidth : barSize.height, height: barSize.height, 'border-color': leftBarBorderColor, transaction: transitionWidth }">

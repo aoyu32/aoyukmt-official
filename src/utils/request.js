@@ -41,6 +41,7 @@ instance.interceptors.response.use(
     } else {
       // 将完整的错误信息传递给组件，不在拦截器中显示错误提示
       return Promise.reject({
+        code:data.code,
         message: data.message || '请求失败!',
       });
     }

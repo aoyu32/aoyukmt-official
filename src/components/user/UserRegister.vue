@@ -1,6 +1,7 @@
 <template>
     <div class="modal-overlay">
         <div class="user-register">
+            <Message :messageContent="tipContext" :isShowMessage="showTipMessage" :messagePosition="'absolute'" />
             <div class="register-header">
                 <div class="header-left">
                     <h4>😉Hi，感谢注册呀</h4>
@@ -19,19 +20,19 @@
                     <!-- 用户名 -->
                     <FormInput label="请输入您的用户名：" placeholder="🐧 用户名" v-model="registerFormData.username"
                         @icon-click="registerFormData.username = ''" :tip-content="validationTips.username"
-                        @blur="validateUsername" />
+                        usernameTipBlink @blur="validateUsername" :blink="tipBlink.usernameTipBlink" />
                     <!-- 设置密码 -->
                     <FormInput label="请输入您账号的密码：" placeholder="🔐 登录密码" v-model="registerFormData.password"
                         :type="showPassword ? 'text' : 'password'" icon="icon-browse"
                         autocomplete-text="current-password" @icon-click="showPassword = !showPassword"
                         :icon-active="showPassword ? 'active' : ''" :tip-content="validationTips.password"
-                        @blur="validatePassword" />
+                        @blur="validatePassword" :blink="tipBlink.passwordTipBlink" />
                     <!-- 确认设置的密码 -->
                     <FormInput label="请再次输入您账号的密码：" placeholder="🔏 确认登录密码" v-model="registerFormData.confirmPassword"
                         :type="showConfirmPassword ? 'text' : 'password'" icon="icon-browse"
                         autocomplete-text="current-password" @icon-click="showConfirmPassword = !showConfirmPassword"
                         :icon-active="showConfirmPassword ? 'active' : ''" :tip-content="validationTips.confirmPassword"
-                        @blur="validateConfirmPassword" />
+                        @blur="validateConfirmPassword" :blink="tipBlink.confirmTipBlink" />
                 </form>
             </div>
             <div class="register-footer">
@@ -48,11 +49,14 @@ import { ref, reactive, watch } from 'vue'
 import FormInput from '../common/FormInput.vue'
 import VerifyWindow from '../verifition/VerifyWindow.vue'
 import { apis } from '@/api/api'
-import { errorMessages } from 'vue/compiler-sfc'
+import Message from '../common/Message.vue'
+
 const registerText = ref("注 册")//注册按钮文本
 const showPassword = ref(false)//是否显示输入的密码
 const showConfirmPassword = ref(false)//是否显示输入的确认密码
-const isShowSliderCaptcha = ref(false)
+const isShowSliderCaptcha = ref(false)//是否显示滑块验证码
+const showTipMessage = ref(false)//是否显示提示消息
+const tipContext = ref("")
 
 //校验成功
 const handleVerifySuccess = (param) => {
@@ -70,9 +74,38 @@ const register = async (vcode) => {
         verifyCode: vcode
     }
     try {
-        await apis.register(data)
+
+        const resp = await apis.register(data)
+        console.log(resp);
+
+        tipContext.value = "注册成功啦" + "🥰"
+        showTipMessage.value = true
+        setTimeout(() => {
+            //关闭注册成功消息
+            showTipMessage.value = false
+            //通知执行登录
+            emit("auto-login", resp)
+            //关闭注册窗口
+            closeRegister()
+
+        }, 1000)
+
+
+
+
     } catch (error) {
-        modifyRegisterText("注册失败，" + error.message)
+
+        if (error.code === 438) {
+            validationTips.username = "用户名已存在！🫢"
+            tipBlink.usernameTipBlink = true
+            return
+        }
+
+        tipContext.value = error.message + "🫢"
+        showTipMessage.value = true
+        setTimeout(() => {
+            showTipMessage.value = false
+        }, 1500)
     }
 }
 
@@ -81,6 +114,13 @@ const register = async (vcode) => {
 const handleCloseVerify = () => {
     isShowSliderCaptcha.value = false
 }
+
+//提示文本闪烁
+const tipBlink = reactive({
+    usernameTipBlink: false,
+    passwordTipBlink: false,
+    confirmTipBlink: false
+})
 
 //注册表单数据
 const registerFormData = reactive({
@@ -103,7 +143,7 @@ const validationTips = reactive({
 })
 
 // 关闭注册窗口
-const emit = defineEmits(["close-register"])
+const emit = defineEmits(["close-register", "auto-login"])
 const closeRegister = () => {
     emit("close-register")
 }
@@ -113,25 +153,28 @@ const validateUsername = () => {
     if (!registerFormData.username) {
         validationResults.username = false;
         validationTips.username = "用户名要是6~20位字符，只能数字加字母哦"
+        tipBlink.usernameTipBlink = false
         return;
     }
 
     const isValid = /^[a-zA-Z0-9]{6,20}$/.test(registerFormData.username);
     validationResults.username = isValid;
-    validationTips.username = isValid ? "用户名合法了" : "用户名不合法！";
+    validationTips.username = isValid ? "用户名合法了✅" : "用户名不合法!❌";
 }
 
 // 验证密码
 const validatePassword = () => {
     if (!registerFormData.password) {
+
         validationTips.password = "密码要是8~16位，数字字母下划线哦";
         validationResults.password = false;
+        tipBlink.passwordTipBlink = false
         return;
     }
 
     const isValid = /^[a-zA-Z0-9_]{8,16}$/.test(registerFormData.password);
     validationResults.password = isValid;
-    validationTips.password = isValid ? "密码符合要求啦" : "密码不符合要求，重新设置一下吧！";
+    validationTips.password = isValid ? "密码符合要求啦✅" : "密码不符合要求，重新设置一下吧!❌";
 
     // 如果确认密码已填写，重新验证确认密码
     if (registerFormData.confirmPassword) {
@@ -139,17 +182,25 @@ const validatePassword = () => {
     }
 }
 
+const blinkTip = () => {
+
+    tipBlink.usernameTipBlink = validationResults.username ? false : true
+    tipBlink.passwordTipBlink = validationResults.password ? false : true
+    tipBlink.confirmTipBlink = validationResults.confirmPassword ? false : true
+}
+
 // 验证确认密码
 const validateConfirmPassword = () => {
     if (!registerFormData.confirmPassword) {
         validationTips.confirmPassword = "确认您的密码！";
         validationResults.confirmPassword = false;
+        tipBlink.confirmTipBlink = false
         return;
     }
 
     const isValid = registerFormData.confirmPassword === registerFormData.password;
     validationResults.confirmPassword = isValid;
-    validationTips.confirmPassword = isValid ? "两次密码输入一致呀" : "两次输入的密码不一致";
+    validationTips.confirmPassword = isValid ? "密码确认成功✅" : "两次输入的密码不一致!❌";
 }
 
 // 监听值变化进行实时验证
@@ -159,6 +210,7 @@ watch(() => registerFormData.username, (newVal) => {
     // 可以添加防抖处理
     const debounceTimer = setTimeout(() => {
         validateUsername();
+        tipBlink.usernameTipBlink = false
     }, 500);
     return () => clearTimeout(debounceTimer);
 })
@@ -173,6 +225,8 @@ watch(() => registerFormData.password, (newVal) => {
 })
 
 watch(() => registerFormData.confirmPassword, (newVal) => {
+    if (!newVal)
+        return
     if (newVal) {
         const debounceTimer = setTimeout(() => {
             validateConfirmPassword();
@@ -197,6 +251,7 @@ const submitRegister = () => {
         //开启人机校验
         isShowSliderCaptcha.value = true
     } else {
+        blinkTip()
         modifyRegisterText("请完善注册信息呀！😑")
     }
 }

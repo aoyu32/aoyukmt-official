@@ -1,0 +1,93 @@
+// 主色调变量（暗黑深邃主题）
+$theme-primary: #1a1a1a; // 主要主题色（深邃黑）
+$theme-primary-light: #2e2e2e; // 比主要颜色再亮一些的颜色
+$theme-primary-dark: #0f0f0f; // 比主要颜色再暗一些的颜色
+
+$theme-primary-lt: #1a1a1a33; // 比主要颜色再亮一些透明一些的颜色
+$theme-primary-dt: #0f0f0f66; // 比主要颜色暗一些透明一些的颜色
+
+$theme-secondary: #4b2e00; // 次要主题色（暗金）
+$theme-secondary-light: #6d4c41; // 和次要颜色接近的颜色
+$theme-secondary-dark: #3e2723; // 比次要颜色深一些的颜色
+$theme-secondary-lt: #4b2e0070; // 次要颜色透明些的颜色
+
+$theme-primary-hover: #1a1a1a1a; // 比主色调浅些透明些的hover颜色
+$theme-primary-hover-dark: #0f0f0f70; // 比主色调深些透明些的hover颜色
+
+$theme-primary-shadow: #1a1a1ab3; // 和主色接近的边框阴影颜色
+$theme-primary-shadow-lt: #2e2e2e40; // 和主色接近的更浅透明边框阴影颜色
+$theme-shallow-shadow: rgba(26, 26, 26, 0.15); // 浅阴影颜色
+$theme-deep-shadow: rgba(26, 26, 26, 0.25); // 中阴影颜色
+
+$theme-background: #0a0a0a; // 纯黑背景颜色
+$theme-background-light: #1c1c1c; // 浅黑背景
+$theme-background-lt: #0a0a0a80; // 纯黑透明背景
+$theme-background-dark: rgba(5, 5, 5, 0.9); // 更暗黑背景
+$theme-background-dt: rgba(28, 28, 28, 0.85); // 深黑透明背景
+$theme-background-gt: #1c1c1c33; // 有一定透明度的浅黑背景
+
+$theme-border-gray: rgba(80, 80, 80, 0.4); // 深灰边框颜色
+
+// 文字颜色
+$theme-font-light: rgb(180, 180, 180); // 文字主色（冷灰白）
+$theme-font-dark: rgb(140, 140, 140); // 浅冷灰
+$theme-font-gray: rgb(100, 100, 100); // 中冷灰
+$theme-font-light-gray: #707070a6; // 冷灰透明
+$theme-font-lgt: #80808045; // 冷灰更透明
+$theme-font-dark-gray: #505050; // 冷调深灰
+
+// 主页渐变背景颜色
+$theme-gradient-background-first: rgba(10, 10, 10, 0.95); // 纯黑
+$theme-gradient-background-second: rgba(28, 28, 28, 0.95); // 浅黑
+$theme-gradient-background-third: rgba(75, 46, 0, 0.95); // 暗金
+$theme-gradient-background-fourth: rgba(15, 15, 15, 0.95); // 更深黑
+
+// 功能展示背景
+$theme-detail-background: #1c1c1c; // 功能展示区域背景
+$theme-img-background: #2c2c2c; // 图片背景
+
+// 展示卡片颜色
+$theme-card-background: #141414; // 卡片背景颜色（极深黑）
+
+// 下载安装界面卡片颜色
+$download-card-background: #141414; // 暗色系下为展示卡片颜色
+// 下载安装界面打字机文本
+$download-typing-text: #4b2e00; // 暗金文字
+
+// 下载渐变背景
+$dynamic-background-first: #2e2e2e; // 第一个颜色
+$dynamic-background-second: #6d4c41; // 第二个颜色
+$dynamic-background-third: #3e2723; // 第三个颜色
+$dynamic-background-fourth: #0f0f0f; // 第四个颜色
+
+// 下载卡片hover阴影
+$download-card-hover-shadow: rgba(26, 26, 26, 0.75);
+
+// 使用文档界面侧边栏背景
+$document-sidebar-background: #141414; // 极深黑背景
+
+// 智能助手界面聊天窗口呼吸边框动画
+// 呼吸边框动画颜色变量
+$assistant-chat-shadow-light: rgba(75, 46, 0, 0.85); // 最亮的呼吸边框阴影颜色（暗金）
+$assistant-chat-shadow-medium: rgba(62, 39, 35, 0.85); // 稍浅的呼吸边框阴影颜色
+$assistant-chat-shadow-dark: rgba(49, 30, 20, 0.85); // 中等亮度的呼吸边框阴影颜色
+$assistant-chat-shadow-darker: rgba(36, 23, 15, 0.85); // 略深的呼吸边框阴影颜色
+$assistant-chat-shadow-darkest: rgba(24, 15, 10, 0.85); // 最暗的呼吸边框阴影颜色
+$assistant-chat-shadow-soft: rgba(75, 46, 0, 0.55); // 最亮的柔和阴影
+$assistant-chat-shadow-moderate: rgba(62, 39, 35, 0.55); // 稍浅的柔和阴影
+$assistant-chat-shadow-deep: rgba(49, 30, 20, 0.55); // 中等深度的柔和阴影
+$assistant-chat-shadow-deeper: rgba(36, 23, 15, 0.55); // 略深的柔和阴影
+$assistant-chat-shadow-deepest: rgba(24, 15, 10, 0.55); // 最深的柔和阴影
+
+// 修改用户信息窗口闪烁动画颜色变量
+$theme-dialog-shadow-light: rgba(26, 26, 26, 0.45); // 较浅的黑色阴影
+$theme-dialog-shadow-medium: rgba(26, 26, 26, 0.4); // 中等深度的黑色阴影
+
+:root {
+    --key-background-start: #{$theme-background};
+    --key-background-end: #{$theme-background-light};
+    --key-border: #{$theme-primary};
+    --key-text: #{$theme-primary-dark};
+    --plus-sign: #{$theme-primary};
+    --hover-border: #{$theme-primary-light};
+}

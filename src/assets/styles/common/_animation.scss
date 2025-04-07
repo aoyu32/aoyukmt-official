@@ -336,7 +336,7 @@
 /* 定义闪烁的动画 */
 @keyframes blinkOfInput {
     0% {
-        text-shadow: 0 0 3px $theme-dialog-shadow-light, 0 0 6px $theme-dialog-shadow-medium;
+        text-shadow: 0 0 3px rgb(255, 79, 79), 0 0 6px $theme-dialog-shadow-medium;
     }
 
     50% {
@@ -344,13 +344,13 @@
     }
 
     100% {
-        text-shadow: 0 0 3px $theme-dialog-shadow-light, 0 0 6px $theme-dialog-shadow-medium;
+        text-shadow: 0 0 3px rgb(255, 79, 79), 0 0 6px $theme-dialog-shadow-medium;
     }
 }
 
 @keyframes blinkOfAvatar {
     0% {
-        box-shadow: 0 0 5px $theme-dialog-shadow-light, 0 0 8px $theme-dialog-shadow-medium;
+        box-shadow: 0 0 5px rgb(255, 79, 79), 0 0 8px $theme-dialog-shadow-medium;
     }
 
     50% {

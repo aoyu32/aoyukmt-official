@@ -6,7 +6,7 @@
                 <div class="avatar" @click="hanldeAvatarClick">
                     <img :src="userData.user.avatar" alt="User Avatar" />
                 </div>
-                <p class="username">{{ userData.user.name }}</p>
+                <p class="username">{{ userData.user.nickname }}</p>
                 <div class="login-button" @click="handleLoginButton"><button><i class="iconfont" :class="iconClass"
                             :tip="isLogin ? '退出登录' : '点击登录'"></i></button></div>
             </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { userStore } from '@/stores/user';
 const userData = userStore()
 const currentIndex = ref(0)
@@ -63,6 +63,11 @@ const hanldeAvatarClick = () => {
         emit("display-dialog")
     }
 }
+
+watch(() => userData.token, (newVal) => {
+    console.log('Token 变化:', newVal)
+    isLogin.value = newVal != null && newVal !== ''
+}, { immediate: true })
 
 //去登录按钮
 const handleLoginButton = () => {

@@ -135,10 +135,4 @@ export const useAssistantStore = defineStore('assistant', () => {
         setShowDialog
     }
 },
-    {
-        persist: {
-            key: 'user',
-            pick: ['user']
-        }
-    }
 );

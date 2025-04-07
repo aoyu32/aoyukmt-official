@@ -7,8 +7,8 @@
             <div class="community-nav" :class="{ 'show': isShowNav }">
                 <!-- 导航栏 -->
                 <div class="nav" :style="{ 'height': navHeight, 'border-radius': navBorderRadius }">
-                    <CommunitySidebar @display-user-card="isDisplayLogin = true"
-                        @display-dialog="isShowDialog = true" @display-login="isDisplayLogin = true"/>
+                    <CommunitySidebar @display-user-card="isDisplayLogin = true" @display-dialog="isShowDialog = true"
+                        @display-login="isDisplayLogin = true" />
                 </div>
             </div>
             <!-- 界面 -->
@@ -33,7 +33,7 @@
                 @display-reset="isDisplayReset = true" />
         </div>
         <div class="user-register" v-if="isDisplayRegister">
-            <UserRegister @close-register="isDisplayRegister = false" />
+            <UserRegister @close-register="isDisplayRegister = false" @auto-login="handleAutoLogin" />
         </div>
         <div class="user-reset" v-if="isDisplayReset">
             <UserReset @close-reset="isDisplayReset = false" />
@@ -52,8 +52,8 @@ import CommunityDialog from '@/components/community/CommunityDialog.vue';
 import UserLogin from '@/components/user/UserLogin.vue';
 import UserRegister from '@/components/user/UserRegister.vue';
 import UserReset from '@/components/user/UserReset.vue';
-const userData = userStore()
-const { user } = storeToRefs(userData)
+const userDataStore = userStore()
+
 
 //显示对话框
 const dialogTitle = ref("📌 登录提示")
@@ -66,10 +66,22 @@ const isDisplayRegister = ref(false)//是否显示注册窗口
 const isDisplayLogin = ref(false)//是否显示登录窗口
 const isDisplayReset = ref(false)//是否显示重置密码窗口
 
+
 //监听是否点击对话框确认按钮
 const handleDialogSubmit = () => {
     isDisplayLogin.value = true
     isShowDialog.value = false
+}
+
+//监听开始自动登录
+const handleAutoLogin = (resp) => {
+    isDisplayLogin.value = false
+    const { token, ...userInfo } = resp
+    //持久化token
+    userDataStore.setToken(token)
+    //设置用户信息
+    userDataStore.setUser(userInfo)
+
 }
 
 //控制侧边栏高度
