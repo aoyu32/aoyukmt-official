@@ -60,7 +60,6 @@ const tipContext = ref("")
 
 //校验成功
 const handleVerifySuccess = (param) => {
-    console.log(param);
     isShowSliderCaptcha.value = false
     register(param.captchaVerification)
 }
@@ -74,10 +73,8 @@ const register = async (vcode) => {
         verifyCode: vcode
     }
     try {
-
         const resp = await apis.register(data)
         console.log(resp);
-
         tipContext.value = "注册成功啦" + "🥰"
         showTipMessage.value = true
         setTimeout(() => {
@@ -87,20 +84,13 @@ const register = async (vcode) => {
             emit("auto-login", resp)
             //关闭注册窗口
             closeRegister()
-
         }, 1000)
-
-
-
-
     } catch (error) {
-
         if (error.code === 438) {
             validationTips.username = "用户名已存在！🫢"
             tipBlink.usernameTipBlink = true
             return
         }
-
         tipContext.value = error.message + "🫢"
         showTipMessage.value = true
         setTimeout(() => {

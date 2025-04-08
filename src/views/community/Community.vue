@@ -7,8 +7,8 @@
             <div class="community-nav" :class="{ 'show': isShowNav }">
                 <!-- 导航栏 -->
                 <div class="nav" :style="{ 'height': navHeight, 'border-radius': navBorderRadius }">
-                    <CommunitySidebar @display-user-card="isDisplayLogin = true" @display-dialog="isShowDialog = true"
-                        @display-login="isDisplayLogin = true" />
+                    <CommunitySidebar @display-user-card="isDispalyUserCard = true"
+                        @display-dialog="handleDisplayDialog" @display-login="isDisplayLogin = true" @logout="logout" />
                 </div>
             </div>
             <!-- 界面 -->
@@ -21,12 +21,11 @@
             </div>
         </div>
         <div class="user-info-card">
-            <UserIDCard :userData="user" @close-user-card="isDisplayUserCard = false" v-if="isDisplayUserCard" />
+            <UserIDCard @close-user-card="isDisplayUserCard = false" v-if="isDisplayUserCard" />
         </div>
-        <div class="dialog" v-if="isShowDialog">
-            <CommunityDialog @close-dialog="isShowDialog = false" @dialog-submit="handleDialogSubmit"
-                :title="dialogTitle" :content="dialogContent" :cancel-btn="dialogCancelBtn"
-                :submit-btn="dialogSubmitBtn" />
+        <div class="dialog" v-if="isDisplayDialog">
+            <CommunityDialog @close-dialog="isDisplayDialog = false" @dialog-submit="handleDialogSubmit"
+                :config="dialog" />
         </div>
         <div class="user-login" v-if="isDisplayLogin">
             <UserLogin @close-login="isDisplayLogin = false" @display-register="isDisplayRegister = true"
@@ -47,41 +46,96 @@ import CommunitySidebar from '@/components/community/CommunitySidebar.vue';
 import { useRoute } from 'vue-router';
 import UserIDCard from '@/components/user/UserIDCard.vue';
 import { userStore } from '@/stores/user';
-import { storeToRefs } from 'pinia';
 import CommunityDialog from '@/components/community/CommunityDialog.vue';
 import UserLogin from '@/components/user/UserLogin.vue';
 import UserRegister from '@/components/user/UserRegister.vue';
 import UserReset from '@/components/user/UserReset.vue';
+import { apis } from '@/api/api';
 const userDataStore = userStore()
 
 
-//显示对话框
-const dialogTitle = ref("📌 登录提示")
-const dialogContent = ref("抱歉！您还未登录，麻烦您先登录或注册！")
-const dialogCancelBtn = ref("我先再逛逛")
-const dialogSubmitBtn = ref("我要登录/注册")
-const isShowDialog = ref(false)//是否显示对话框
+const loginDialog = {
+    icon: '☺️',
+    title: "📌 登录提示",
+    content: "抱歉！您还未登录，麻烦您先登录或注册！",
+    cancel: "我先再逛逛",
+    submit: "我要登录/注册",
+    event: "login"
+}
+
+const logoutDialog = {
+    icon: '😶',
+    title: "📌 退出登录",
+    content: "你确定要退出登录吗？",
+    cancel: "我不退出了",
+    submit: "确定退出登录",
+    event: "logout"
+}
+
+
+const dialog = ref(loginDialog)//对话框配置
+const isDisplayDialog = ref(false)//是否显示对话框
 const isDisplayUserCard = ref(false)//是否显示用户卡片
 const isDisplayRegister = ref(false)//是否显示注册窗口
 const isDisplayLogin = ref(false)//是否显示登录窗口
 const isDisplayReset = ref(false)//是否显示重置密码窗口
+const isDispalyUserCard = ref(false)//是否显示用户卡片
 
-
-//监听是否点击对话框确认按钮
-const handleDialogSubmit = () => {
-    isDisplayLogin.value = true
-    isShowDialog.value = false
+//监听登录和退出登录按钮点击事件
+const handleDisplayDialog = () => {
+    dialog.value = loginDialog
+    isDisplayDialog.value = true
 }
 
-//监听开始自动登录
-const handleAutoLogin = (resp) => {
-    isDisplayLogin.value = false
-    const { token, ...userInfo } = resp
-    //持久化token
-    userDataStore.setToken(token)
-    //设置用户信息
-    userDataStore.setUser(userInfo)
+//监听是否点击对话框确认按钮
+const handleDialogSubmit = (event) => {
+    if (event === 'login') {
+        //显示登录窗口
+        isDisplayLogin.value = true
+    }
 
+    if (event === 'logout') {
+        //退出登录操作
+        //清除token
+        userDataStore.clearToken()
+        //清除用户数据
+        userDataStore.clearUserData()
+    }
+    isDisplayDialog.value = false
+}
+
+//退出登录操作
+const logout = () => {
+    isDisplayDialog.value = true
+    dialog.value = logoutDialog
+}
+
+onMounted(() => {
+    console.log("是否登录：", userDataStore.hasLogin);
+    console.log("是否有用户数据", !userDataStore.isUserInfoEmpty);
+    if (!userDataStore.hasLogin || !userDataStore.isUserInfoEmpty)
+        return
+    //请求获取用户信息
+    requestUserInfo()
+})
+
+//监听开始自动登录
+const handleAutoLogin = async (data) => {
+    isDisplayLogin.value = false
+    //持久化token
+    userDataStore.setToken(data)
+    requestUserInfo()
+}
+
+//请求获取用户信息
+const requestUserInfo = async () => {
+    try {
+        const resp = await apis.getUserInfo()
+        //设置用户信息
+        userDataStore.setUser(resp)
+    } catch (error) {
+        console.log(error.message);
+    }
 }
 
 //控制侧边栏高度

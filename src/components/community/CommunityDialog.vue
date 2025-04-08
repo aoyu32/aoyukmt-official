@@ -3,7 +3,7 @@
         <div class="community-dialog">
             <div class="dialog-header">
                 <div class="header-left">
-                    <h3>{{ title }}</h3>
+                    <h3>{{ config.title }}</h3>
                 </div>
                 <div class="header-right">
                     <button class="close-button" @click="closeDialog">
@@ -13,40 +13,31 @@
             </div>
             <div class="dialog-body">
                 <div class="body-icon">
-                    {{ icon }}
+                    {{ config.icon }}
                 </div>
                 <div class="body-content">
-                    <p>{{ content }}</p>
+                    <p>{{ config.content }}</p>
                 </div>
             </div>
             <div class="dialog-footer">
-                <button class="cancel" @click="closeDialog">{{ cancelBtn }}</button>
-                <button class="submit" @click="handleSubmit"> {{ submitBtn }}</button>
+                <button class="cancel" @click="closeDialog">{{ config.cancel }}</button>
+                <button class="submit" @click="handleSubmit"> {{ config.submit }}</button>
             </div>
         </div>
     </div>
 </template>
 <script setup>
 const props = defineProps({
-    title: {
-        type: String,
-        default: 'DIALOG'
-    },
-    icon: {
-        type: String,
-        default: "☺️"
-    },
-    content: {
-        type: String,
-        default: "这是一个提示对话框"
-    },
-    cancelBtn: {
-        type: String,
-        default: "取消"
-    },
-    submitBtn: {
-        type: String,
-        default: "确认"
+    config: {
+        type: Object,
+        default: () => ({
+            icon: '',
+            title: 'DIALOG',
+            content: '这是一个提示对话框',
+            cancel: '取消',
+            submit: '确认',
+            event: ''
+        })
     }
 })
 
@@ -56,7 +47,9 @@ const closeDialog = () => {
 }
 
 const handleSubmit = () => {
-    emit("dialog-submit")
+    console.log("执行的操作：",props.config.event);
+    
+    emit("dialog-submit", props.config.event)
 }
 </script>
 <style lang="scss" scoped>

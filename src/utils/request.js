@@ -12,23 +12,31 @@ const instance = axios.create({
   }
 });
 
-// // 请求拦截器
-// instance.interceptors.request.use(
-//   config => {
-//     // 在发送请求之前做些什么
-//     // 例如：获取并设置token
-//     const token = localStorage.getItem('token');
-//     if (token) {
-//       config.headers['Authorization'] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   error => {
-//     // 对请求错误做些什么
-//     console.error('Request error:', error);
-//     return Promise.reject(error);
-//   }
-// );
+// 请求拦截器
+// 请求拦截器
+instance.interceptors.request.use(config => {
+  const token = localStorage.getItem('user_token')
+  
+  // 只有需要认证的请求才添加token
+  if (config.needAuth) {
+    // 检查token是否存在
+    if (token) {
+      try {
+        const tokenObj = JSON.parse(token)
+        if (tokenObj && tokenObj.token) {
+          // 使用反引号而不是普通引号
+          config.headers.Authorization = `Bearer ${tokenObj.token}`
+        }
+      } catch (e) {
+        console.error('Token解析错误:', e)
+      }
+    }
+  }
+  
+  return config
+}, error => {
+  return Promise.reject(error)
+})
 
 // 响应拦截器
 instance.interceptors.response.use(

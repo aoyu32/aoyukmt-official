@@ -48,6 +48,13 @@ export const apis = {
 
     //注册
     register: (data) => {
-        return instance.post('auth\\register', data)
-    }
+        return instance.post('auth/register', data)
+    },
+
+    //获取用户信息
+    getUserInfo: () => {
+        return instance.post("user/info", null, {
+          needAuth: true
+        });
+      }
 };

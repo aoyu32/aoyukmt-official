@@ -3,12 +3,12 @@
         <!-- 上半部分：头像和用户名 -->
         <div class="sidebar-top">
             <div class="user-info">
-                <div class="avatar" @click="hanldeAvatarClick">
+                <div class="avatar" @click="handleAvatarClick">
                     <img :src="userData.user.avatar" alt="User Avatar" />
                 </div>
                 <p class="username">{{ userData.user.nickname }}</p>
-                <div class="login-button" @click="handleLoginButton"><button><i class="iconfont" :class="iconClass"
-                            :tip="isLogin ? '退出登录' : '点击登录'"></i></button></div>
+                <div class="login-button" @click="handleLoginOrLogout"><button><i class="iconfont" :class="iconClass"
+                            :tip="userData.hasLogin ? '退出登录' : '点击登录'"></i></button></div>
             </div>
         </div>
 
@@ -34,45 +34,25 @@ const menuItems = [
     { name: "人机客服🐔", icon: "🐻‍❄️", link: "/community/assistant" },
     { name: "意见反馈🐼", icon: "👻", link: "/community/feedback" },
     { name: "群聊论坛☠️", icon: "🐚", link: "/community/forum" },
-
 ];
 
 //登录按钮
 const iconClass = computed(() =>
-    isLogin.value ? 'icon-tuichudenglu' : 'icon-denglu12'
+    userData.hasLogin ? 'icon-tuichudenglu' : 'icon-denglu12'
 );
 
-//是否已登录
-const isLogin = ref(false)
-onMounted(() => {
-    if (userData.token !== '') {
-        isLogin.value = true
-    } else {
-        isLogin.value = false
-    }
-})
-
 //显示用户身份证卡片
-const emit = defineEmits(["display-user-card", "display-dialog", "display-login"])
+const emit = defineEmits(["display-user-card", "display-dialog", "display-login", "logout"])
 
 //显示未登录对话框
-const hanldeAvatarClick = () => {
-    if (isLogin.value) {
-        emit("display-user-card")
-    } else {
-        emit("display-dialog")
-    }
+const handleAvatarClick = () => {
+    userData.hasLogin ? emit("display-user-card") : emit("display-dialog")
 }
 
-watch(() => userData.token, (newVal) => {
-    console.log('Token 变化:', newVal)
-    isLogin.value = newVal != null && newVal !== ''
-}, { immediate: true })
-
-//去登录按钮
-const handleLoginButton = () => {
-    emit("display-login")
+const handleLoginOrLogout = () => {
+    userData.hasLogin ? emit("logout") : emit("display-login")
 }
+
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/community/sidebar.scss" as *;
