@@ -26,6 +26,8 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import { userStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
+const router = useRouter() 
 const userData = userStore()
 const currentIndex = ref(0)
 
@@ -46,7 +48,7 @@ const emit = defineEmits(["display-user-card", "display-dialog", "display-login"
 
 //显示未登录对话框
 const handleAvatarClick = () => {
-    userData.hasLogin ? emit("display-user-card") : emit("display-dialog")
+    userData.hasLogin ? router.push("/community/user") : emit("display-dialog")
 }
 
 const handleLoginOrLogout = () => {

@@ -29,7 +29,7 @@
         </div>
         <div class="user-login" v-if="isDisplayLogin">
             <UserLogin @close-login="isDisplayLogin = false" @display-register="isDisplayRegister = true"
-                @display-reset="isDisplayReset = true" />
+                @display-reset="isDisplayReset = true" @user-login="handleUserLogin" />
         </div>
         <div class="user-register" v-if="isDisplayRegister">
             <UserRegister @close-register="isDisplayRegister = false" @auto-login="handleAutoLogin" />
@@ -108,6 +108,16 @@ const handleDialogSubmit = (event) => {
 const logout = () => {
     isDisplayDialog.value = true
     dialog.value = logoutDialog
+}
+
+//监听用户登录
+const handleUserLogin = (resp) => {
+    //关闭登录窗口
+    isDisplayLogin.value = false
+    //设置登录
+    userDataStore.setToken(resp.token)
+    //设置用户信息
+    userDataStore.setUser(resp.userData)
 }
 
 onMounted(() => {

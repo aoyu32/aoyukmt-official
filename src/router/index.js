@@ -30,6 +30,10 @@ const router = createRouter({
               redirect: '/community/assistant'
             },
             {
+              path: 'user',
+              component: () => import('@/views/user/User.vue'),
+            },
+            {
               path: 'assistant',
               component: () => import('@/views/assistant/Assistant.vue')
             },

@@ -54,7 +54,15 @@ export const apis = {
     //获取用户信息
     getUserInfo: () => {
         return instance.post("user/info", null, {
-          needAuth: true
+            needAuth: true
         });
-      }
+    },
+
+    //用户登录
+    login: (data) => {
+        return instance.post('auth/login', data)
+    }
+
+
+
 };
