@@ -8,8 +8,8 @@
         <div class="message">
             <!-- 用户名容器 -->
             <div class="name-container">
-                <span class="status">{{ message.user.status }}</span>
-                <span class="name"> {{ message.user.name }}</span>
+                <span class="status">{{ status }}</span>
+                <span class="name"> {{ message.user.nickname }}</span>
             </div>
             <!-- 消息容器 -->
             <div class="message-container" :style="messageContainerStyle">
@@ -51,6 +51,9 @@ const isimgempty = computed(() => {
     return props.message.content.img.length === 0
 })
 
+const status = computed(() => {
+    return props.message.user.activeStatus === 1 ? '🔋' : '🪫'
+})
 
 //判断发送的是否是文本+图片类型的消息
 const contentType = computed(() => {

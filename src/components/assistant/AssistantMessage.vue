@@ -4,7 +4,7 @@
       <img :src="messageData.isUser ? user.avatar : aoyukmtAvatar" alt="">
     </div>
     <div class="message-wrapper">
-      <div class="name">{{ messageData.isUser ? "🪶" + user.name : officialName }}</div>
+      <div class="name">{{ messageData.isUser ? "🪶" + user.nickname : officialName }}</div>
       <div class="message-content">
         <!-- 显示图片 -->
         <div v-if="hasImages" class="message-content-img" :style="messageTextStyle">
