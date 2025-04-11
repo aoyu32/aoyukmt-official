@@ -1,20 +1,14 @@
 <template>
     <div class="user">
         <div class="main-content">
-            <!-- <div class="user-header">
-                <h2>我的信息</h2>
-            </div> -->
             <div class="user-body">
                 <UserWindow />
             </div>
-
         </div>
     </div>
 </template>
 <script setup>
 import UserWindow from '@/components/user/UserWindow.vue';
-
-
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/_theme.scss" as *;
@@ -38,6 +32,7 @@ import UserWindow from '@/components/user/UserWindow.vue';
         border-radius: 12px;
         border: 2px solid $theme-primary;
         position: relative;
+        overflow: hidden;
 
         .user-header {
             width: 100%;
@@ -46,11 +41,13 @@ import UserWindow from '@/components/user/UserWindow.vue';
             align-items: center;
             padding: 10px;
             border-bottom: 1px solid $theme-primary;
-            h2{
+
+            h2 {
                 color: $theme-primary;
             }
         }
-        .user-body{
+
+        .user-body {
             width: 100%;
             height: 100%;
         }

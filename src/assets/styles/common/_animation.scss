@@ -403,6 +403,19 @@
     }
 }
 
+@keyframes slideLeftOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(300px);
+    }
+}
+
+
 //反馈选项卡片向右滑入动画
 @keyframes slideRight {
     from {
@@ -429,13 +442,13 @@
     }
 
     90% {
-        opacity: 1; 
+        opacity: 1;
     }
 
 
     100% {
         right: 100%;
-        opacity: 0; 
+        opacity: 0;
     }
 }
 
@@ -462,7 +475,7 @@
         opacity: 0;
     }
 
-    50%{
+    50% {
         opacity: 0;
     }
 

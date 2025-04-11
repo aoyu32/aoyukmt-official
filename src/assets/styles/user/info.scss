@@ -1,6 +1,7 @@
 @use "@/assets/styles/common/_theme.scss" as *;
 @use "@/assets/styles/common/_variable.scss" as *;
 @use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_tooltip-mixins.scss" as *;
 
 .user-info {
 
@@ -8,8 +9,9 @@
     min-width: 60%;
     max-width: 70%;
     border-radius: 10px;
-    animation: slideLeft 0.3s ease-in-out;
+    animation: slideRight 0.3s ease-in-out;
     border: 1px solid $theme-primary;
+    position: relative;
 
     .user-info-header {
         display: flex;
@@ -17,6 +19,7 @@
         padding: 10px;
         border-bottom: 1px solid $theme-primary;
         background-color: $theme-primary-lt;
+        position: relative;
 
         h3 {
             color: $theme-primary;
@@ -25,13 +28,26 @@
         button {
             background-color: transparent;
             border: none;
+            cursor: pointer;
+            position: relative;
 
             .iconfont {
                 font-size: 20px;
                 color: $theme-primary;
+                transition: all 0.3s ease-in-out;
+
+                &:hover {
+                    color: $theme-primary-dark;
+                }
+
             }
+
+            @include tooltip("点击设置你的信息", left, 170%, top, -20%, 20px, $theme-secondary-light);
+
+
         }
     }
+
 
     .user-info-body {
         display: flex;
@@ -41,7 +57,7 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid $theme-primary;
-            background-color: $theme-primary-lt;
+            background-color: $theme-primary-hover;
 
             .avatar {
                 display: flex;
@@ -95,7 +111,7 @@
                         gap: 10px;
 
                         .item-content {
-                      
+
                             margin-right: 10px;
                             height: 100%;
                             display: flex;
@@ -103,17 +119,18 @@
                             line-height: 100%;
                             gap: 15px;
 
-                            label{
+                            label {
                                 color: $theme-primary;
                                 font-weight: bold;
                                 font-size: 15px;
                             }
-                            span{
+
+                            span {
                                 font-size: 15px;
                                 color: $theme-font-gray;
                             }
 
-                         
+
                         }
                     }
 
@@ -141,7 +158,7 @@
                     align-items: center;
                     width: 100%;
                     height: 50px;
-                    background-color: $theme-secondary-lt;
+                    background-color: $theme-primary-hover;
                     padding: 10px;
                     border-radius: 5px;
 
@@ -159,6 +176,17 @@
     @media (max-width: 1100px) {
         min-width: 100%;
         max-width: 100%;
+        position: relative;
+
+        .user-info-header {
+            position: relative;
+
+            button {
+
+                @include tooltip("点击设置你的信息", left, -140px, top, -20%, 20px, $theme-secondary-light);
+            }
+        }
+
 
         .user-info-body {
             flex-direction: column;

@@ -8,7 +8,7 @@ export const userStore = defineStore('user', () => {
         nickname: "未登录",
         avatar: unloginAvatar,
         gender: '...',
-        activeStatus: '📡' ,
+        activeStatus: '📡',
         registrationTime: "...",
         bio: '......',
         ipInfo: '...',
@@ -32,6 +32,11 @@ export const userStore = defineStore('user', () => {
     //是否登录
     const hasLogin = computed(() => {
         return token.value !== ''
+    })
+
+    //用户是否绑定了邮箱
+    const isBindEmail = computed(() => {
+        return !user.value.email
     })
 
     //是否有用户信息
@@ -74,6 +79,7 @@ export const userStore = defineStore('user', () => {
         userRegisterForm,
         hasLogin,
         isUserInfoEmpty,
+        isBindEmail,
         setUser,
         setToken,
         setUserLoginForm,

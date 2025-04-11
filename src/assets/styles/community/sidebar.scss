@@ -8,16 +8,15 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-
     padding: 20px 10px;
     box-sizing: border-box;
+    position: relative;
 
     a {
         text-decoration: none;
     }
 
     .sidebar-top {
-        position: relative;
 
         .user-info {
             text-align: center;
@@ -29,13 +28,16 @@
                 border-radius: 50%;
                 overflow: hidden;
                 margin: 0 auto 10px;
+
                 transition: all 0.3s ease-in-out;
+
+
+                @include tooltip("用户主页🐙", left, 0%, bottom, 100px, 20px, $theme-secondary-light);
 
                 img {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
-
                 }
 
                 &:hover {
@@ -43,7 +45,11 @@
                     border: 1px solid $theme-secondary-light;
                     box-shadow: 0 0 2px 4px $theme-secondary-lt;
                 }
+
+
             }
+
+
 
 
             .username {
@@ -172,6 +178,8 @@
                     height: 40px;
                 }
 
+                @include tooltip("用户主页🐙", right, -105px, bottom, 62px, 20px, $theme-secondary-light);
+
                 .username {
                     display: none;
                 }
@@ -194,6 +202,7 @@
 
                     }
                 }
+
 
 
 

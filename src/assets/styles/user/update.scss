@@ -1,0 +1,97 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_common-mixins.scss" as *;
+
+.user-update {
+    padding: 10px;
+    border: 1px solid $theme-primary;
+    background-color: rgba($theme-primary, 0.05);
+    max-width: 60%;
+    border-radius: 10px;
+
+
+
+    .update-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 10px;
+
+        h4 {
+            color: $theme-primary;
+        }
+
+        button {
+            border: none;
+            background-color: transparent;
+
+            .iconfont {
+                font-weight: 600;
+                font-size: 16px;
+                color: $theme-primary;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+
+                &:hover {
+                    color: $theme-primary-dark;
+                }
+            }
+
+         
+
+        }
+
+    }
+
+    .update-body {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .tip-message {
+
+            width: 100%;
+            display: flex;
+            margin-bottom: 15px;
+
+            p {
+                color: $theme-font-dark;
+            }
+
+        }
+
+        .select-option {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+
+            button {
+                padding: 8px 15px;
+                background-color: $theme-primary;
+                border: none;
+                color: $theme-font-light;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                width: auto;
+                white-space: nowrap;
+                border-radius: 5px;
+
+                &:hover {
+                    background-color: $theme-secondary;
+                }
+
+
+            }
+
+            .active {
+                background-color: $theme-secondary;
+            }
+        }
+
+
+    }
+
+
+
+}

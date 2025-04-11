@@ -2,7 +2,8 @@
     <div class="user-info">
         <div class="user-info-header">
             <h3>🍰 我的资料卡</h3>
-            <button><i class="iconfont icon-edit"></i></button>
+            <button @click="displayUpdate"><i class="iconfont"
+                    :class="isEditting ? 'icon-edit' : 'icon-setting'"></i></button>
         </div>
         <div class="user-info-body">
             <div class="info-body-left">
@@ -97,6 +98,15 @@ const email = computed(() => {
 const bio = computed(() => {
     return !props.userInfo.bio ? "你还没有填写你的简介信息！😫" : props.userInfo.bio
 })
+
+//显示修改用户信息组件
+const isEditting = ref(false)
+const emit = defineEmits(["display-update"])
+const displayUpdate = () => {
+    isEditting.value = !isEditting.value
+    emit("display-update")
+}
+
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/user/info.scss" as *;

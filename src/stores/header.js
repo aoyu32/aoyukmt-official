@@ -71,6 +71,11 @@ export const useHeaderStore = defineStore('header', () => {
             typeText: 'FEEDBACK',
             navWidth: '1300px',
             routerLink: '/community/feedback'
+        },
+        { 
+            typeText: 'USER INFORMATION', 
+            navWidth:'1300px',
+            routerLink:'/community/user'
         }
 
     ])

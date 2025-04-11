@@ -167,6 +167,11 @@ watchEffect(() => {
         navHeight.value = '95%'
         navBorderRadius.value = '0'
     }
+    if (currentRoute === "/community/user") {
+        navHeight.value = '95%'
+        navBorderRadius.value = '10px'
+    }
+
 
 })
 
