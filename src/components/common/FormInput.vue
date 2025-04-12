@@ -5,7 +5,7 @@
         </div>
         <div class="input-wrapper">
             <input :type="type" :placeholder="placeholder" :value="modelValue" @input="update" @blur="handleBlur"
-                :autocomplete="autocompleteText">
+                :autocomplete="autocompleteText" :style="{ height: height }">
             <i :class="['iconfont', icon, iconActive]" @click="handleIconClick"></i>
         </div>
         <div class="input-tip" :class="{ 'show': tipContent, 'blink-name': blink }">
@@ -16,6 +16,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 const props = defineProps({
+    //输入框高度
+    height: {
+        type: String,
+        default: '45px'
+    },
     //输入框标签
     label: {
         type: String,

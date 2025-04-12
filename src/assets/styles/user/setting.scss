@@ -38,7 +38,7 @@
                 }
             }
 
-         
+
 
         }
 
@@ -67,21 +67,20 @@
             gap: 12px;
 
             button {
+                flex: 1;
                 padding: 8px 15px;
                 background-color: $theme-primary;
                 border: none;
                 color: $theme-font-light;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
-                width: auto;
                 white-space: nowrap;
                 border-radius: 5px;
+                text-align: center;
 
                 &:hover {
                     background-color: $theme-secondary;
                 }
-
-
             }
 
             .active {
@@ -89,9 +88,5 @@
             }
         }
 
-
     }
-
-
-
 }

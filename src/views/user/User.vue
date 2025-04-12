@@ -24,7 +24,7 @@ import UserWindow from '@/components/user/UserWindow.vue';
 
     .main-content {
         width: 100%;
-        height: 95%;
+        height: 97%;
         display: flex;
         align-items: center;
         flex-direction: column;

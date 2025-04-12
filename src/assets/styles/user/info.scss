@@ -42,7 +42,7 @@
 
             }
 
-            @include tooltip("点击设置你的信息", left, 170%, top, -20%, 20px, $theme-secondary-light);
+            @include tooltip(attr(tip), left, 170%, top, -20%, 20px, $theme-secondary-light);
 
 
         }
@@ -182,8 +182,7 @@
             position: relative;
 
             button {
-
-                @include tooltip("点击设置你的信息", left, -140px, top, -20%, 20px, $theme-secondary-light);
+                @include tooltip(attr(tip), left, -140px, top, -20%, 20px, $theme-secondary-light);
             }
         }
 

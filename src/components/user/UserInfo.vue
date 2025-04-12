@@ -2,8 +2,8 @@
     <div class="user-info">
         <div class="user-info-header">
             <h3>🍰 我的资料卡</h3>
-            <button @click="displayUpdate"><i class="iconfont"
-                    :class="isEditting ? 'icon-edit' : 'icon-setting'"></i></button>
+            <button @click="displayUpdate" :tip="isSetting ? '点击退出用户设置' : '点击设置用户信息'"><i class="iconfont"
+                    :class="isSetting ? 'icon-edit' : 'icon-setting'"></i></button>
         </div>
         <div class="user-info-body">
             <div class="info-body-left">
@@ -60,6 +60,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 const props = defineProps({
+    //是否处于设置模式
+    isSetting: {
+        type: Boolean,
+        default: false
+    },
+    //用户信息
     userInfo: {
         type: Object,
         default: () => {
@@ -100,11 +106,9 @@ const bio = computed(() => {
 })
 
 //显示修改用户信息组件
-const isEditting = ref(false)
-const emit = defineEmits(["display-update"])
+const emit = defineEmits(["display-setting"])
 const displayUpdate = () => {
-    isEditting.value = !isEditting.value
-    emit("display-update")
+    emit("display-setting")
 }
 
 </script>

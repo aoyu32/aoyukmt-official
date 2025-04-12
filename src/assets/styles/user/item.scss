@@ -1,0 +1,263 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_common-mixins.scss" as *;
+
+.user-setting-item {
+    padding: 10px;
+    border: 1px solid $theme-primary;
+    background-color: rgba($theme-primary, 0.05);
+    border-radius: 10px;
+
+
+    .btn-save {
+        width: 100%;
+        padding: 6px;
+        border: none;
+        border-radius: 5px;
+        background-color: $theme-primary;
+        color: $theme-font-light;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: $theme-primary;
+        color: $theme-font-light;
+        font-weight: 550;
+    }
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        h3 {
+            color: $theme-primary;
+
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $theme-primary;
+            transition: all 0.3s ease-in-out;
+
+            i {
+                font-size: 17px;
+            }
+
+            &:hover {
+                color: $theme-primary-dark;
+            }
+        }
+
+    }
+
+
+    // 修改昵称
+    .modify-nickname {
+        width: 100%;
+    }
+
+    // 修改头像
+    .modify-avatar {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .avatar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 60px;
+            gap: 10px;
+
+            .avatar {
+                border: 2px solid $theme-primary;
+                border-radius: 10px;
+                width: 100px;
+                height: 100px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .iconfont {
+                    color: $theme-primary;
+                    font-size: 20px;
+                }
+            }
+
+            .btn-random {
+                border: none;
+                background-color: transparent;
+                color: $theme-primary;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+            }
+
+        }
+    }
+
+    //设置性别
+    .setting-gender {
+        width: 100%;
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem;
+
+            .radio-label {
+                cursor: pointer;
+                position: relative;
+
+                input[type="radio"] {
+                    position: absolute;
+                    opacity: 0;
+
+                    &:checked+span {
+                        background-color: $theme-secondary-lt;
+                        color: $theme-font-light;
+                        border-color: $theme-secondary-light;
+                    }
+
+                    &:focus+span {
+                        box-shadow: 0 0 0 2px $theme-secondary-lt;
+                    }
+                }
+
+                span {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.75rem;
+                    border: 1px solid $theme-background-dt;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+                    text-align: center;
+
+                    &:hover {
+                        border-color: $theme-primary-hover;
+                        background-color: $theme-primary-hover;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    //修改密码
+    .modify-password {
+        width: 300px;
+
+        .password-form {
+            width: 100%;
+        }
+
+
+    }
+
+    //绑定邮箱
+    .binding-email {
+        width: 350px;
+
+        .input-code {
+            width: 100%;
+            display: flex;
+            gap: 15px;
+
+
+
+            .btn-code {
+                width: 100%;
+                flex: 1;
+                height: 45px;
+                background-color: $theme-primary;
+                border: 1px solid $theme-secondary;
+                border-radius: 5px;
+                color: $theme-font-light;
+            }
+        }
+    }
+
+    //注销账户
+    .destroy-account {
+        width: 100%;
+
+        .warning-text {
+
+            color: $theme-font-gray;
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .btn-actions {
+            display: flex;
+            justify-content: end;
+            gap: 10px;
+
+            button {
+                padding: 6px 10px;
+                border-radius: 5px;
+            }
+
+            .cancel-btn {
+                background-color: transparent;
+                border: 1px solid $theme-primary;
+            }
+
+            .confirm-btn {
+                background-color: $theme-secondary;
+                border: 1px solid $theme-primary;
+                color: $theme-font-light;
+            }
+        }
+    }
+
+    //设置简介
+    .setting-bio {
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+
+        textarea {
+            width: 100%;
+            border: 1px solid $theme-primary;
+            cursor: default;
+            height: 60px;
+            outline: none;
+            resize: vertical;
+            padding: 5px;
+            font-size: 15px;
+            background-color: transparent;
+            resize: none;
+            color: $theme-font-dark;
+            border-radius: 5px;
+            overflow: hidden;
+
+            &:focus::placeholder {
+                color: transparent;
+            }
+
+
+        }
+
+        span {
+            font-size: 12px;
+            text-align: right;
+            margin: 5px 0 15px 0;
+            color: $theme-font-gray;
+        }
+    }
+}
