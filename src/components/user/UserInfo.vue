@@ -2,13 +2,13 @@
     <div class="user-info">
         <div class="user-info-header">
             <h3>🍰 我的资料卡</h3>
-            <button @click="displayUpdate" :tip="isSetting ? '点击退出用户设置' : '点击设置用户信息'"><i class="iconfont"
+            <button @click="displayUpdate" :tip="toolTipContent"><i class="iconfont"
                     :class="isSetting ? 'icon-edit' : 'icon-setting'"></i></button>
         </div>
         <div class="user-info-body">
             <div class="info-body-left">
                 <div class="avatar">
-                    <img :src="userInfo.avatar || defaultAvatar" alt="用户头像">
+                    <img :src="userAvatar" alt="用户头像">
                 </div>
                 <div class="basic-info">
                     <div class="nickname">{{ userInfo.nickname || '未设置昵称' }}</div>
@@ -42,7 +42,7 @@
                             <div class="item-content"><label>🌍 上一次登录IP</label> <span>117.72.89.209</span></div>
                         </div>
                         <div class="item">
-                            <div class="item-content"><label>🕒 上一次登录时间</label> <span>2023-12-01</span></div>
+                            <div class="item-content"><label>🕒 上一次登录时间</label> <span>2023-12-01 12:23:34</span></div>
                         </div>
                     </div>
                 </div>
@@ -58,10 +58,15 @@
 </template>
 
 <script setup>
+import unloginAvatar from '@/assets/unlogin-avatar-square.svg'
 import { ref, onMounted, computed } from 'vue'
 const props = defineProps({
     //是否处于设置模式
     isSetting: {
+        type: Boolean,
+        default: false
+    },
+    hasLogin: {
         type: Boolean,
         default: false
     },
@@ -105,9 +110,21 @@ const bio = computed(() => {
     return !props.userInfo.bio ? "你还没有填写你的简介信息！😫" : props.userInfo.bio
 })
 
+const userAvatar = computed(() => {
+    return props.hasLogin ? props.userInfo.avatar : unloginAvatar
+})
+
+const toolTipContent = computed(() => {
+    if (!props.hasLogin)
+        return '您还未登录'
+    return props.isSetting ? '点击退出用户设置' : '点击设置用户信息'
+})
+
 //显示修改用户信息组件
 const emit = defineEmits(["display-setting"])
 const displayUpdate = () => {
+    if (!props.hasLogin)
+        return
     emit("display-setting")
 }
 

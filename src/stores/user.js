@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from 'vue'
-import unloginAvatar from '@/assets/unlogin-avatar.svg'
+import unloginAvatar from '@/assets/unlogin-avatar-circle.svg'
 export const userStore = defineStore('user', () => {
     //未登录时用户信息
     const initUserData = {

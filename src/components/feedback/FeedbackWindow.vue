@@ -1,6 +1,6 @@
 <template>
     <div class="feedback-window" ref="feedbackWindowRef">
-        <Message :messageContent="tipContext" :isShowMessage="feedbackStore.showTip" :topOffset="'70px'" />
+        <Message :messageContent="tipContext" :isShowMessage="feedbackStore.showTip" message-position="absolute" />
         <!-- 反馈会话区域 -->
         <div v-for="session in feedbackStore.feedbackSessions" :key="session.id">
             <!-- 反馈选择组件 -->

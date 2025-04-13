@@ -17,12 +17,19 @@
         border-radius: 5px;
         background-color: $theme-primary;
         color: $theme-font-light;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background-color: $theme-secondary-light;
+        }
     }
 
     .btn-submit {
         width: 100%;
         padding: 10px;
         border: none;
+        cursor: pointer;
         border-radius: 5px;
         background-color: $theme-primary;
         color: $theme-font-light;
@@ -64,6 +71,11 @@
     // 修改昵称
     .modify-nickname {
         width: 100%;
+
+        .btn-save {
+            margin-top: 5px;
+            padding: 8px;
+        }
     }
 
     // 修改头像
@@ -87,11 +99,46 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                overflow: hidden;
+                position: relative;
+                cursor: pointer;
+                /* 添加指针样式表示可点击 */
 
-                .iconfont {
-                    color: $theme-primary;
-                    font-size: 20px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
                 }
+
+                .upload-icon {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    transition: all 0.3s ease-in-out;
+                    /* 添加半透明背景提升可视性 */
+
+                    .iconfont {
+                        color: $theme-primary;
+                        font-size: 20px;
+                    }
+                }
+
+                &:has(img) .upload-icon {
+                    opacity: 0;
+                }
+
+                &:has(img):hover .upload-icon {
+                    opacity: 1;
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+
+                &:not(:has(img)):hover .upload-icon {
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+
             }
 
             .btn-random {

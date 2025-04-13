@@ -26,18 +26,25 @@
                 height: 50px;
                 border: 1px solid $theme-primary;
                 border-radius: 50%;
-                overflow: hidden;
                 margin: 0 auto 10px;
-
                 transition: all 0.3s ease-in-out;
+                position: relative;
 
 
-                @include tooltip("用户主页🐙", left, 0%, bottom, 100px, 20px, $theme-secondary-light);
+                // 修改 tooltip 参数
+                @include tooltip("用户主页🐙",
+                    right,
+                    -107px,
+                    top,
+                    7px,
+                    20px,
+                    $theme-secondary-light );
 
                 img {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
+                    border-radius: 50%;
                 }
 
                 &:hover {
@@ -173,12 +180,17 @@
             justify-content: center;
 
             .user-info {
+
+                position: relative;
+
                 .avatar {
                     width: 40px;
                     height: 40px;
+                    position: relative;
+                    @include tooltip("用户主页🐙", right, -105px, top, 1px, 20px, $theme-secondary-light);
                 }
 
-                @include tooltip("用户主页🐙", right, -105px, bottom, 62px, 20px, $theme-secondary-light);
+
 
                 .username {
                     display: none;

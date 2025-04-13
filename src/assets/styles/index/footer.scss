@@ -38,3 +38,44 @@ footer {
     }
 
 }
+
+// @use "@/assets/styles/common/_variable.scss" as *;
+// @use "@/assets/styles/common/_theme-v2.scss" as *;
+// @use "@/assets/styles/common/_animation.scss" as *;
+
+// /* 增强的页脚 */
+// footer {
+//     background: $theme-primary; // 使用主色调
+//     color: $text-light; // 使用浅色文本
+//     padding: 1rem 0;
+//     position: relative;
+//     overflow: hidden;
+
+//     .footer-content {
+//         text-align: center;
+//         position: relative;
+//         z-index: 2;
+//     }
+
+//     .footer-waves {
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         width: 100%;
+//         height: 100px;
+//         background: $theme-primary-dark; // 使用主色深色版本
+//         animation: waveMove 20s linear infinite;
+//     }
+
+//     .copyright-text {
+//         font-size: 14px;
+//         margin-bottom: 5px;
+//         color: $text-light; // 使用浅色文本
+//     }
+
+//     .copyright-explain {
+//         font-size: 12px;
+//         color: $text-light-medium; // 使用中等透明度的浅色文本
+//         font-weight: 600;
+//     }
+// }

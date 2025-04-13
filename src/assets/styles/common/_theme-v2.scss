@@ -1,0 +1,94 @@
+// 模式切换变量
+$theme-mode: 'light' !default; // 默认亮色系，可设置为 'dark' 切换为暗色系
+
+/** ====================== 主色调 ====================== **/
+$theme-primary: #66b5bb; // 主色 (柔和的绿色)
+$theme-primary-light: lighten($theme-primary, 10%); // 变亮
+$theme-primary-dark: darken($theme-primary, 10%); // 变暗
+$theme-primary-transparent: rgba($theme-primary, 0.8); // 半透明
+
+/** ====================== 次色调 ====================== **/
+$theme-secondary: #95dc99; // 次色 (互补的蓝色)
+$theme-secondary-light: lighten($theme-secondary, 10%);
+$theme-secondary-dark: darken($theme-secondary, 10%);
+
+/** ====================== 背景色 ====================== **/
+// 深色背景
+$bg-dark: #121212; // 纯黑太刺眼，改用深灰
+$bg-dark-light: lighten($bg-dark, 5%);
+$bg-dark-lighter: lighten($bg-dark, 10%);
+
+// 浅色背景
+$bg-light: #ffffff;
+$bg-light-dark: darken($bg-light, 5%);
+$bg-light-darker: darken($bg-light, 10%);
+
+// 灰色背景
+$bg-gray: #f5f5f5;
+$bg-gray-dark: darken($bg-gray, 10%);
+$bg-gray-darker: darken($bg-gray, 20%);
+
+/** ====================== 文本色 ====================== **/
+// 深色文本
+$text-dark: #212121; // 主要文本
+$text-dark-medium: #424242; // 次级文本
+$text-dark-light: #616161; // 辅助文本
+
+// 浅色文本
+$text-light: #ffffff;
+$text-light-dark: rgba($text-light, 0.87);
+$text-light-medium: rgba($text-light, 0.6);
+$text-light-light: rgba($text-light, 0.38);
+
+// 灰色文本
+$text-gray: #9e9e9e;
+$text-gray-dark: darken($text-gray, 20%);
+$text-gray-light: lighten($text-gray, 15%);
+
+/** ====================== 模式相关变量 ====================== **/
+// 背景色变量（根据模式切换）
+$bg-color: if($theme-mode == 'dark', $bg-dark, $bg-light);
+$bg-color-secondary: if($theme-mode == 'dark', $bg-dark-light, $bg-light-dark);
+$bg-color-tertiary: if($theme-mode == 'dark', $bg-dark-lighter, $bg-light-darker);
+
+// 文本色变量（根据模式切换）
+$text-color: if($theme-mode == 'dark', $text-light, $text-dark);
+$text-color-secondary: if($theme-mode == 'dark', $text-light-medium, $text-dark-medium);
+$text-color-tertiary: if($theme-mode == 'dark', $text-light-light, $text-dark-light);
+
+// 卡片/表面颜色
+$surface-color: if($theme-mode == 'dark', $bg-dark-light, $bg-light);
+$surface-color-hover: if($theme-mode == 'dark', $bg-dark-lighter, $bg-light-dark);
+
+// 边框颜色
+$border-color: if($theme-mode == 'dark', rgba($text-light, 0.12), rgba($text-dark, 0.12));
+$border-color-dark: if($theme-mode == 'dark', rgba($text-light, 0.24), rgba($text-dark, 0.24));
+
+// 阴影
+$shadow-color: if($theme-mode == 'dark', rgba(black, 0.4), rgba(black, 0.1));
+
+
+/** ====================== 通用 Hover 变量 ====================== **/
+// 主元素 hover（按钮/重要操作）
+$hover-primary: if($theme-mode == 'dark', 
+  lighten($theme-primary, 5%), 
+  darken($theme-primary, 5%)
+);
+
+// 次要元素 hover（卡片/区块）
+$hover-bg: if($theme-mode == 'dark', 
+  rgba(255, 255, 255, 0.05), 
+  rgba(0, 0, 0, 0.03)
+);
+
+// 文本链接 hover
+$hover-text: if($theme-mode == 'dark', 
+  lighten($theme-primary, 15%), 
+  darken($theme-primary, 10%)
+);
+
+// 边框 hover（输入框/分割线）
+$hover-border: if($theme-mode == 'dark', 
+  rgba($theme-primary, 0.5), 
+  rgba($theme-primary, 0.7)
+);

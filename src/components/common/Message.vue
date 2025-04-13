@@ -59,6 +59,7 @@ onMounted(() => {
     line-height: 45px;
     font-weight: bold;
     opacity: 0;
+    border-radius: 8px;
     z-index: 10;
     box-shadow: 1px 5px 10px $theme-deep-shadow;
 
@@ -69,8 +70,8 @@ onMounted(() => {
         color: $theme-font-light;
         background-color: $theme-secondary-dark;
         margin: 0 auto;
-        padding: 0 20px;
         border-radius: 8px;
+        padding: 0 20px;
 
         p {
             white-space: nowrap;

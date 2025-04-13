@@ -5,10 +5,11 @@
         <!-- 左侧用户信息卡片展示区域 -->
         <div class="user-left">
             <UserInfo :user-info="userData.user" @display-setting="handleSetting"
-                :is-setting="displaySetting || hasSettingItem" />
+                :is-setting="displaySetting || hasSettingItem" :has-login="userData.hasLogin" />
         </div>
-        <Transition name="slide">
-            <div class="user-email-unbind" v-if="isShowEmailTip">
+        <Transition name="slide" mode="out-in">
+            <!-- 邮箱提示组件 -->
+            <div class="user-email-unbind" v-if="isShowEmailTip && !displaySetting && !hasSettingItem">
                 <div class="email-tip">
                     <div class="content">
                         <p>您好呀！您还没有绑定邮箱，邮箱可用于登录和找回密码，为了您的账号安全请绑定邮箱!</p>
@@ -22,25 +23,20 @@
                     </div>
                 </div>
             </div>
-        </Transition>
-        <!-- 右侧用户信息修改区域 -->
-        <Transition name="slide">
-            <div class="user-right" v-if="displaySetting">
+            <!-- 设置菜单组件 -->
+            <div class="user-right" v-else-if="displaySetting">
                 <UserSetting @hide-setting="displaySetting = false" @select-option="handleSelectOption" />
             </div>
-        </Transition>
-
-        <Transition name="slide">
-            <div class="user-right" v-if="hasSettingItem">
+            <!-- 具体设置项组件 -->
+            <div class="user-right" v-else-if="hasSettingItem">
                 <UserSettingItem :option-id="optionId" @hide-item="handleHideItem" />
             </div>
         </Transition>
 
-
     </div>
 </template>
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import Message from '../common/Message.vue';
 import UserInfo from './UserInfo.vue';
 import { userStore } from '@/stores/user';
@@ -69,11 +65,13 @@ onMounted(() => {
     checkEmailBinding()
 })
 
+
+
 //监听点击哪个设置选项
 const handleSelectOption = (index) => {
     displaySetting.value = false
     optionId.value = index
-
+    scrollToBottom()
 }
 
 let emailCheckTimer = null;
@@ -123,7 +121,17 @@ const handleHideItem = (index) => {
     }
     optionId.value = 100
     controlEmialItemHide.value = false
+    scrollToBottom()
 
+}
+
+const scrollToBottom = () => {
+    nextTick(() => {
+        setTimeout(() => {
+            scrollTo('bottom', 150, userWindowRef.value)
+            console.log('bottom 执行了')
+        }, 300)
+    })
 }
 
 //现在绑定邮箱
@@ -132,29 +140,36 @@ const handleNowBindingEmail = () => {
     isShowEmailTip.value = false
     optionId.value = 5
     controlEmialItemHide.value = true
-    if (window.innerWidth >= 1100)
-        return
-    scrollTo('bottom', 150, userWindowRef.value)
+    if (window.innerWidth < 1100) {
+        scrollToBottom()
+    }
+
 }
 
 //监听是否显示设置菜单，如果显示窗口滚动到底部
 watch(() => displaySetting.value, (newValue) => {
-
-
-
     if (!newValue && !hasSettingItem.value) {
-
         checkEmailBinding()
     }
     if (window.innerWidth >= 1100)
         return
-    if (newValue || optionId.value !== 100) {
+    if (newValue || hasSettingItem.value) {
         scrollTo('bottom', 150, userWindowRef.value)
     } else {
         scrollTo('top', 150, userWindowRef.value)
     }
 }, { immediate: true })
 
+//监听是否登录或退出登录
+watch(() => userData.hasLogin, (newValue) => {
+    if (newValue) {
+        checkEmailBinding()
+    } else {
+        isShowEmailTip.value = false
+        optionId.value = 100
+        displaySetting.value = false
+    }
+}, { immediate: true })
 </script>
 
 <style lang="scss" scoped>

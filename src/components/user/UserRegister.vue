@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay">
         <div class="user-register">
-            <Message :messageContent="tipContext" :isShowMessage="showTipMessage" :messagePosition="'absolute'" />
+            <Message :messageContent="tipContext" :isShowMessage="showTipMessage" messagePosition="'absolute'" />
             <div class="register-header">
                 <div class="header-left">
                     <h4>😉Hi，感谢注册呀</h4>
@@ -143,7 +143,6 @@ const validateUsername = () => {
     if (!registerFormData.username) {
         validationResults.username = false;
         validationTips.username = "用户名要是6~20位字符，只能数字加字母哦"
-        tipBlink.usernameTipBlink = false
         return;
     }
 
@@ -158,7 +157,6 @@ const validatePassword = () => {
 
         validationTips.password = "密码要是8~16位，数字字母下划线哦";
         validationResults.password = false;
-        tipBlink.passwordTipBlink = false
         return;
     }
 
@@ -173,10 +171,12 @@ const validatePassword = () => {
 }
 
 const blinkTip = () => {
-
-    tipBlink.usernameTipBlink = validationResults.username ? false : true
-    tipBlink.passwordTipBlink = validationResults.password ? false : true
-    tipBlink.confirmTipBlink = validationResults.confirmPassword ? false : true
+    if (registerFormData.username)
+        tipBlink.usernameTipBlink = validationResults.username ? false : true
+    if (registerFormData.password)
+        tipBlink.passwordTipBlink = validationResults.password ? false : true
+    if (registerFormData.confirmPassword)
+        tipBlink.confirmTipBlink = validationResults.confirmPassword ? false : true
 }
 
 // 验证确认密码
@@ -184,13 +184,15 @@ const validateConfirmPassword = () => {
     if (!registerFormData.confirmPassword) {
         validationTips.confirmPassword = "确认您的密码！";
         validationResults.confirmPassword = false;
-        tipBlink.confirmTipBlink = false
         return;
     }
 
     const isValid = registerFormData.confirmPassword === registerFormData.password;
     validationResults.confirmPassword = isValid;
     validationTips.confirmPassword = isValid ? "密码确认成功✅" : "两次输入的密码不一致!❌";
+    if (isValid) {
+        tipBlink.confirmTipBlink = false
+    }
 }
 
 // 监听值变化进行实时验证
@@ -209,6 +211,7 @@ watch(() => registerFormData.password, (newVal) => {
     if (newVal) {
         const debounceTimer = setTimeout(() => {
             validatePassword();
+            tipBlink.passwordTipBlink = false
         }, 500);
         return () => clearTimeout(debounceTimer);
     }
@@ -220,6 +223,7 @@ watch(() => registerFormData.confirmPassword, (newVal) => {
     if (newVal) {
         const debounceTimer = setTimeout(() => {
             validateConfirmPassword();
+            tipBlink.confirmTipBlink = false
         }, 500);
         return () => clearTimeout(debounceTimer);
     }

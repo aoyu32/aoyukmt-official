@@ -5,8 +5,9 @@
                 <h3>🐌修改昵称</h3>
                 <button @click="hideSettingItem(0)"><i class="iconfont icon-retract-right"></i></button>
             </div>
-            <FormInput label="请输入新的昵称：" placeholder="🐧 昵称" />
-            <button class="btn-save">保存</button>
+            <FormInput label="请输入新的昵称：" placeholder="🐧 昵称" v-model="nickname" :tipContent="nicknameTip"
+                @icon-click="nickname = ''" :blink="showValidationError" />
+            <button class="btn-save" @click="submitModifyNickname">保存</button>
         </div>
 
         <div class="modify-avatar" v-if="optionId === 1">
@@ -16,15 +17,16 @@
             </div>
             <div class="avatar-container">
                 <div class="avatar">
-                    <div class="upload-icon">
+                    <div class="upload-icon" @click="triggerUploadAvatar">
                         <i class="iconfont icon-upload"></i>
                     </div>
-                    <img src="" alt="">
-                    <input type="file" hidden>
+                    <img :src="avatarImage" alt="" v-if="avatarImage">
+                    <input type="file" hidden @change="handleUploadAvatar" ref="avatarInputRef" accept="image/*"
+                        multiple="false">
                 </div>
                 <button class="btn-random">随机 <i class="iconfont icon-suijishushengcheng"></i></button>
             </div>
-            <button class="btn-save">保存</button>
+            <button class="btn-save" @click="submitModifyAvatar">{{ avatarBtnContext }}</button>
         </div>
 
         <div class="setting-gender" v-if="optionId === 2">
@@ -111,12 +113,13 @@
 </template>
 
 <script setup>
+import { ref, watch, computed } from 'vue'
 import FormInput from '../common/FormInput.vue';
 
 const props = defineProps({
     optionId: {
         type: Number,
-        default: 10
+        default: 100
     }
 })
 
@@ -125,6 +128,173 @@ const emit = defineEmits(["hide-item"])
 const hideSettingItem = (index) => {
     emit("hide-item", index)
 }
+
+//昵称
+const NICKNAME_RULES = {
+    minLength: 1,
+    maxLength: 12,
+    pattern: /^[\u4e00-\u9fa5a-zA-Z0-9_\-\s]+$/ // 允许中文、英文、数字、下划线、短横线和空格
+};
+const nickname = ref("")
+const nicknameTip = ref("");
+const nicknameIsValid = ref(false);
+const showValidationError = ref(false)
+const VALIDATION_MESSAGES = {
+    empty: "",
+    valid: "昵称可用 ✅",
+    tooShort: `昵称至少需要${NICKNAME_RULES.minLength}个字符 ❌`,
+    tooLong: `昵称最多${NICKNAME_RULES.maxLength}个字符 ❌`,
+    invalidChars: "包含非法字符 ❌",
+}
+//校验昵称
+// 验证昵称
+const validateNickname = (value) => {
+    showValidationError.value = false;
+
+    if (!value.trim()) {
+        updateNicknameState("", false);
+        return;
+    }
+
+    // 检查长度
+    if (value.length < NICKNAME_RULES.minLength) {
+        updateNicknameState(VALIDATION_MESSAGES.tooShort, false);
+        return;
+    }
+
+    if (value.length > NICKNAME_RULES.maxLength) {
+        updateNicknameState(VALIDATION_MESSAGES.tooLong, false);
+        return;
+    }
+
+    // 检查字符有效性
+    if (!NICKNAME_RULES.pattern.test(value)) {
+        updateNicknameState(VALIDATION_MESSAGES.invalidChars, false);
+        return;
+    }
+
+    updateNicknameState(VALIDATION_MESSAGES.valid, true);
+};
+
+// 更新昵称状态
+const updateNicknameState = (message, isValid) => {
+    nicknameTip.value = message;
+    nicknameIsValid.value = isValid;
+};
+const debounceValidate = debounce((value) => {
+    validateNickname(value);
+}, 500);
+//监听昵称输入
+watch(() => nickname.value, (value) => {
+    debounceValidate(value);
+}, { immediate: true });
+
+// 防抖函数
+function debounce(fn, delay) {
+    let timer = null;
+    return function (...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+            fn.apply(this, args);
+        }, delay);
+    };
+}
+
+//提交修改昵称
+const submitModifyNickname = () => {
+    if (!nicknameIsValid.value) {
+        showValidationError.value = true;
+        return;
+    }
+
+
+    console.log("要修改的昵称：", nickname.value);
+    hideSettingItem(0)
+}
+
+//头像
+// 头像相关状态
+const avatarInputRef = ref(null);
+const avatarBtnContext = ref("保存");
+const avatarImage = ref("");
+const avatarVerify = ref(false);
+
+// 常量定义
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
+const MAX_IMAGE_SIZE = 3 * 1024 * 1024; // 3MB
+const ERROR_MESSAGES = {
+    invalidType: "仅支持 JPG/PNG 格式",
+    tooLarge: "图片大小不能超过3M",
+    default: "保存"
+};
+
+// 触发上传头像
+const triggerUploadAvatar = () => {
+    avatarInputRef.value?.click();
+};
+
+// 处理上传头像
+const handleUploadAvatar = (event) => {
+    resetAvatarState();
+
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+
+    // 预览图片
+    previewImage(file);
+    // 验证文件类型
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setAvatarErrorState(ERROR_MESSAGES.invalidType);
+        return;
+    }
+
+    // 验证文件大小
+    if (file.size > MAX_IMAGE_SIZE) {
+        setAvatarErrorState(ERROR_MESSAGES.tooLarge);
+        return;
+    }
+
+    setAvatarSuccessState();
+};
+
+// 预览图片
+const previewImage = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        avatarImage.value = e.target.result;
+    };
+    reader.onerror = () => {
+        setAvatarErrorState("图片读取失败");
+    };
+    reader.readAsDataURL(file);
+};
+
+// 重置状态
+const resetAvatarState = () => {
+    avatarVerify.value = false;
+    avatarBtnContext.value = ERROR_MESSAGES.default;
+};
+
+// 设置错误状态
+const setAvatarErrorState = (message) => {
+    avatarVerify.value = false;
+    avatarBtnContext.value = message;
+};
+
+// 设置成功状态
+const setAvatarSuccessState = () => {
+    avatarVerify.value = true;
+    avatarBtnContext.value = ERROR_MESSAGES.default;
+};
+
+// 提交修改
+const submitModifyAvatar = async () => {
+    if (!avatarVerify.value || !avatarImage.value) return;
+    console.log("提交修改头像");
+    hideSettingItem(1);
+};
+
 
 </script>
 
