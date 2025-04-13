@@ -1,11 +1,11 @@
 <template>
     <div class="user-window" ref="userWindowRef">
-        <Message :messageContent="tipContext" :topOffset="'70px'" />
+        <Message :messageContent="tipContext" :is-show-message="false" :topOffset="'70px'" />
 
         <!-- 左侧用户信息卡片展示区域 -->
         <div class="user-left">
             <UserInfo :user-info="userData.user" @display-setting="handleSetting"
-                :is-setting="displaySetting || optionId !== 100" />
+                :is-setting="displaySetting || hasSettingItem" />
         </div>
         <Transition name="slide">
             <div class="user-email-unbind" v-if="isShowEmailTip">
@@ -31,7 +31,7 @@
         </Transition>
 
         <Transition name="slide">
-            <div class="user-right" v-if="optionId !== 100">
+            <div class="user-right" v-if="hasSettingItem">
                 <UserSettingItem :option-id="optionId" @hide-item="handleHideItem" />
             </div>
         </Transition>
@@ -40,7 +40,7 @@
     </div>
 </template>
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import Message from '../common/Message.vue';
 import UserInfo from './UserInfo.vue';
 import { userStore } from '@/stores/user';
@@ -49,26 +49,45 @@ import UserSettingItem from './UserSettingItem.vue';
 import { scrollTo } from '@/utils/scroll';
 const userData = userStore()
 const tipContext = ref("")
+const optionId = ref(100)
+
+
+//是否显示没绑定邮箱提示
 const isShowEmailTip = ref(false)
+//控制是否显示设置选项
 const displaySetting = ref(false)
+//用户信息窗口
 const userWindowRef = ref(null)
+
+//是否有设置项显示
+const hasSettingItem = computed(() => {
+    return optionId.value < 7
+})
+
 onMounted(() => {
+    //刚进入用户信息页面时检查是否绑定邮箱，如果没绑定显示提示消息
     checkEmailBinding()
 })
 
 //监听点击哪个设置选项
-const optionId = ref(100)
 const handleSelectOption = (index) => {
-    optionId.value = index
     displaySetting.value = false
-    controlEmialItemHide.value = false
+    optionId.value = index
+
 }
 
-//检查是否绑定邮箱
+let emailCheckTimer = null;
+
 const checkEmailBinding = () => {
-    setTimeout(() => {
-        isShowEmailTip.value = userData.hasLogin ? userData.isBindEmail : false
-        if (userData.hasLogin && userData.isBindEmail) {
+    // 清除之前的定时器
+    if (emailCheckTimer) {
+        clearTimeout(emailCheckTimer);
+    }
+
+    emailCheckTimer = setTimeout(() => {
+        const flag = userData.hasLogin && userData.isBindEmail
+        isShowEmailTip.value = flag
+        if (flag) {
             scrollTo('bottom', 150, userWindowRef.value)
         }
     }, 1000)
@@ -76,21 +95,35 @@ const checkEmailBinding = () => {
 
 //显示设置菜单
 const handleSetting = () => {
-    if (optionId.value !== 100) {
-        displaySetting.value = !displaySetting.value
-    }
-    optionId.value = 100
+
+    //显示 隐藏设置菜单项
     displaySetting.value = !displaySetting.value
+    //隐藏邮箱提示
     isShowEmailTip.value = false
+    // 清除定时器
+    if (emailCheckTimer) {
+        clearTimeout(emailCheckTimer);
+        emailCheckTimer = null;
+    }
+
+
+    if (hasSettingItem.value) {
+        optionId.value = 100
+        displaySetting.value = false
+    }
 
 }
 
 //隐藏设置项，显示设置菜单
 const handleHideItem = (index) => {
-    optionId.value = 100
-    if (index === 5 && controlEmialItemHide.value)
-        return
     displaySetting.value = true
+    //如果是通过点击绑定邮箱提示的绑定邮箱按钮
+    if (index === 5 && controlEmialItemHide.value) {
+        displaySetting.value = false
+    }
+    optionId.value = 100
+    controlEmialItemHide.value = false
+
 }
 
 //现在绑定邮箱
@@ -106,10 +139,13 @@ const handleNowBindingEmail = () => {
 
 //监听是否显示设置菜单，如果显示窗口滚动到底部
 watch(() => displaySetting.value, (newValue) => {
-    console.log("是否处于设置模式：", !newValue && optionId.value === 100);
 
-    if (!newValue && optionId.value === 100)
+
+
+    if (!newValue && !hasSettingItem.value) {
+
         checkEmailBinding()
+    }
     if (window.innerWidth >= 1100)
         return
     if (newValue || optionId.value !== 100) {
