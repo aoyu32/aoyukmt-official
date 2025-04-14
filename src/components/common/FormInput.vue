@@ -4,85 +4,150 @@
             <label>{{ label }}</label>
         </div>
         <div class="input-wrapper">
-            <input :type="type" :placeholder="placeholder" :value="modelValue" @input="update" @blur="handleBlur"
+            <input :type="inputType" :placeholder="placeholder" :value="modelValue" @input="update" @blur="handleBlur"
                 :autocomplete="autocompleteText" :style="{ height: height }">
-            <i :class="['iconfont', icon, iconActive]" @click="handleIconClick"></i>
+            <i :class="['iconfont', icon, { 'active': iconActive }]" @click="handleIconClick"></i>
         </div>
-        <div class="input-tip" :class="{ 'show': tipContent, 'blink-name': blink }">
-            <p>{{ tipContent }}</p>
+        <div class="input-tip" :class="{ 'show': message, 'blink-name': shouldBlink }">
+            <p>{{ tip }}</p>
         </div>
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
+
 const props = defineProps({
-    //输入框高度
     height: {
         type: String,
         default: '45px'
     },
-    //输入框标签
     label: {
         type: String,
         default: ""
     },
-    //预览文本
     placeholder: {
         type: String,
         default: ""
     },
-    //输入框类型
     type: {
         type: String,
         default: "text"
     },
-    //右边的按钮图标
     icon: {
         type: String,
         default: "icon-close-bold"
     },
-    //改变icon按钮颜色
-    iconActive: {
-        type: String,
-        default: ''
-    },
-    //输入的值
     modelValue: {
         type: String,
         default: ""
     },
-    //提示消息
-    tipContent: {
-        type: String,
-        default: ""
-    },
-    //自动填充
     autocompleteText: {
         type: String,
         default: "username"
     },
-    //提示文本闪烁
-    blink: {
-        type: Boolean,
-        default: false
-    }
+    pattern: {
+        type: RegExp,
+    },
+    message: {
+        type: Object,
+        default: () => ({
+            prompt: '',
+            success: '',
+            error: ''
+        })
+    },
+    validator: {
+        type: Function,
+        default: null
+    },
 })
 
-//更新输入的值
-const emit = defineEmits(["update:modelValue", "icon-click", "blur"])
+const tip = ref("") // 提示文本
+const isValid = ref(false) // 校验结果
+const iconActive = ref(false) // 是否高亮
+const emit = defineEmits(["update:modelValue", "icon-click", "blur", "validate"])
+const inputType = ref(props.type === "password" ? "password" : "text")
+const shouldBlink = ref(false)//是否闪烁提示文本
 
+// 更新输入的值
 const update = (event) => {
     emit("update:modelValue", event.target.value)
 }
 
+// 失去焦点事件
 const handleBlur = () => {
     emit("blur", props.modelValue)
 }
 
-//右侧图标点击事件
-const handleIconClick = () => {
-    emit("icon-click")
+// 设置文本
+const setTip = (value) => {
+    tip.value = value
 }
+
+//设置提示文本闪烁
+const triggerTipBlink = (flag) => {
+    shouldBlink.value = flag
+}
+
+// 右侧图标点击事件
+const handleIconClick = () => {
+    if (props.type === 'text') {
+        emit("update:modelValue", "")
+        return
+    }
+    if (props.type === 'password') {
+        inputType.value = inputType.value === "text" ? "password" : "text"
+        iconActive.value = inputType.value === "text"
+    }
+}
+
+// 校验函数
+const validate = (value) => {
+    if (props.validator) {
+        isValid.value = props.validator(value)
+    } else if (props.pattern) {
+        isValid.value = props.pattern.test(value)
+    } else {
+        return
+    }
+    setTip(isValid.value ? props.message.success : props.message.error)
+    emit("validate", isValid.value)
+    triggerTipBlink(false)
+}
+
+// 监听输入框输入
+let timer = null
+watch(() => props.modelValue, (newValue) => {
+    if (timer) clearTimeout(timer)
+    shouldBlink.value = false
+    if (!newValue) {
+        setTip(props.message.prompt)
+        isValid.value = false
+        return
+    }
+    debounceValidate(newValue)
+}, { immediate: true })
+
+// 防抖函数
+const debounce = (fn, delay) => {
+    return function (...args) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+            fn.apply(this, args)
+        }, delay)
+    }
+}
+
+// 防抖验证
+const debounceValidate = debounce((value) => {
+    validate(value)
+}, 300)
+
+//防止防抖验证的内存泄露
+onUnmounted(() => {
+    if (timer) clearTimeout(timer)
+})
+defineExpose({ validate, setTip, triggerTipBlink })
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/_theme.scss" as *;
@@ -145,17 +210,14 @@ const handleIconClick = () => {
             &.active {
                 color: $theme-primary;
             }
-
         }
-
-
     }
 
     .input-tip {
         margin-top: 5px;
         width: 100%;
         color: #666666;
-        height: 20px; // 固定高度防止跳动
+        height: 20px;
         opacity: 0;
 
         p {
@@ -163,14 +225,14 @@ const handleIconClick = () => {
             margin: 0;
         }
 
-
         &.show {
             opacity: 1;
         }
 
         &.blink-name {
             color: rgba(255, 0, 0, 0.833);
-            animation: blinkOfInput 0.5s infinite;
+            transition: all 0.3s ease-in-out;
+            animation: blinkOfInput .7s infinite;
         }
     }
 }

@@ -36,19 +36,19 @@
             </div>
             <div class="radio-group">
                 <label class="radio-label">
-                    <input type="radio" value="male" name="gender" />
+                    <input type="radio" value="male" name="gender" v-model="selectedGender" />
                     <span>男♂️</span>
                 </label>
                 <label class="radio-label">
-                    <input type="radio" value="female" name="gender" />
+                    <input type="radio" value="female" name="gender" v-model="selectedGender" />
                     <span>女♀️</span>
                 </label>
                 <label class="radio-label">
-                    <input type="radio" value="other" name="gender" />
+                    <input type="radio" value="other" name="gender" v-model="selectedGender" />
                     <span>保密⚧️</span>
                 </label>
             </div>
-            <button class="btn-save">保存</button>
+            <button class="btn-save" @click="submitModifyGender">保存</button>
         </div>
 
         <div class="destroy-account" v-if="optionId === 3">
@@ -57,11 +57,18 @@
                 <button @click="hideSettingItem(3)"><i class="iconfont icon-retract-right"></i></button>
             </div>
             <p class="warning-text">☣️账号注销后将无法恢复，所有数据将被永久删除!</p>
-            <FormInput type="password" placeholder="密码" label="输入密码确认操作！" icon="icon-browse" />
-            <div class="btn-actions">
-                <button class="cancel-btn">取消</button>
-                <button class="confirm-btn">确认注销</button>
-            </div>
+            <form>
+                <FormInput type="password" placeholder="密码" label="输入密码确认操作！" icon="icon-browse"
+                    v-model="destroyPassword" :tip-content="destroyTip" :blink="destroyAccountBlink"
+                    @icon-click="isShowDestroyPassword = !isShowDestroyPassword"
+                    :type="isShowDestroyPassword ? 'text' : 'password'"
+                    :icon-active="isShowDestroyPassword ? 'active' : ''" />
+                <div class="btn-actions">
+                    <button class="cancel-btn " @click="cancelDestroy">取消</button>
+                    <button class="confirm-btn" @click="submitDestroyAccount">确认注销</button>
+                </div>
+
+            </form>
         </div>
 
         <div class="setting-bio" v-if="optionId === 4">
@@ -69,9 +76,9 @@
                 <h3>🎗️设置简介</h3>
                 <button @click="hideSettingItem(4)"><i class="iconfont icon-retract-right"></i></button>
             </div>
-            <textarea placeholder="介绍一下自己..." class="bio-textarea" rows="2"></textarea>
-            <span>还剩10个字符可输入</span>
-            <button class="btn-save">保存</button>
+            <textarea placeholder="介绍一下自己..." class="bio-textarea" rows="2" v-model="bioInput"></textarea>
+            <span>还剩{{ surplus }}个字符可输入</span>
+            <button class="btn-save" @click="submitSettingBio">{{ bioBtnContext }}</button>
         </div>
 
         <div class="binding-email" v-if="optionId === 5">
@@ -80,13 +87,15 @@
                 <button @click="hideSettingItem(5)"><i class="iconfont icon-retract-right"></i></button>
             </div>
             <div class="input-email">
-                <FormInput type="email" placeholder="输入邮箱地址" />
+                <FormInput placeholder="📧 请输入您的邮箱" v-model="bindEmailInput" @icon-click="bindEmailInput = ''"
+                    :tip-content="bindEmailTip" :blink="bindEmailBlink" />
             </div>
-            <div class="input-code">
-                <FormInput type="text" placeholder="输入验证码" />
+            <div class=" input-code">
+                <FormInput placeholder="🔑 请输入验证码" v-model="inputVerifyCode" @icon-click="inputVerifyCode = ''"
+                    :tip-content="verifyCodeTip" @blur="handleVerifyCode" :blink="verifyCodeBlink" />
                 <button class="btn-code">获取验证码</button>
             </div>
-            <button class="btn-submit">绑定</button>
+            <button class="btn-submit" @click="submitBindEmail">绑定</button>
         </div>
 
         <div class="modify-password" v-if="optionId === 6">
@@ -295,6 +304,112 @@ const submitModifyAvatar = async () => {
     hideSettingItem(1);
 };
 
+
+//设置性别
+const selectedGender = ref('')//用户选择的性别
+const destroyTip = ref("")//销毁账户输入框提示文本
+const destroyAccountBlink = ref(false)//是否闪烁提示文本
+//提交选择的性别
+const submitModifyGender = () => {
+    console.log(selectedGender.value);
+}
+
+//注销用户
+const destroyPassword = ref("")//输入的确认注销用户的密码
+const isShowDestroyPassword = ref(false)//是否显示输入框内的密码
+const cancelDestroy = () => {
+    hideSettingItem(3)
+}
+
+const submitDestroyAccount = (e) => {
+    e.preventDefault()
+    if (!destroyPassword.value) {
+        destroyTip.value = "请输入您账号的密码，确认您的身份"
+        destroyAccountBlink.value = true
+        return
+    }
+    console.log("提交确认注销账户", destroyPassword.value);
+
+}
+//监听输入
+watch(() => destroyPassword.value, (newValue) => {
+    destroyTip.value = ''
+    destroyAccountBlink.value = false
+})
+
+
+//设置简介
+const bioInput = ref("")//输入的简介
+const surplus = ref(50)//还剩多少个字符可以输入
+const bioBtnContext = ref("保存")
+//监听输入
+watch(() => bioInput.value, (newValue) => {
+    bioBtnContext.value = "保存"
+    if (surplus.value > 0) {
+        surplus.value = 50 - newValue.length
+    }
+})
+//提交修改简介
+const submitSettingBio = () => {
+    if (!bioInput.value) {
+        bioBtnContext.value = "请输入您的简介"
+        return
+    }
+    if (bioInput.value.length > 50) {
+        bioBtnContext.value = "你输入的内容超过限制，请简化一下"
+        return
+    }
+    console.log("提交设置的简介", bioInput.value);
+}
+
+//绑定邮箱
+const bindEmailInput = ref("")//输入的邮箱
+const bindEmailTip = ref("")//邮箱输入提示文本
+const bindEmailValid = ref(false)//邮箱验证结果
+const bindEmailBlink = ref(false)//是否闪烁提示文本
+const inputVerifyCode = ref("")//输入的验证码
+const verifyCodeTip = ref("")//验证码提示文本
+const verifyCodeValid = ref(false)//验证码验证结果
+const verifyCodeBlink = ref(false)//是否闪烁验证码提示文本
+
+const ERROR_MESSAGE = {
+    invalid: "邮箱不能为空",
+    emailError: "邮箱格式不正确",
+    verifyCodeError: "验证码为6位"
+
+}
+
+//验证邮箱
+const validateBindEmail = () => {
+    if (!bindEmailInput.value) {
+        bindEmailValid.value = false
+        bindEmailTip.value = ERROR_MESSAGE.invalid
+        return
+    }
+    //验证邮箱格式
+    const isValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(bindEmailInput.value)
+    bindEmailTip.value = isValid ? "邮箱格式正确" : ERROR_MESSAGE.emailError
+    bindEmailValid.value = true
+}
+//验证验证码
+
+//监听邮箱输入
+watch(() => bindEmailInput.value, (newValue) => {
+    if (!newValue) {
+        return
+    }
+    console.log(newValue);
+    validateBindEmail()
+})
+
+//监听验证码输入框失去焦点
+const handleVerifyCode = () => {
+
+}
+//提交绑定邮箱
+const submitBindEmail = () => {
+
+}
 
 </script>
 
