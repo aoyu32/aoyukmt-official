@@ -18,10 +18,17 @@
         background-color: $theme-primary;
         color: $theme-font-light;
         cursor: pointer;
-        transition: all 0.3s ease-in-out;
+        transition: all 0.1s ease;
 
         &:hover {
             background-color: $theme-secondary-light;
+        }
+
+
+
+        &:active {
+            transform: scale(0.96);
+            // background-color: $theme-secondary-light;
         }
     }
 
@@ -34,6 +41,12 @@
         background-color: $theme-primary;
         color: $theme-font-light;
         font-weight: 550;
+        transition: all 0.1s ease;
+
+        &:active {
+            transform: scale(0.96);
+            // background-color: $theme-secondary-light;
+        }
     }
 
     .header {
@@ -206,25 +219,36 @@
 
     //修改密码
     .modify-password {
+
         width: 300px;
 
         .password-form {
             width: 100%;
+            form{
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
         }
 
+        button{
+            margin-top: 5px;
+        }
 
     }
 
     //绑定邮箱
     .binding-email {
         width: 350px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
 
         .input-code {
             width: 100%;
             display: flex;
             gap: 15px;
-
-
 
             .btn-code {
                 width: 100%;
@@ -234,6 +258,11 @@
                 border: 1px solid $theme-secondary;
                 border-radius: 5px;
                 color: $theme-font-light;
+                cursor: pointer;
+
+                &:active {
+                    transform: scale(0.96);
+                }
             }
         }
     }

@@ -171,15 +171,20 @@ const submitRegister = () => {
     if (allValid.value) {
         isShowSliderCaptcha.value = true
     } else {
-        if (!validResults.username && registerFormData.username)
-            usernameRef.value.triggerTipBlink(true)
-        if (!validResults.password && registerFormData.password)
-            passwordRef.value.triggerTipBlink(true)
-        if (!validResults.confirm && registerFormData.confirmPassword)
-            confirmPasswordRef.value.triggerTipBlink(true)
+        blink()
         modifyRegisterText("请完善注册信息呀！😑")
     }
 }
+
+const blink = () => {
+    if (!validResults.username && registerFormData.username)
+        usernameRef.value.triggerTipBlink(true)
+    if (!validResults.password && registerFormData.password)
+        passwordRef.value.triggerTipBlink(true)
+    if (!validResults.confirm && registerFormData.confirmPassword)
+        confirmPasswordRef.value.triggerTipBlink(true)
+}
+
 
 // 修改注册按钮文本
 const modifyRegisterText = (value) => {

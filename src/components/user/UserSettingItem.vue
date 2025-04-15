@@ -5,8 +5,9 @@
                 <h3>🐌修改昵称</h3>
                 <button @click="hideSettingItem(0)"><i class="iconfont icon-retract-right"></i></button>
             </div>
-            <FormInput label="请输入新的昵称：" placeholder="🐧 昵称" v-model="nickname" :tipContent="nicknameTip"
-                @icon-click="nickname = ''" :blink="showValidationError" />
+            <!-- 用户名 -->
+            <FormInput label="请输入您的用户名：" placeholder="🐧 用户名" v-model="nickname" :message="nicknameTipMessage"
+                :pattern="nicknamePattern" @validate="nicknameIsValid = $event" type="text" ref="nicknameRef" />
             <button class="btn-save" @click="submitModifyNickname">保存</button>
         </div>
 
@@ -59,10 +60,8 @@
             <p class="warning-text">☣️账号注销后将无法恢复，所有数据将被永久删除!</p>
             <form>
                 <FormInput type="password" placeholder="密码" label="输入密码确认操作！" icon="icon-browse"
-                    v-model="destroyPassword" :tip-content="destroyTip" :blink="destroyAccountBlink"
-                    @icon-click="isShowDestroyPassword = !isShowDestroyPassword"
-                    :type="isShowDestroyPassword ? 'text' : 'password'"
-                    :icon-active="isShowDestroyPassword ? 'active' : ''" />
+                    v-model="destroyPassword" :validator="destroyValidator" @validate="destroyPasswordIsValid = $event"
+                    ref="destroyPasswordRef" />
                 <div class="btn-actions">
                     <button class="cancel-btn " @click="cancelDestroy">取消</button>
                     <button class="confirm-btn" @click="submitDestroyAccount">确认注销</button>
@@ -87,15 +86,15 @@
                 <button @click="hideSettingItem(5)"><i class="iconfont icon-retract-right"></i></button>
             </div>
             <div class="input-email">
-                <FormInput placeholder="📧 请输入您的邮箱" v-model="bindEmailInput" @icon-click="bindEmailInput = ''"
-                    :tip-content="bindEmailTip" :blink="bindEmailBlink" />
+                <FormInput placeholder="📧 请输入您的邮箱" v-model="bindEmailInput" :pattern="emailPattern"
+                    :message="emailTipMessage" @validate="emailIsValid = $event" ref="emailInputRef" height="40px" />
             </div>
             <div class=" input-code">
-                <FormInput placeholder="🔑 请输入验证码" v-model="inputVerifyCode" @icon-click="inputVerifyCode = ''"
-                    :tip-content="verifyCodeTip" @blur="handleVerifyCode" :blink="verifyCodeBlink" />
-                <button class="btn-code">获取验证码</button>
+                <FormInput placeholder="🔑 请输入验证码" v-model="vcodeInput" :pattern="vcodePattern"
+                    :message="vcodeTipMessage" @validate="vcodeIsValid = $event" ref="vcodeInputRef" height="40px" />
+                <button class="btn-code" @click="getCode">{{ vcodeBtnContext }}</button>
             </div>
-            <button class="btn-submit" @click="submitBindEmail">绑定</button>
+            <button class="btn-submit" @click="submitBindEmail" :disabled="isDisable">绑定</button>
         </div>
 
         <div class="modify-password" v-if="optionId === 6">
@@ -106,23 +105,29 @@
             <div class="password-form">
                 <form>
                     <div class="input-group">
-                        <FormInput type="password" placeholder="🗝️ 原密码" icon="icon-browse" height="40px" />
+                        <FormInput type="password" placeholder="🗝️ 原密码" icon="icon-browse" height="35px"
+                            v-model="modifyPassword.original" ref="originalPasswordRef" :message="originalTipMessage"
+                            :validator="originalValidator" @validate="validResults.original = $event" />
                     </div>
                     <div class="input-group">
-                        <FormInput type="password" placeholder="🔒 新密码" icon="icon-browse" height="40px" />
+                        <FormInput type="password" placeholder="🔒 新密码" icon="icon-browse" height="35px"
+                            v-model="modifyPassword.new" :pattern="newPassowrdPattern" :message="newTipMessages"
+                            ref="newPasswordRef" @validate="validResults.new = $event" />
                     </div>
                     <div class="input-group">
-                        <FormInput type="passowrd" placeholder="🔐 确认新密码" icon="icon-browse" height="40px" />
+                        <FormInput type="password" placeholder="🔐 确认新密码" icon="icon-browse" height="35px"
+                            v-model="modifyPassword.confirm" :validator="confirmValidator" :message="confirmTipMessages"
+                            ref="confirmPasswordRef" @validate="validResults.confirm = $event" />
                     </div>
                 </form>
-                <button class="btn-submit">修改密码</button>
+                <button class="btn-submit" @click="submitModifyPassword">{{ modifyPasswordBtnContext }}</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import FormInput from '../common/FormInput.vue';
 
 const props = defineProps({
@@ -139,84 +144,20 @@ const hideSettingItem = (index) => {
 }
 
 //昵称
-const NICKNAME_RULES = {
-    minLength: 1,
-    maxLength: 12,
-    pattern: /^[\u4e00-\u9fa5a-zA-Z0-9_\-\s]+$/ // 允许中文、英文、数字、下划线、短横线和空格
-};
 const nickname = ref("")
-const nicknameTip = ref("");
-const nicknameIsValid = ref(false);
-const showValidationError = ref(false)
-const VALIDATION_MESSAGES = {
-    empty: "",
-    valid: "昵称可用 ✅",
-    tooShort: `昵称至少需要${NICKNAME_RULES.minLength}个字符 ❌`,
-    tooLong: `昵称最多${NICKNAME_RULES.maxLength}个字符 ❌`,
-    invalidChars: "包含非法字符 ❌",
+const nicknameTipMessage = {
+    prompt: "",
+    success: "昵称可用✅",
+    error: "昵称1~12个字符❌"
 }
-//校验昵称
-// 验证昵称
-const validateNickname = (value) => {
-    showValidationError.value = false;
-
-    if (!value.trim()) {
-        updateNicknameState("", false);
-        return;
-    }
-
-    // 检查长度
-    if (value.length < NICKNAME_RULES.minLength) {
-        updateNicknameState(VALIDATION_MESSAGES.tooShort, false);
-        return;
-    }
-
-    if (value.length > NICKNAME_RULES.maxLength) {
-        updateNicknameState(VALIDATION_MESSAGES.tooLong, false);
-        return;
-    }
-
-    // 检查字符有效性
-    if (!NICKNAME_RULES.pattern.test(value)) {
-        updateNicknameState(VALIDATION_MESSAGES.invalidChars, false);
-        return;
-    }
-
-    updateNicknameState(VALIDATION_MESSAGES.valid, true);
-};
-
-// 更新昵称状态
-const updateNicknameState = (message, isValid) => {
-    nicknameTip.value = message;
-    nicknameIsValid.value = isValid;
-};
-const debounceValidate = debounce((value) => {
-    validateNickname(value);
-}, 500);
-//监听昵称输入
-watch(() => nickname.value, (value) => {
-    debounceValidate(value);
-}, { immediate: true });
-
-// 防抖函数
-function debounce(fn, delay) {
-    let timer = null;
-    return function (...args) {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-            fn.apply(this, args);
-        }, delay);
-    };
-}
+const nicknameIsValid = ref(false)
+const nicknamePattern = ref(new RegExp(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,12}$/))
 
 //提交修改昵称
 const submitModifyNickname = () => {
     if (!nicknameIsValid.value) {
-        showValidationError.value = true;
         return;
     }
-
-
     console.log("要修改的昵称：", nickname.value);
     hideSettingItem(0)
 }
@@ -248,8 +189,6 @@ const handleUploadAvatar = (event) => {
 
     const file = event.target.files?.[0];
     if (!file) return;
-
-
     // 预览图片
     previewImage(file);
     // 验证文件类型
@@ -257,13 +196,11 @@ const handleUploadAvatar = (event) => {
         setAvatarErrorState(ERROR_MESSAGES.invalidType);
         return;
     }
-
     // 验证文件大小
     if (file.size > MAX_IMAGE_SIZE) {
         setAvatarErrorState(ERROR_MESSAGES.tooLarge);
         return;
     }
-
     setAvatarSuccessState();
 };
 
@@ -307,8 +244,6 @@ const submitModifyAvatar = async () => {
 
 //设置性别
 const selectedGender = ref('')//用户选择的性别
-const destroyTip = ref("")//销毁账户输入框提示文本
-const destroyAccountBlink = ref(false)//是否闪烁提示文本
 //提交选择的性别
 const submitModifyGender = () => {
     console.log(selectedGender.value);
@@ -316,99 +251,203 @@ const submitModifyGender = () => {
 
 //注销用户
 const destroyPassword = ref("")//输入的确认注销用户的密码
-const isShowDestroyPassword = ref(false)//是否显示输入框内的密码
+const destroyPasswordRef = ref(null)
+const destroyValidator = () => {
+    return destroyPassword === ''
+}
 const cancelDestroy = () => {
     hideSettingItem(3)
 }
-
 const submitDestroyAccount = (e) => {
     e.preventDefault()
     if (!destroyPassword.value) {
-        destroyTip.value = "请输入您账号的密码，确认您的身份"
-        destroyAccountBlink.value = true
+        destroyPasswordRef.value.setTip("请输入您账号的密码，确认您的身份")
+        destroyPasswordRef.value.triggerTipBlink(true)
         return
     }
     console.log("提交确认注销账户", destroyPassword.value);
-
+    cancelDestroy()
 }
-//监听输入
-watch(() => destroyPassword.value, (newValue) => {
-    destroyTip.value = ''
-    destroyAccountBlink.value = false
-})
+
 
 
 //设置简介
 const bioInput = ref("")//输入的简介
 const surplus = ref(50)//还剩多少个字符可以输入
 const bioBtnContext = ref("保存")
+
 //监听输入
 watch(() => bioInput.value, (newValue) => {
+    console.log("输入的简介", newValue);
+
+    if (!newValue) {
+        surplus.value = 50
+    }
     bioBtnContext.value = "保存"
-    if (surplus.value > 0) {
-        surplus.value = 50 - newValue.length
+
+    surplus.value = 50 - newValue.length
+    if (surplus.value < 0) {
+        surplus.value = 0
     }
 })
+
 //提交修改简介
 const submitSettingBio = () => {
     if (!bioInput.value) {
         bioBtnContext.value = "请输入您的简介"
+        setTimeout(() => {
+            bioBtnContext.value = "保存"
+        }, 1000)
         return
     }
     if (bioInput.value.length > 50) {
         bioBtnContext.value = "你输入的内容超过限制，请简化一下"
+        setTimeout(() => {
+            bioBtnContext.value = "保存"
+        }, 1000)
         return
+
     }
     console.log("提交设置的简介", bioInput.value);
 }
 
-//绑定邮箱
-const bindEmailInput = ref("")//输入的邮箱
-const bindEmailTip = ref("")//邮箱输入提示文本
-const bindEmailValid = ref(false)//邮箱验证结果
-const bindEmailBlink = ref(false)//是否闪烁提示文本
-const inputVerifyCode = ref("")//输入的验证码
-const verifyCodeTip = ref("")//验证码提示文本
-const verifyCodeValid = ref(false)//验证码验证结果
-const verifyCodeBlink = ref(false)//是否闪烁验证码提示文本
-
-const ERROR_MESSAGE = {
-    invalid: "邮箱不能为空",
-    emailError: "邮箱格式不正确",
-    verifyCodeError: "验证码为6位"
-
-}
 
 //验证邮箱
-const validateBindEmail = () => {
-    if (!bindEmailInput.value) {
-        bindEmailValid.value = false
-        bindEmailTip.value = ERROR_MESSAGE.invalid
-        return
-    }
-    //验证邮箱格式
-    const isValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(bindEmailInput.value)
-    bindEmailTip.value = isValid ? "邮箱格式正确" : ERROR_MESSAGE.emailError
-    bindEmailValid.value = true
+const emailInputRef = ref(null)
+const vcodeInputRef = ref(null)
+const bindEmailInput = ref("")//输入的邮箱
+const vcodeInput = ref("")//输入的验证码
+const emailPattern = ref(new RegExp(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/))//邮箱校验规则
+const vcodePattern = ref(new RegExp(/^\d{4}$/))//验证码校验规则
+const emailIsValid = ref(false)//邮箱校验是否通过
+const vcodeIsValid = ref(false)//验证码校验是否通过
+const vcodeBtnContext = ref("获取验证码")//获取验证码按钮文本
+const isDisable = ref(false)//是否禁用获取验证码按钮
+const emailTipMessage = {
+    prompt: "",
+    success: "邮箱格式正确✅",
+    error: "邮箱格式不正确❌"
 }
-//验证验证码
 
-//监听邮箱输入
-watch(() => bindEmailInput.value, (newValue) => {
-    if (!newValue) {
+const vcodeTipMessage = {
+    prompt: "",
+    success: "",
+    error: "请输入4位数字验证码❌"
+}
+
+//提交绑定
+const submitBindEmail = () => {
+    if (!emailIsValid.value && !vcodeIsValid.value) {
+        emailInputRef.value.triggerTipBlink(true)
+        vcodeInputRef.value.triggerTipBlink(true)
         return
     }
+
+    console.log("提交绑定邮箱", bindEmailInput.value);
+}
+
+let timer = null
+const getCode = () => {
+    if (isDisable.value) return;
+    vcodeTimer(60)
+}
+const vcodeTimer = (initialCount) => {
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    }
+    let count = initialCount
+    isDisable.value = true
+    timer = setInterval(() => {
+        vcodeBtnContext.value = `${count--}s`
+        if (count === 0) {
+            isDisable.value = false
+            vcodeBtnContext.value = "获取验证码"
+            clearInterval(timer)
+            return
+        }
+    }, 1000)
+}
+
+
+//修改密码
+const originalPasswordRef = ref(null)//原密码输入框
+const newPasswordRef = ref(null)//新密码输入框
+const confirmPasswordRef = ref(null)//确认密码输入框
+const modifyPasswordBtnContext = ref("修改密码")//修改密码按钮文本
+const validResults = reactive({
+    original: false,
+    new: false,
+    confirm: false
+})
+const modifyPassword = reactive({
+    original: "",
+    new: "",
+    confirm: ""
+})
+const originalTipMessage = {
+    prompt: "请输入原密码",
+    success: "",
+    error: "您还未输入原密码❌"
+}
+// 密码输入框提示文本
+const newTipMessages = {
+    prompt: "密码要是8~16位，数字字母下划线哦",
+    success: "密码符合要求啦✅",
+    error: "密码不符合要求，重新设置一下吧!❌"
+}
+// 确认密码输入框提示文本
+const confirmTipMessages = {
+    prompt: "确认您的密码！",
+    success: "密码确认成功✅",
+    error: "两次输入的密码不一致!❌"
+}
+
+//原密码校验规则
+const originalValidator = () => {
+    return modifyPassword.original !== ''
+}
+// 密码校验规则
+const newPassowrdPattern = ref(new RegExp(/^[a-zA-Z0-9_]{8,16}$/))
+// 确认密码校验规则
+const confirmValidator = () => {
+    return modifyPassword.new === modifyPassword.confirm
+}
+
+// 监听密码输入
+watch(() => modifyPassword.new, (newValue) => {
     console.log(newValue);
-    validateBindEmail()
+
+    if (!newValue || !modifyPassword.confirm) {
+        return
+    }
+    confirmPasswordRef.value.validate(newValue)
+}, { immediate: true })
+
+// 是否所有输入项都校验成功
+const allValid = computed(() => {
+    return Object.values(validResults).every(Boolean)
 })
 
-//监听验证码输入框失去焦点
-const handleVerifyCode = () => {
 
+//提交修改密码
+const submitModifyPassword = () => {
+    if (allValid) {
+        modifyPasswordBtnContext.value = "请完善修改密码信息!"
+        blink()
+        setTimeout(() => {
+            modifyPasswordBtnContext.value = "修改密码"
+        }, 1500)
+        return
+    }
+    console.log("提交修改密码", modifyPassword.new);
 }
-//提交绑定邮箱
-const submitBindEmail = () => {
 
+const blink = () => {
+    if (!validResults.new && modifyPassword.new)
+        newPasswordRef.value.triggerTipBlink(true)
+    if (!validResults.confirm && modifyPassword.confirm)
+        confirmPasswordRef.value.triggerTipBlink(true)
 }
 
 </script>
