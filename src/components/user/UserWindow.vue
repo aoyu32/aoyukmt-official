@@ -1,6 +1,6 @@
 <template>
     <div class="user-window" ref="userWindowRef">
-        <Message :messageContent="tipContext" :is-show-message="false" :topOffset="'70px'" />
+        <Message :messageContent="tipContext" :is-show-message="isShowMessage" :topOffset="'70px'" />
 
         <!-- 左侧用户信息卡片展示区域 -->
         <div class="user-left">
@@ -43,10 +43,12 @@ import { userStore } from '@/stores/user';
 import UserSetting from './UserSetting.vue';
 import UserSettingItem from './UserSettingItem.vue';
 import { scrollTo } from '@/utils/scroll';
+import emitter from '@/utils/emitter';
+import { apis } from '@/api/api';
 const userData = userStore()
 const tipContext = ref("")
 const optionId = ref(100)
-
+const isShowMessage = ref(false)//是否显示提示消息
 
 //是否显示没绑定邮箱提示
 const isShowEmailTip = ref(false)
@@ -64,7 +66,6 @@ onMounted(() => {
     //刚进入用户信息页面时检查是否绑定邮箱，如果没绑定显示提示消息
     checkEmailBinding()
 })
-
 
 
 //监听点击哪个设置选项
@@ -170,6 +171,41 @@ watch(() => userData.hasLogin, (newValue) => {
         displaySetting.value = false
     }
 }, { immediate: true })
+
+//处理请求函数
+const handleUpdateRequest = async (eventData) => {
+    console.log("请求参数", eventData.data);
+    try {
+        const resp = await apis.update(eventData.data)
+        console.log("服务端返回更新结果：", resp);
+        //更新展示的用户信息
+        if (eventData.type === 'nickname') {
+            userData.user.nickname = eventData.data.nickname
+            tipContext.value = "昵称修改成功😉"
+        }
+        if (eventData.type === 'gender') {
+            tipContext.value = "性别设置成功😉"
+            userData.user.gender = eventData.data.gender
+        }
+        if (eventData.type === 'bio') {
+            tipContext.value = "个人简介设置成功😉"
+            userData.user.bio = eventData.data.bio
+        }
+        isShowMessage.value = true
+        setTimeout(() => {
+            isShowMessage.value = false
+        }, 1500)
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+//请求执行更新用户数据操作
+emitter.on('handle-update-request', handleUpdateRequest)
+
+
+
 </script>
 
 <style lang="scss" scoped>

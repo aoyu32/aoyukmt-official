@@ -38,6 +38,9 @@ importers:
       marked:
         specifier: ^15.0.4
         version: 15.0.4
+      mitt:
+        specifier: ^3.0.1
+        version: 3.0.1
       openai:
         specifier: ^4.86.1
         version: 4.86.1(ws@8.18.1)

@@ -37,15 +37,15 @@
             </div>
             <div class="radio-group">
                 <label class="radio-label">
-                    <input type="radio" value="male" name="gender" v-model="selectedGender" />
+                    <input type="radio" value="1" name="gender" v-model="selectedGender" />
                     <span>男♂️</span>
                 </label>
                 <label class="radio-label">
-                    <input type="radio" value="female" name="gender" v-model="selectedGender" />
+                    <input type="radio" value="2" name="gender" v-model="selectedGender" />
                     <span>女♀️</span>
                 </label>
                 <label class="radio-label">
-                    <input type="radio" value="other" name="gender" v-model="selectedGender" />
+                    <input type="radio" value="3" name="gender" v-model="selectedGender" />
                     <span>保密⚧️</span>
                 </label>
             </div>
@@ -76,7 +76,7 @@
                 <button @click="hideSettingItem(4)"><i class="iconfont icon-retract-right"></i></button>
             </div>
             <textarea placeholder="介绍一下自己..." class="bio-textarea" rows="2" v-model="bioInput"></textarea>
-            <span>还剩{{ surplus }}个字符可输入</span>
+            <span>字符限制50字符内，当前字符数：{{ surplus }}</span>
             <button class="btn-save" @click="submitSettingBio">{{ bioBtnContext }}</button>
         </div>
 
@@ -127,9 +127,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, watch, computed, provide } from 'vue'
 import FormInput from '../common/FormInput.vue';
-
+import emitter from '@/utils/emitter';
 const props = defineProps({
     optionId: {
         type: Number,
@@ -154,11 +154,17 @@ const nicknameIsValid = ref(false)
 const nicknamePattern = ref(new RegExp(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,12}$/))
 
 //提交修改昵称
-const submitModifyNickname = () => {
+const submitModifyNickname = async () => {
     if (!nicknameIsValid.value) {
         return;
     }
     console.log("要修改的昵称：", nickname.value);
+    updateRequest('handle-update-request', {
+        type: 'nickname',
+        data: {
+            nickname: nickname.value
+        }
+    })
     hideSettingItem(0)
 }
 
@@ -243,19 +249,31 @@ const submitModifyAvatar = async () => {
 
 
 //设置性别
-const selectedGender = ref('')//用户选择的性别
+const selectedGender = ref(0)//用户选择的性别
 //提交选择的性别
-const submitModifyGender = () => {
+const submitModifyGender = async () => {
+
     console.log(selectedGender.value);
+    updateRequest('handle-update-request', {
+        type: 'gender',
+        data: {
+            gender: Number(selectedGender.value)
+        }
+    })
+
+    hideSettingItem(2)
+
 }
 
 //注销用户
 const destroyPassword = ref("")//输入的确认注销用户的密码
 const destroyPasswordRef = ref(null)
+const destroyPasswordIsValid = ref(false) 
 const destroyValidator = () => {
     return destroyPassword === ''
 }
-const cancelDestroy = () => {
+const cancelDestroy = (e) => {
+    e.preventDefault()
     hideSettingItem(3)
 }
 const submitDestroyAccount = (e) => {
@@ -273,7 +291,7 @@ const submitDestroyAccount = (e) => {
 
 //设置简介
 const bioInput = ref("")//输入的简介
-const surplus = ref(50)//还剩多少个字符可以输入
+const surplus = ref(0)//还剩多少个字符可以输入
 const bioBtnContext = ref("保存")
 
 //监听输入
@@ -281,18 +299,18 @@ watch(() => bioInput.value, (newValue) => {
     console.log("输入的简介", newValue);
 
     if (!newValue) {
-        surplus.value = 50
+        surplus.value = 0
     }
     bioBtnContext.value = "保存"
 
-    surplus.value = 50 - newValue.length
+    surplus.value =  newValue.length
     if (surplus.value < 0) {
         surplus.value = 0
     }
 })
 
 //提交修改简介
-const submitSettingBio = () => {
+const submitSettingBio = async () => {
     if (!bioInput.value) {
         bioBtnContext.value = "请输入您的简介"
         setTimeout(() => {
@@ -309,6 +327,15 @@ const submitSettingBio = () => {
 
     }
     console.log("提交设置的简介", bioInput.value);
+    updateRequest('handle-update-request', {
+        type: 'bio',
+        data: {
+            bio: bioInput.value
+        }
+    })
+
+    hideSettingItem(4)
+
 }
 
 
@@ -448,6 +475,11 @@ const blink = () => {
         newPasswordRef.value.triggerTipBlink(true)
     if (!validResults.confirm && modifyPassword.confirm)
         confirmPasswordRef.value.triggerTipBlink(true)
+}
+
+const updateRequest = (type, data) => {
+    //传递事件
+    emitter.emit(type, data)
 }
 
 </script>

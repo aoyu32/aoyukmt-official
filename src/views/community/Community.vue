@@ -121,8 +121,6 @@ const handleUserLogin = (resp) => {
 }
 
 onMounted(() => {
-    console.log("是否登录：", userDataStore.hasLogin);
-    console.log("是否有用户数据", !userDataStore.isUserInfoEmpty);
     if (!userDataStore.hasLogin || !userDataStore.isUserInfoEmpty)
         return
     //请求获取用户信息
@@ -171,8 +169,6 @@ watchEffect(() => {
         navHeight.value = '97%'
         navBorderRadius.value = '10px'
     }
-
-
 })
 
 //控制显示隐藏导航栏

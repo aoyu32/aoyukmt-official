@@ -77,7 +77,7 @@ const props = defineProps({
             return {
                 uid: "",
                 nickname: "未登录",
-                gender: '',
+                gender: 0,
                 activeStatus: '📡',
                 registrationTime: "",
                 bio: '',
@@ -90,16 +90,18 @@ const props = defineProps({
 })
 
 const gender = computed(() => {
-    console.log("gender", props.userInfo.gender);
+    console.log("gender", props.userInfo.gender,typeof(props.userInfo.gender));
 
     const userGender = props.userInfo.gender
+    if (userGender === 3)
+        return '保密'
     if (userGender === 2)
-        return '未知'
+        return '女'
     if (userGender === 1)
         return '男'
     if (userGender === 0)
-        return '女'
-    return '...'
+        return '未设置'
+    return ''
 })
 
 const email = computed(() => {

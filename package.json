@@ -19,6 +19,7 @@
     "highlight.js": "^11.11.1",
     "lenis": "^1.2.3",
     "marked": "^15.0.4",
+    "mitt": "^3.0.1",
     "openai": "^4.86.1",
     "pinia": "^2.2.6",
     "pinia-plugin-persistedstate": "^4.2.0",

@@ -4,16 +4,16 @@ import unloginAvatar from '@/assets/unlogin-avatar-circle.svg'
 export const userStore = defineStore('user', () => {
     //未登录时用户信息
     const initUserData = {
-        uid: "...",
+        uid: "",
         nickname: "未登录",
         avatar: unloginAvatar,
-        gender: '...',
+        gender: 0,
         activeStatus: '📡',
-        registrationTime: "...",
-        bio: '......',
-        ipInfo: '...',
-        email: '...',
-        username: "..."
+        registrationTime: "",
+        bio: '',
+        ipInfo: '',
+        email: '',
+        username: ""
     }
     const token = ref("")
     const userLoginForm = ref({
@@ -42,10 +42,10 @@ export const userStore = defineStore('user', () => {
     //是否有用户信息
     const isUserInfoEmpty = computed(() => {
         return (
-            user.value.uid === "..." &&
+            user.value.uid === "" &&
             user.value.nickname === "未登录" &&
-            user.value.email === "..." &&
-            user.value.username === "..."
+            user.value.email === "" &&
+            user.value.username === ""
         );
     })
     const setUserLoginForm = (form) => {
@@ -57,6 +57,7 @@ export const userStore = defineStore('user', () => {
     }
 
     const setUser = (userData) => {
+        
         user.value = userData
     }
 

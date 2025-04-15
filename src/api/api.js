@@ -61,8 +61,14 @@ export const apis = {
     //用户登录
     login: (data) => {
         return instance.post('auth/login', data)
-    }
+    },
 
+    //更新用户信息
+    update: (data) => {
+        return instance.post('/user/update',data, {
+            needAuth: true
+        })
+    }
 
 
 };
