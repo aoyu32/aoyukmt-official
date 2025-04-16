@@ -1,22 +1,14 @@
 <template>
-    <div class="message-tip" ref="messageRef" :class="{ 'show': localShowMessage, 'hide': !localShowMessage }"
+    <div class="message-tip" ref="messageRef" :class="{ 'show': display, 'hide': !display }"
         :style="{ 'position': messagePosition, 'top': topOffset }">
         <div class="message-container">
-            <p> {{ messageContent }}</p>
+            <p> {{ message }}</p>
         </div>
     </div>
 </template>
 <script setup>
 import { onMounted, watch, ref } from 'vue'
 const props = defineProps({
-    messageContent: {
-        type: String,
-        required: true,
-    },
-    isShowMessage: {
-        type: Boolean,
-        required: true,
-    },
     topOffset: {
         type: String,
         default: '0'
@@ -27,7 +19,8 @@ const props = defineProps({
     }
 
 })
-
+const message = ref("")//提示内容
+const display = ref(false)//是否显示
 const localShowMessage = ref(props.isShowMessage)
 watch(() => props.isShowMessage, (newValue) => {
     localShowMessage.value = newValue
@@ -39,8 +32,18 @@ onMounted(() => {
     messageRef.value.classList.remove('hide')
 })
 
-
-
+let timer = null
+const show = (text) => {
+    if (timer !== null) {
+        clearTimeout(timer)
+    }
+    message.value = text
+    display.value = true
+    timer = setTimeout(() => {
+        display.value = false
+    }, 1500)
+}
+defineExpose({ show })
 </script>
 
 <style lang="scss" scoped>

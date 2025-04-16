@@ -39,10 +39,10 @@
                             <div class="item-content"><label>🌐 IP 信息</label> <span>安徽阜阳</span></div>
                         </div>
                         <div class="item">
-                            <div class="item-content"><label>🌍 上一次登录IP</label> <span>117.72.89.209</span></div>
+                            <div class="item-content"><label>🌍 上一次登录IP</label> <span>{{ userInfo.lastLoginIp }}</span></div>
                         </div>
                         <div class="item">
-                            <div class="item-content"><label>🕒 上一次登录时间</label> <span>2023-12-01 12:23:34</span></div>
+                            <div class="item-content"><label>🕒 上一次登录时间</label> <span>{{ userInfo.lastLoginTime }}</span></div>
                         </div>
                     </div>
                 </div>

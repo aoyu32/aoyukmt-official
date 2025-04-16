@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay">
         <div class="user-login">
-            <Message :messageContent="tipContext" :isShowMessage="showTipMessage" :messagePosition="'absolute'" />
+            <Message :messagePosition="'absolute'" ref="messageRef" />
             <div class="login-header">
                 <div class="header-left">
                     <h4>☺️Hi，欢迎登录呀</h4>
@@ -40,14 +40,11 @@
 import { ref, reactive } from 'vue';
 import FormInput from '../common/FormInput.vue';
 import VerifyWindow from '../verifition/VerifyWindow.vue';
-import Message from '../common/Message.vue'
 import { apis } from '@/api/api';
+const messageRef = ref(null)
 const loginText = ref("登录")
 const isShowSliderCaptcha = ref(false)
 const showPassword = ref(false)
-const tipContext = ref("")//提示文本
-const showTipMessage = ref(false)//是否显示提示文本
-
 
 
 //校验成功
@@ -93,23 +90,15 @@ const login = async (vcode) => {
         ...loginFormData,
         verifyCode: vcode
     }
-
-    console.log("请求数据：",data);
-    
+    console.log("请求数据：", data);
     try {
         const resp = await apis.login(data)
         console.log("登录后返回的数据：", resp);
-
         //通知父组件
         emit("user-login", resp)
     } catch (error) {
         console.log(error);
-
-        tipContext.value = error.message + "😔"
-        showTipMessage.value = true
-        setTimeout(() => {
-            showTipMessage.value = false
-        }, 1500)
+        messageRef.value.show(error.message)
     }
 }
 
@@ -120,7 +109,6 @@ const modifyLoginText = (value) => {
         loginText.value = "登 录"
     }, 1500)
 }
-
 
 //关闭登录窗口
 const emit = defineEmits(["close-login", "display-register", "display-reset", "user-login"])

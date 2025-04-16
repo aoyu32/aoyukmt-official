@@ -10,8 +10,7 @@ export const useForumStore = defineStore('forum', () => {
     const uploadImages = ref([])
     //存储用户发送的消息
     const messages = ref([])
-    //控制是否显示提示消失
-    const showTip = ref(false)
+
 
     //判断消息是否为空
     const isMessagesEmpty = computed(() => messages.value.length === 0)
@@ -48,15 +47,6 @@ export const useForumStore = defineStore('forum', () => {
         uploadImages.value.splice(index, 1)
     }
 
-
-    //设置显示消息
-    const setShowTip = () => {
-        showTip.value = true
-        setTimeout(() => {
-            showTip.value = false
-        }, 1500)
-    }
-
     //添加一条消息
     const addMessage = (msg) => {
 
@@ -70,7 +60,6 @@ export const useForumStore = defineStore('forum', () => {
 
     return {
         messages,
-        showTip,
         isMessagesEmpty,
         uploadImages,
         uploadDocuments,
@@ -81,7 +70,6 @@ export const useForumStore = defineStore('forum', () => {
         addDocument,
         removeImage,
         removeDocument,
-        setShowTip,
         clearUploadFiles
 
     }

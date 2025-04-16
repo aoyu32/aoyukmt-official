@@ -1,6 +1,8 @@
 <template>
     <div class="assistant">
+
         <div class="main-content" id="main-content" @dragover="handleImageDragover" @drop="handleImageDrop">
+            <Message :messagePosition="'absolute'" :topOffset="'10px'" ref="messageRef" />
             <div class="chat-container active">
                 <AssistantWindow />
                 <AssistantInput :files="files" @receiveUserMessage="handleUserMessage" v-aos="{
@@ -8,7 +10,6 @@
                     once: true,
                     animation: 'fade-up',
                 }" />
-                <ModalDialog />
             </div>
         </div>
     </div>
@@ -28,6 +29,7 @@ import { GeminiAssistant } from '@/api/gemini'
 import { userStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
+const messageRef = ref(null)
 
 
 const assistantStore = useAssistantStore()
@@ -53,11 +55,22 @@ const handleImageDrop = (event) => {
 const handleUserMessage = (msg) => {
 
     // 开始流式接收官方消息
+    if (assistantStore.isEmpty(msg)) {
+        messageRef.value.show("不输入内容休想发送消息!😛")
+        return
+    }
+    // 发送消息并自动触发官方回复
+    assistantStore.addUserMessage({
+        img: assistantStore.images,
+        text: message.value,
+        date: Tools.getFormatDate('yyyy-mm-dd')
+    });
 
     setTimeout(() => {
         assistantStore.startStreamingOfficialMessage();
     }, 1000)
 
+    assistantStore.isReplaying(true)
     // 请求 coze 获取流式回复
     // const stream = fetchChatStream(msg);
     //阿里云百炼通义千问
@@ -93,12 +106,6 @@ async function readStream(reader) {
     }
 }
 
-onMounted(() => {
-    if (localStorage.getItem('user') === null) {
-        handleUserMessage("你好,你是谁")
-    }
-})
-
 </script>
 <style lang="scss" scoped>
 @use "@/assets/styles/common/_theme.scss" as *;
@@ -109,12 +116,14 @@ onMounted(() => {
     width: 100%;
     height: 100%;
 
+
     .main-content {
         display: flex;
         width: 100%;
         height: 100%;
         align-items: center;
         justify-content: center;
+        position: relative;
 
         .chat-container {
             width: 100%;

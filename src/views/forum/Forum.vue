@@ -1,7 +1,7 @@
 <template>
     <div class="forum">
         <div class="main-content">
-            <Message :messageContent="tipContext" :isShowMessage="forumStore.showTip" :messagePosition="'absolute'" />
+            <Message :messagePosition="'absolute'" ref="messageRef" />
             <!-- 聊天窗口头部 -->
             <div class="forum-header">
                 <!-- 窗口标题 -->
@@ -27,26 +27,29 @@
             </div>
             <!-- 输入窗口  -->
             <div class="forum-footer" v-if="isHide">
-                <ForumInput @setFooterHide="handleHidFooter" />
+                <ForumInput @setFooterHide="handleHideFooter" @show-message="handleShowMessage" />
             </div>
         </div>
     </div>
 </template>
 <script setup>
 import { ref } from 'vue'
-import Message from '@/components/common/Message.vue'
 import ForumInput from '@/components/forum/ForumInput.vue';
 import ForumWindow from '@/components/forum/ForumWindow.vue';
 import { useForumStore } from '@/stores/forum';
 const forumStore = useForumStore()
-const tipContext = ref("请先输入消息，不输入消息休想发送!😁")
 const forumBodyRef = ref(null);
+const messageRef = ref(null)
 const isHide = ref(true)
 //隐藏输入框
-const handleHidFooter = (flag) => {
+const handleHideFooter = (flag) => {
     isHide.value = flag
 }
 
+//监听是否要显示提示消息
+const handleShowMessage = () => {
+    messageRef.value.show("请先输入消息，不输入消息休想发送!😁")
+}
 
 // 判断是否滚动到底部
 const isScrolledToBottom = () => {

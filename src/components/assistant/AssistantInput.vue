@@ -23,7 +23,6 @@
 import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import FilePreview from '../common/FilePreview.vue'
 import { useAssistantStore } from '@/stores/assistant'
-import Tools from '@/utils/tools'
 const assistantStore = useAssistantStore()
 //接收拖动到父组件的图片
 const props = defineProps({
@@ -101,7 +100,7 @@ const handleHover = (isHover) => {
 const imageUploadInput = ref(null)
 
 //监听文件选择
-const handleImageSelection = () => {
+const handleImageSelection = (event) => {
     const files = event.target.files;
     // 遍历每个选中的文件
     Array.from(files).forEach((file) => {
@@ -143,22 +142,8 @@ const message = ref('')//用户输入
 const sendButton = ref(null)
 const emit = defineEmits(['receiveUserMessage'])
 const sendMessage = async () => {
-
-    if (assistantStore.isEmpty(message.value)) {
-        assistantStore.SetShowTip()
-        return
-    }
-    // 发送消息并自动触发官方回复
-    assistantStore.addUserMessage({
-        img: assistantStore.images,
-        text: message.value,
-        date: Tools.getFormatDate('yyyy-mm-dd')
-    });
-
     //将发送的消息传递给父组件
     emit('receiveUserMessage', message.value)
-
-    assistantStore.isReplaying(true)
     //清空输入的数据 
     message.value = ''
     assistantStore.clearAll()

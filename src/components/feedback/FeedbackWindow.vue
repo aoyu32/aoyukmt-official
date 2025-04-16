@@ -1,6 +1,7 @@
 <template>
     <div class="feedback-window" ref="feedbackWindowRef">
-        <Message :messageContent="tipContext" :isShowMessage="feedbackStore.showTip" message-position="absolute" />
+        <Message message-position="absolute" ref="messageRef"/>
+
         <!-- 反馈会话区域 -->
         <div v-for="session in feedbackStore.feedbackSessions" :key="session.id">
             <!-- 反馈选择组件 -->
@@ -36,12 +37,13 @@ import { useFeedbackStore } from '@/stores/feedback';
 import FeedbackSelect from './FeedbackSelect.vue';
 import FeedbackForm from './FeedbackForm.vue';
 import { userStore } from '@/stores/user';
-import Message from '../common/Message.vue';
 import CurrentTime from '../common/CurrentTime.vue';
 import tools from '@/utils/tools';
 import { scrollTo } from '@/utils/scroll';
 
+
 const feedbackWindowRef = ref(null)
+const messageRef = ref(null)
 
 const feedbackStore = useFeedbackStore();
 const userData = userStore()
@@ -67,11 +69,8 @@ watch(() => feedbackStore.feedbackSessions, () => {
 }, { deep: true })
 
 
-//是否显示提示内容
-const tipContext = ref("")
 const showTip = (value) => {
-    feedbackStore.setShowTip()
-    tipContext.value = value
+    messageRef.value.show(value)
 }
 
 // 处理选择反馈类型

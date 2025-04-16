@@ -11,7 +11,6 @@ export const useAssistantStore = defineStore('assistant', () => {
     const chatMessages = ref([]); // 所有聊天消息
     const userMessages = ref([]); // 用户发送的消息
     const officialMessage = ref([]); // 官方回复的消息
-    const showTip = ref(false); // 是否显示提示文字
     const showDialog = ref(false) //是否显示修改信息弹窗
 
     // Getters
@@ -44,15 +43,6 @@ export const useAssistantStore = defineStore('assistant', () => {
     // 清除用户输入的消息和图片
     const clearAll = () => {
         images.value = [];
-    };
-
-    // 显示隐藏提示
-    const SetShowTip = () => {
-        showTip.value = true;
-        // 1.5秒后隐藏
-        setTimeout(() => {
-            showTip.value = false;
-        }, 1500);
     };
 
     // 判断消息和图片是否为空
@@ -111,7 +101,6 @@ export const useAssistantStore = defineStore('assistant', () => {
         chatMessages,
         userMessages,
         officialMessage,
-        showTip,
         showDialog,
 
         // Getters
@@ -125,7 +114,6 @@ export const useAssistantStore = defineStore('assistant', () => {
         addImage,
         removeImage,
         clearAll,
-        SetShowTip,
         isEmpty,
         addUserMessage,
         addOfficialMessage,

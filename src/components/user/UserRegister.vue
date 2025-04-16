@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay">
         <div class="user-register">
-            <Message :messageContent="tipContext" :isShowMessage="showTipMessage" :messagePosition="'absolute'" />
+            <Message :messagePosition="'absolute'" ref="messageRef" />
             <div class="register-header">
                 <div class="header-left">
                     <h4>😉Hi，感谢注册呀</h4>
@@ -51,11 +51,12 @@ import Message from '../common/Message.vue'
 
 const registerText = ref("注 册") // 注册按钮文本
 const isShowSliderCaptcha = ref(false) // 是否显示滑块验证码
-const showTipMessage = ref(false) // 是否显示提示消息
-const tipContext = ref("")
 const usernameRef = ref(null) // 用户名输入框组件
 const passwordRef = ref(null)//密码输入框组件
 const confirmPasswordRef = ref(null) // 密码输入框组件
+const messageRef = ref(null)
+
+
 const emit = defineEmits(["auto-login", "close-register"])
 
 // 用户名输入框提示文本
@@ -123,27 +124,20 @@ const register = async (vcode) => {
     }
     try {
         const resp = await apis.register(data)
-        tipContext.value = "注册成功啦" + "🥰"
-        showTipMessage.value = true
         setTimeout(() => {
-            // 关闭注册成功消息
-            showTipMessage.value = false
             // 通知执行登录
             emit("auto-login", resp)
             // 关闭注册窗口
             closeRegister()
         }, 1000)
+        messageRef.value.show("注册成功啦🥰")
     } catch (error) {
         if (error.code === 438) {
             usernameRef.value.setTip("用户名已存在！🫢")
             usernameRef.value.triggerTipBlink(true)
             return
         }
-        tipContext.value = error.message + "🫢"
-        showTipMessage.value = true
-        setTimeout(() => {
-            showTipMessage.value = false
-        }, 1500)
+        messageRef.value.show(error.message)
     }
 }
 

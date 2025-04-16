@@ -284,7 +284,9 @@ const submitDestroyAccount = (e) => {
         return
     }
     console.log("提交确认注销账户", destroyPassword.value);
-    cancelDestroy()
+    updateRequest("handle-destroy-user",{
+        password:destroyPassword.value
+    })
 }
 
 

@@ -1,6 +1,6 @@
 <template>
     <div class="user-window" ref="userWindowRef">
-        <Message :messageContent="tipContext" :is-show-message="isShowMessage" :topOffset="'70px'" />
+        <Message :topOffset="'70px'" ref="messageRef" />
 
         <!-- 左侧用户信息卡片展示区域 -->
         <div class="user-left">
@@ -37,7 +37,6 @@
 </template>
 <script setup>
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
-import Message from '../common/Message.vue';
 import UserInfo from './UserInfo.vue';
 import { userStore } from '@/stores/user';
 import UserSetting from './UserSetting.vue';
@@ -46,9 +45,8 @@ import { scrollTo } from '@/utils/scroll';
 import emitter from '@/utils/emitter';
 import { apis } from '@/api/api';
 const userData = userStore()
-const tipContext = ref("")
 const optionId = ref(100)
-const isShowMessage = ref(false)//是否显示提示消息
+const messageRef = ref(null)
 
 //是否显示没绑定邮箱提示
 const isShowEmailTip = ref(false)
@@ -104,7 +102,6 @@ const handleSetting = () => {
         clearTimeout(emailCheckTimer);
         emailCheckTimer = null;
     }
-
 
     if (hasSettingItem.value) {
         optionId.value = 100
@@ -175,34 +172,51 @@ watch(() => userData.hasLogin, (newValue) => {
 //处理请求函数
 const handleUpdateRequest = async (eventData) => {
     console.log("请求参数", eventData.data);
+    let message = ''
     try {
         const resp = await apis.update(eventData.data)
         console.log("服务端返回更新结果：", resp);
         //更新展示的用户信息
         if (eventData.type === 'nickname') {
             userData.user.nickname = eventData.data.nickname
-            tipContext.value = "昵称修改成功😉"
+            message = "昵称修改成功😉"
         }
         if (eventData.type === 'gender') {
-            tipContext.value = "性别设置成功😉"
+            message = "性别设置成功😉"
             userData.user.gender = eventData.data.gender
         }
         if (eventData.type === 'bio') {
-            tipContext.value = "个人简介设置成功😉"
+            message = "个人简介设置成功😉"
             userData.user.bio = eventData.data.bio
         }
-        isShowMessage.value = true
-        setTimeout(() => {
-            isShowMessage.value = false
-        }, 1500)
-
+        messageRef.value.show(message)
     } catch (error) {
-        console.log(error.message);
+        messageRef.value.show(error.message)
+    }
+}
+
+const handleDestroyUser = async (eventData) => {
+    console.log("注销用户数据：", eventData);
+    console.log(eventData);
+
+    try {
+        const resp = await apis.destroy(eventData)
+        console.log("服务器返回的注销结果：", resp);
+        messageRef.value.show("注销成功")
+
+        // 退出用户
+        userData.clearToken()
+        userData.clearUserData()
+        handleHideItem(3)
+    } catch (error) {
+        messageRef.value.show(error.message)
     }
 }
 
 //请求执行更新用户数据操作
 emitter.on('handle-update-request', handleUpdateRequest)
+//请求注销用户操作
+emitter.on('handle-destroy-user', handleDestroyUser)
 
 
 

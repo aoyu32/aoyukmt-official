@@ -70,14 +70,14 @@ const textareaRef = ref(null);
 const acceptFile = ref("image/*,.md");
 const userInputText = ref("");
 const uploadInputRef = ref(null);
-
+const emit = defineEmits(["set-footer-hide","show-message"])
 
 //点击发送消息
 const sendMessage = () => {
 
     //判断是否上传文档或输入消息
     if (userInputText.value.trim() === '' && forumStore.isuploadDocumentEmpty && forumStore.isUploadImageEmpty) {
-        forumStore.setShowTip()
+        emit("show-message")
         return
     }
 
@@ -218,7 +218,7 @@ const handleRemoveFile = (type, index) => {
 }
 
 //隐藏输入框
-const emit = defineEmits(["set-footer-hide"])
+
 const hiddenInput = () => {
     emit('set-footer-hide', false)
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="download">
-        <Message :messageContent="tipContext" :isShowMessage="downloadStore.showTip" :topOffset="'72px'" />
+        <Message :topOffset="'72px'" ref="messageRef" />
         <section class="download-section dynamic-background">
             <!-- 动态背景的 Canvas -->
             <!-- <canvas ref="backgroundCanvas" class="canvas-background"></canvas> -->
@@ -21,7 +21,8 @@
             <p class="latest-version">
                 <span class="version" @click="toLatestVersion">🦈{{ updatelogStore.isLatestEmpty ? errorText :
                     "V" + updatelogStore.latest.version }}</span> ｜
-                <span class="update">🎉Latest Update Date：{{ updatelogStore.isLatestEmpty ? errorText : updatelogStore.latest.releaseDate
+                <span class="update">🎉Latest Update Date：{{ updatelogStore.isLatestEmpty ? errorText :
+                    updatelogStore.latest.releaseDate
                     }}</span> ｜
                 <span class="platform">🎲Win 7 & 10 & 11</span>
             </p>
@@ -37,7 +38,6 @@ import DownloadCard from "@/components/download/DownloadCard.vue";
 import TypeEffect from "@/utils/typing";
 import { useRouter } from 'vue-router';
 import AOS from 'aos';
-import Message from '@/components/common/Message.vue';
 import { apis } from '@/api/api';
 import { useUpdatelogStore } from '@/stores/updatelog';
 import { useDownloadStore } from '@/stores/download';
@@ -45,6 +45,7 @@ const updatelogStore = useUpdatelogStore()
 const downloadStore = useDownloadStore()
 import 'aos/dist/aos.css';  // 必须引入CSS
 const downloadText = ref(null)
+const messageRef = ref(null)
 let typingInstance = null;  // 用来存储打字效果实例
 
 const initTypeEffect = {
@@ -71,10 +72,8 @@ onMounted(async () => {
 });
 
 //设置提示消息
-const tipContext = ref("")
 const handleTipContext = (value) => {
-    tipContext.value = value
-    downloadStore.setShowTip()
+    messageRef.value.show(value)
 }
 
 // 组件销毁时清除打字机效果

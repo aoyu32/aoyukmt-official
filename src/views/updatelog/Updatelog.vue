@@ -1,6 +1,6 @@
 <template>
     <div class="updatelog">
-        <Message :messageContent="tipContext" :isShowMessage="updatelogStore.showTip" :topOffset="'72px'" />
+        <Message :topOffset="'72px'" ref="messageRef" />
         <div class="main-content">
             <div class="loadding-box" v-if="updatelogStore.isLatestEmpty && updatelogStore.isHistoryEmpty">
                 <Loadding :text="loaddingText" fontSize="35px" animationType="jump-up" :fullScreen="false" />
@@ -52,9 +52,9 @@ import UpdatelogSidebar from '@/components/updatelog/UpdatelogSidebar.vue';
 import { useUpdatelogStore } from '@/stores/updatelog';
 import Loadding from '@/components/common/Loadding.vue';
 import { apis } from '@/api/api';
-import Message from '@/components/common/Message.vue';
 const loaddingText = ref("LOADDING")
 const updatelogStore = useUpdatelogStore()
+const messageRef = ref(null)
 onMounted(async () => {
     // 初始检查窗口大小
     checkWindowSize();
@@ -77,10 +77,8 @@ onMounted(async () => {
 
 });
 
-const tipContext = ref("")
 const handleTipContext = (value) => {
-    tipContext.value = value
-    updatelogStore.setShowTip()
+    messageRef.value.show(value)
 }
 
 //是否显示侧边栏

@@ -65,7 +65,14 @@ export const apis = {
 
     //更新用户信息
     update: (data) => {
-        return instance.post('/user/update',data, {
+        return instance.post('/user/update', data, {
+            needAuth: true
+        })
+    },
+
+    //注销用户
+    destroy: (data) => {
+        return instance.post('/auth/logoff', data, {
             needAuth: true
         })
     }

@@ -4,8 +4,7 @@ import { ref, computed } from 'vue';
 export const useFeedbackStore = defineStore('feedback', () => {
     // 存储反馈会话，每个会话包含选择和表单数据
     const feedbackSessions = ref([]);
-    //控制是否显示提示信息
-    const showTip = ref(false)
+
     //控制是否显示添加一个反馈会话按钮
     const showAddButton = ref(false)
 
@@ -33,14 +32,6 @@ export const useFeedbackStore = defineStore('feedback', () => {
     //设置显示添加会话按钮
     const setAddButton = (flag) => {
         showAddButton.value = flag
-    }
-
-    //设置显示提示信息
-    const setShowTip = () => {
-        showTip.value = true
-        setTimeout(() => {
-            showTip.value = false
-        }, 1500)
     }
 
     // 创建新会话
@@ -102,7 +93,6 @@ export const useFeedbackStore = defineStore('feedback', () => {
         feedbackSessions,
         sessionCount,
         hasNoSessions,
-        showTip,
         showAddButton,
         submitFeedbackCount,
         setFormSubmit,
@@ -110,7 +100,6 @@ export const useFeedbackStore = defineStore('feedback', () => {
         updateSessionOption,
         updateSessionForm,
         resetSession,
-        setShowTip,
         setFormSubmitTime,
         setAddButton
 

@@ -1,6 +1,6 @@
 <template>
     <div class="index">
-        <Message :messageContent="tipContext" :isShowMessage="indexStore.showTip" :topOffset="'72px'" />
+        <Message :topOffset="'72px'" ref="messageRef"/>
         <section class="introduce">
             <canvas id="backgroundCanvas"></canvas> <!-- 将 canvas 放入 section 内 -->
             <div class="aoyukmt-ico" v-aos="{
@@ -67,7 +67,6 @@
 import FeatureCard from "@/components/index/FeatureCard.vue";
 import DetailCard from "@/components/index/DetailCard.vue";
 import { ref, onMounted, nextTick, onUpdated, onUnmounted } from "vue";
-import Message from "@/components/common/Message.vue";
 import tools from "@/utils/tools";
 import { initLenis, destroyLenis } from "@/utils/lenis";
 import { scrollTo } from "@/utils/scroll";
@@ -77,6 +76,7 @@ import { useIndexStore } from "@/stores";
 //动画背景
 import { initBackgroundCanvas } from "@/utils/canvas";
 import Loadding from "@/components/common/Loadding.vue";
+const messageRef = ref(null)//提示消息
 const loaddingText = ref("LOADDING")
 const indexStore = useIndexStore()
 let lenis = null
@@ -96,13 +96,11 @@ const fetchData = async () => {
             apis.getFeatureList().then((featureList) => indexStore.setFeatureList(featureList))
         );
     }
-
     if (indexStore.isDetailListEmpty) {
         requests.push(
             apis.getDetailList().then((detailList) => indexStore.setDetailList(detailList))
         );
     }
-
     try {
         await Promise.all(requests);
         await nextTick(); // 确保 DOM 更新后再调整滚动行为
@@ -113,7 +111,6 @@ const fetchData = async () => {
 };
 
 
-const tipContext = ref("")
 const downloadApp = async () => {
 
     //生成auid
@@ -125,13 +122,10 @@ const downloadApp = async () => {
         })
         await tools.downloadFile(path)
     } catch (error) {
-        tipContext.value = error.message + "!🤬"
-        indexStore.setShowTip()
+        messageRef.value.show(error.message +"!🤬")
     }
 
 }
-
-
 
 onUnmounted(() => {
     destroyLenis()

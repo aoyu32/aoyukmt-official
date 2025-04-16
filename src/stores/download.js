@@ -7,8 +7,6 @@ export const useDownloadStore = defineStore('download', () => {
     const installerUrl = ref("")
     //压缩包下载链接
     const zipPackageUrl = ref("")
-    //是否显示消息提示
-    const showTip = ref(false)
     //下载卡片内容
     const downloadOptions = ref([
         {
@@ -41,23 +39,14 @@ export const useDownloadStore = defineStore('download', () => {
         zipPackageUrl.value = url
     }
 
-    const setShowTip = () => {
-        showTip.value = true
-        setTimeout(() => {
-            showTip.value = false
-        }, 1500)
-    }
-
     return {
         installerUrl,
         zipPackageUrl,
-        showTip,
         downloadOptions,
         isInstallUrlEmpty,
         isInstallUrlEmpty,
         setInstallUrl,
         setZipPackageUrl,
-        setShowTip
     }
 
 })
