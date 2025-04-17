@@ -180,14 +180,17 @@ const handleUpdateRequest = async (eventData) => {
         if (eventData.type === 'nickname') {
             userData.user.nickname = eventData.data.nickname
             message = "昵称修改成功😉"
+            handleHideItem(0)
         }
         if (eventData.type === 'gender') {
             message = "性别设置成功😉"
             userData.user.gender = eventData.data.gender
+            handleHideItem(2)
         }
         if (eventData.type === 'bio') {
             message = "个人简介设置成功😉"
             userData.user.bio = eventData.data.bio
+            handleHideItem(4)
         }
         messageRef.value.show(message)
     } catch (error) {
@@ -213,10 +216,64 @@ const handleDestroyUser = async (eventData) => {
     }
 }
 
+
+const handleResetPassword = async (evnetData) => {
+    console.log("用户重置密码的数据", evnetData);
+    try {
+        const resp = await apis.reset(evnetData)
+        console.log("服务端响应结果：", resp);
+        messageRef.value.show("重置密码成功")
+        handleHideItem(6)
+    } catch (error) {
+        messageRef.value.show(error.message)
+    }
+}
+
+const handleAvatarModify = async (eventData) => {
+    console.log("用户上传的头像图片数据：", eventData);
+    let action
+    let data
+    try {
+        if (eventData.type === 'upload') {
+            //判断是提交随机图片还是提交本地图片
+            if (!eventData.random) {
+                action = 'local'
+                data = eventData.data
+
+            } else {
+                action = 'confirm'
+                data = new File([], "")
+            }
+        }
+        if (eventData.type === 'random') {
+            action = 'generate'
+            data = eventData.data
+
+        }
+        const resp = await apis.avatar(action, data)
+        if (action !== 'generate') {
+            userData.user.avatar = resp
+            messageRef.value.show("头像更改成功")
+            handleHideItem(1)
+        } else {
+            eventData.callback(resp)
+        }
+
+    } catch (error) {
+        console.log(error);
+        messageRef.value.show(error.message)
+    }
+
+}
+
 //请求执行更新用户数据操作
 emitter.on('handle-update-request', handleUpdateRequest)
 //请求注销用户操作
 emitter.on('handle-destroy-user', handleDestroyUser)
+//请求重置密码
+emitter.on('handle-reset-password', handleResetPassword)
+//修改头像
+emitter.on('handle-avatar-modify', handleAvatarModify)
 
 
 

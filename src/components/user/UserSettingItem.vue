@@ -21,11 +21,12 @@
                     <div class="upload-icon" @click="triggerUploadAvatar">
                         <i class="iconfont icon-upload"></i>
                     </div>
-                    <img :src="avatarImage" alt="" v-if="avatarImage">
+                    <img :src="avatarImage" v-if="avatarImage">
                     <input type="file" hidden @change="handleUploadAvatar" ref="avatarInputRef" accept="image/*"
                         multiple="false">
                 </div>
-                <button class="btn-random">随机 <i class="iconfont icon-suijishushengcheng"></i></button>
+                <button class="btn-random" @click="submitGetRandowmAvatar">随机 <i
+                        class="iconfont icon-suijishushengcheng"></i></button>
             </div>
             <button class="btn-save" @click="submitModifyAvatar">{{ avatarBtnContext }}</button>
         </div>
@@ -111,8 +112,8 @@
                     </div>
                     <div class="input-group">
                         <FormInput type="password" placeholder="🔒 新密码" icon="icon-browse" height="35px"
-                            v-model="modifyPassword.new" :pattern="newPassowrdPattern" :message="newTipMessages"
-                            ref="newPasswordRef" @validate="validResults.new = $event" />
+                            v-model="modifyPassword.newPwd" :pattern="newPassowrdPattern" :message="newTipMessages"
+                            ref="newPasswordRef" @validate="validResults.newPwd = $event" />
                     </div>
                     <div class="input-group">
                         <FormInput type="password" placeholder="🔐 确认新密码" icon="icon-browse" height="35px"
@@ -165,7 +166,6 @@ const submitModifyNickname = async () => {
             nickname: nickname.value
         }
     })
-    hideSettingItem(0)
 }
 
 //头像
@@ -174,7 +174,8 @@ const avatarInputRef = ref(null);
 const avatarBtnContext = ref("保存");
 const avatarImage = ref("");
 const avatarVerify = ref(false);
-
+const avatarFile = ref(null)
+const random = ref(false)//是否是提交确认更换为随机头像
 // 常量定义
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 const MAX_IMAGE_SIZE = 3 * 1024 * 1024; // 3MB
@@ -207,7 +208,9 @@ const handleUploadAvatar = (event) => {
         setAvatarErrorState(ERROR_MESSAGES.tooLarge);
         return;
     }
+    avatarFile.value = file
     setAvatarSuccessState();
+    random.value = false//表示上传的本地图片而不是随机图片
 };
 
 // 预览图片
@@ -244,8 +247,28 @@ const setAvatarSuccessState = () => {
 const submitModifyAvatar = async () => {
     if (!avatarVerify.value || !avatarImage.value) return;
     console.log("提交修改头像");
-    hideSettingItem(1);
+    updateRequest("handle-avatar-modify", {
+        type: 'upload',
+        data: avatarFile.value,
+        random: random.value//是随机图片还是上传的本地图片
+    })
+    //重置是否是随机头像
+    random.value = false
 };
+//获取随机头像
+const submitGetRandowmAvatar = () => {
+
+    random.value = true//生成了随机头像
+    avatarVerify.value = true
+    avatarImage.value = new File([], "")
+    updateRequest("handle-avatar-modify", {
+        type: 'random',
+        data: avatarImage.value,
+        callback: (resp) => {
+            avatarImage.value = resp
+        }
+    })
+}
 
 
 //设置性别
@@ -260,15 +283,12 @@ const submitModifyGender = async () => {
             gender: Number(selectedGender.value)
         }
     })
-
-    hideSettingItem(2)
-
 }
 
 //注销用户
 const destroyPassword = ref("")//输入的确认注销用户的密码
 const destroyPasswordRef = ref(null)
-const destroyPasswordIsValid = ref(false) 
+const destroyPasswordIsValid = ref(false)
 const destroyValidator = () => {
     return destroyPassword === ''
 }
@@ -284,8 +304,8 @@ const submitDestroyAccount = (e) => {
         return
     }
     console.log("提交确认注销账户", destroyPassword.value);
-    updateRequest("handle-destroy-user",{
-        password:destroyPassword.value
+    updateRequest("handle-destroy-user", {
+        password: destroyPassword.value
     })
 }
 
@@ -305,7 +325,7 @@ watch(() => bioInput.value, (newValue) => {
     }
     bioBtnContext.value = "保存"
 
-    surplus.value =  newValue.length
+    surplus.value = newValue.length
     if (surplus.value < 0) {
         surplus.value = 0
     }
@@ -335,9 +355,6 @@ const submitSettingBio = async () => {
             bio: bioInput.value
         }
     })
-
-    hideSettingItem(4)
-
 }
 
 
@@ -406,12 +423,12 @@ const confirmPasswordRef = ref(null)//确认密码输入框
 const modifyPasswordBtnContext = ref("修改密码")//修改密码按钮文本
 const validResults = reactive({
     original: false,
-    new: false,
+    newPwd: false,
     confirm: false
 })
 const modifyPassword = reactive({
     original: "",
-    new: "",
+    newPwd: "",
     confirm: ""
 })
 const originalTipMessage = {
@@ -440,11 +457,11 @@ const originalValidator = () => {
 const newPassowrdPattern = ref(new RegExp(/^[a-zA-Z0-9_]{8,16}$/))
 // 确认密码校验规则
 const confirmValidator = () => {
-    return modifyPassword.new === modifyPassword.confirm
+    return modifyPassword.newPwd === modifyPassword.confirm
 }
 
 // 监听密码输入
-watch(() => modifyPassword.new, (newValue) => {
+watch(() => modifyPassword.newPwd, (newValue) => {
     console.log(newValue);
 
     if (!newValue || !modifyPassword.confirm) {
@@ -461,7 +478,8 @@ const allValid = computed(() => {
 
 //提交修改密码
 const submitModifyPassword = () => {
-    if (allValid) {
+    console.log(allValid.value);
+    if (!allValid.value) {
         modifyPasswordBtnContext.value = "请完善修改密码信息!"
         blink()
         setTimeout(() => {
@@ -469,11 +487,17 @@ const submitModifyPassword = () => {
         }, 1500)
         return
     }
-    console.log("提交修改密码", modifyPassword.new);
+    console.log("提交修改密码", modifyPassword.newPwd);
+    const { original, newPwd } = modifyPassword
+    const data = { originalPassword: original, newPassword: newPwd }
+    console.log(data);
+
+
+    updateRequest('handle-reset-password', data)
 }
 
 const blink = () => {
-    if (!validResults.new && modifyPassword.new)
+    if (!validResults.newPwd && modifyPassword.newPwd)
         newPasswordRef.value.triggerTipBlink(true)
     if (!validResults.confirm && modifyPassword.confirm)
         confirmPasswordRef.value.triggerTipBlink(true)

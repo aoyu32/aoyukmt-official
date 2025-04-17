@@ -75,7 +75,29 @@ export const apis = {
         return instance.post('/auth/logoff', data, {
             needAuth: true
         })
+    },
+
+    //重置密码
+    reset: (data) => {
+        return instance.post('/auth/reset', data, {
+            needAuth: true
+        })
+    },
+
+    //修改头像
+    avatar: (action,file) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('action',action)
+        return instance.post('/user/avatar', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            needAuth: true
+        })
     }
+
+
 
 
 };

@@ -62,7 +62,7 @@ const handleUserMessage = (msg) => {
     // 发送消息并自动触发官方回复
     assistantStore.addUserMessage({
         img: assistantStore.images,
-        text: message.value,
+        text: msg,
         date: Tools.getFormatDate('yyyy-mm-dd')
     });
 
