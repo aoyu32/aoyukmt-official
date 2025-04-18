@@ -89,8 +89,6 @@ async function readStream(reader) {
     assistantStore.isReplaying(true)
     while (true) {
         const { done, value } = await reader.read();
-
-
         if (done) {
             // 流式接收完成
             assistantStore.completeCurrentOfficialMessage();
@@ -98,7 +96,6 @@ async function readStream(reader) {
             break;
         }
         fullMessage += value;
-
         // 更新当前流式消息
         if (assistantStore.replying) {
             assistantStore.updateCurrentOfficialMessage(fullMessage);

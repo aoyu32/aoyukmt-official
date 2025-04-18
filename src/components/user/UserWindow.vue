@@ -231,36 +231,59 @@ const handleResetPassword = async (evnetData) => {
 
 const handleAvatarModify = async (eventData) => {
     console.log("用户上传的头像图片数据：", eventData);
-    let action
-    let data
     try {
+        //判断点击类型
+        //提交上传图片点击事件
         if (eventData.type === 'upload') {
-            //判断是提交随机图片还是提交本地图片
-            if (!eventData.random) {
-                action = 'local'
-                data = eventData.data
-
+            let resp
+            //判断上传类型
+            //提交随机生成的图片
+            if (eventData.random) {
+                resp = await apis.randomAvatar('confirm')
             } else {
-                action = 'confirm'
-                data = new File([], "")
+                //提交本地上传图片
+                resp = await apis.avatar(eventData.data)
             }
-        }
-        if (eventData.type === 'random') {
-            action = 'generate'
-            data = eventData.data
+            userData.user.avatar = resp
+            messageRef.value.show("头像修改成功😉")
+            handleHideItem(1)
 
         }
-        const resp = await apis.avatar(action, data)
-        if (action !== 'generate') {
-            userData.user.avatar = resp
-            messageRef.value.show("头像更改成功")
-            handleHideItem(1)
-        } else {
+        //生成随机图片点击事件
+        else {
+            const resp = await apis.randomAvatar('generate')
             eventData.callback(resp)
+            console.log("服务端响应：", resp);
         }
 
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
+        messageRef.value.show(error.message)
+
+    }
+
+}
+
+const handleBindEmail = async (eventData) => {
+    console.log("用户请求数据：", eventData);
+    try {
+        if (eventData.type === 'code') {
+            const resp = await apis.code(eventData.data)
+            console.log("服务端验证码接口响应结果", resp);
+            // messageRef.value.show("验证码已发送")
+            eventData.callback(true)
+        }
+        if (eventData.type === 'bind') {
+            const resp = await apis.email(eventData.data)
+            console.log("服务端绑定邮箱接口响应结果", resp);
+            messageRef.value.show("邮箱绑定成功")
+            userData.user.email = eventData.data.email
+            handleHideItem(5)
+        }
+    } catch (error) {
+        if (eventData.type === 'code') {
+            eventData.callback(false)
+        }
         messageRef.value.show(error.message)
     }
 
@@ -274,7 +297,8 @@ emitter.on('handle-destroy-user', handleDestroyUser)
 emitter.on('handle-reset-password', handleResetPassword)
 //修改头像
 emitter.on('handle-avatar-modify', handleAvatarModify)
-
+//绑定邮箱
+emitter.on('handle-bind-email', handleBindEmail)
 
 
 </script>

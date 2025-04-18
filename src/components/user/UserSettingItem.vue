@@ -93,9 +93,9 @@
             <div class=" input-code">
                 <FormInput placeholder="🔑 请输入验证码" v-model="vcodeInput" :pattern="vcodePattern"
                     :message="vcodeTipMessage" @validate="vcodeIsValid = $event" ref="vcodeInputRef" height="40px" />
-                <button class="btn-code" @click="getCode">{{ vcodeBtnContext }}</button>
+                <button class="btn-code" @click="getCode" :disabled="isDisable">{{ vcodeBtnContext }}</button>
             </div>
-            <button class="btn-submit" @click="submitBindEmail" :disabled="isDisable">绑定</button>
+            <button class="btn-submit" @click="submitBindEmail">绑定</button>
         </div>
 
         <div class="modify-password" v-if="optionId === 6">
@@ -128,7 +128,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed, provide } from 'vue'
+import { ref, reactive, watch, computed, nextTick } from 'vue'
 import FormInput from '../common/FormInput.vue';
 import emitter from '@/utils/emitter';
 const props = defineProps({
@@ -175,7 +175,7 @@ const avatarBtnContext = ref("保存");
 const avatarImage = ref("");
 const avatarVerify = ref(false);
 const avatarFile = ref(null)
-const random = ref(false)//是否是提交确认更换为随机头像
+const random = ref(false)//是否生成了随机图片
 // 常量定义
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 const MAX_IMAGE_SIZE = 3 * 1024 * 1024; // 3MB
@@ -192,8 +192,8 @@ const triggerUploadAvatar = () => {
 
 // 处理上传头像
 const handleUploadAvatar = (event) => {
+    random.value = false
     resetAvatarState();
-
     const file = event.target.files?.[0];
     if (!file) return;
     // 预览图片
@@ -210,7 +210,6 @@ const handleUploadAvatar = (event) => {
     }
     avatarFile.value = file
     setAvatarSuccessState();
-    random.value = false//表示上传的本地图片而不是随机图片
 };
 
 // 预览图片
@@ -248,22 +247,22 @@ const submitModifyAvatar = async () => {
     if (!avatarVerify.value || !avatarImage.value) return;
     console.log("提交修改头像");
     updateRequest("handle-avatar-modify", {
-        type: 'upload',
+        type: 'upload',//提交本地图片
         data: avatarFile.value,
-        random: random.value//是随机图片还是上传的本地图片
+        random: random.value,//是否生成了随机图片
     })
-    //重置是否是随机头像
     random.value = false
 };
+
 //获取随机头像
 const submitGetRandowmAvatar = () => {
+    random.value = true
+    setAvatarSuccessState()
+    avatarImage.value = ''
+    avatarFile.value = new File([], "")
 
-    random.value = true//生成了随机头像
-    avatarVerify.value = true
-    avatarImage.value = new File([], "")
     updateRequest("handle-avatar-modify", {
         type: 'random',
-        data: avatarImage.value,
         callback: (resp) => {
             avatarImage.value = resp
         }
@@ -364,7 +363,7 @@ const vcodeInputRef = ref(null)
 const bindEmailInput = ref("")//输入的邮箱
 const vcodeInput = ref("")//输入的验证码
 const emailPattern = ref(new RegExp(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/))//邮箱校验规则
-const vcodePattern = ref(new RegExp(/^\d{4}$/))//验证码校验规则
+const vcodePattern = ref(new RegExp(/^\d{6}$/))//验证码校验规则
 const emailIsValid = ref(false)//邮箱校验是否通过
 const vcodeIsValid = ref(false)//验证码校验是否通过
 const vcodeBtnContext = ref("获取验证码")//获取验证码按钮文本
@@ -378,43 +377,82 @@ const emailTipMessage = {
 const vcodeTipMessage = {
     prompt: "",
     success: "",
-    error: "请输入4位数字验证码❌"
+    error: "请输入6位数字验证码❌"
 }
 
 //提交绑定
 const submitBindEmail = () => {
-    if (!emailIsValid.value && !vcodeIsValid.value) {
-        emailInputRef.value.triggerTipBlink(true)
-        vcodeInputRef.value.triggerTipBlink(true)
-        return
-    }
-
-    console.log("提交绑定邮箱", bindEmailInput.value);
+    if (emailError()) return
+    updateRequest('handle-bind-email', {
+        type: 'bind',
+        data: {
+            code: vcodeInput.value,
+            email: bindEmailInput.value
+        }
+    })
 }
 
+const emailError = () => {
+    const emailInvalid = !emailIsValid.value
+    const vcodeInvalid = !vcodeIsValid.value
+    console.log("邮箱校验结果：", emailInvalid);
+    console.log("验证码校验结果：", vcodeInvalid);
+
+    if (emailInvalid) {
+        emailInputRef.value.triggerTipBlink(true)
+    }
+
+    if (vcodeInvalid) {
+        vcodeInputRef.value.triggerTipBlink(true)
+    }
+
+    return emailInvalid || vcodeInvalid
+}
 let timer = null
 const getCode = () => {
-    if (isDisable.value) return;
-    vcodeTimer(60)
-}
-const vcodeTimer = (initialCount) => {
-    if (timer) {
-        clearInterval(timer);
-        timer = null;
+    if (!bindEmailInput.value) {
+        emailInputRef.value.setTip("请先输入邮箱❌")
+        emailInputRef.value.triggerTipBlink(true)
+        return
     }
-    let count = initialCount
-    isDisable.value = true
-    timer = setInterval(() => {
-        vcodeBtnContext.value = `${count--}s`
-        if (count === 0) {
-            isDisable.value = false
-            vcodeBtnContext.value = "获取验证码"
-            clearInterval(timer)
-            return
-        }
-    }, 1000)
-}
+    if (!emailIsValid.value) return
+    if (isDisable.value) return;
+    updateRequest('handle-bind-email', {
 
+        type: 'code',
+        data: {
+            email: bindEmailInput.value,
+        },
+        callback: (resp) => {
+            if (resp) {
+                vcodeTimer("已发送", 60)
+            } else {
+
+            }
+        }
+    })
+}
+const vcodeTimer = (text, initialCount) => {
+    console.log("开始倒计时了");
+
+    isDisable.value = true;
+    let count = initialCount;
+    vcodeBtnContext.value = text ? `${text}(${count}s)` : `${count}s`;
+
+    if (timer) clearInterval(timer);
+
+    timer = setInterval(() => {
+        count--;
+        vcodeBtnContext.value = text ? `${text}(${count}s)` : `${count}s`;
+
+        if (count <= 0) {
+            clearInterval(timer);
+            isDisable.value = false;
+            vcodeBtnContext.value = "获取验证码";
+        }
+    }, 1000);
+
+}
 
 //修改密码
 const originalPasswordRef = ref(null)//原密码输入框

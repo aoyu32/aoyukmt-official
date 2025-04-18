@@ -85,19 +85,33 @@ export const apis = {
     },
 
     //修改头像
-    avatar: (action,file) => {
+    avatar: (file) => {
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('action',action)
         return instance.post('/user/avatar', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
             needAuth: true
         })
+    },
+    //随机头像
+    randomAvatar: (action) => {
+        return instance.get(`/user/avatar/${action}`, {
+            needAuth: true
+        })
+    },
+
+    //获取验证码
+    code: (data) => {
+        return instance.post('/auth/code', data, {
+            needAuth: true
+        })
+    },
+    //绑定或更新邮箱
+    email: (data) => {
+        return instance.post('/auth/email', data, {
+            needAuth: true
+        })
     }
-
-
-
-
 };

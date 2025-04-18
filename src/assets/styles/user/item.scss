@@ -163,7 +163,21 @@
                 align-items: center;
                 gap: 5px;
                 cursor: pointer;
+                transition: all 1s ease-in-out;
+
+                /* 当按钮被点击时旋转图标 */
+                &:active .iconfont {
+                    transform: rotate(360deg);
+                    /* 旋转 180 度 */
+                    transition: transform 0.1s ease-in-out;
+                }
+
+
+
             }
+
+
+
 
         }
     }
