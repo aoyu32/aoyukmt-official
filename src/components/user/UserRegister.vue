@@ -38,7 +38,8 @@
                     <button @click="submitRegister">{{ registerText }}</button>
                 </div>
             </div>
-            <VerifyWindow @on-success="handleVerifySuccess" @on-close="handleCloseVerify" v-if="isShowSliderCaptcha" />
+            <VerifyWindow @on-success="handleVerifySuccess" @on-close="isShowSliderCaptcha = false"
+                v-if="isShowSliderCaptcha" />
         </div>
     </div>
 </template>
@@ -105,7 +106,6 @@ const confirmValidator = () => {
 
 // 滑块安全验证码校验成功
 const handleVerifySuccess = (param) => {
-    isShowSliderCaptcha.value = false
     register(param.captchaVerification)
 }
 
@@ -124,13 +124,13 @@ const register = async (vcode) => {
     }
     try {
         const resp = await apis.register(data)
+        console.log("注册的响应结果：", resp);
+        messageRef.value.show("注册成功啦🥰")
         setTimeout(() => {
             // 通知执行登录
             emit("auto-login", resp)
-            // 关闭注册窗口
-            closeRegister()
-        }, 1000)
-        messageRef.value.show("注册成功啦🥰")
+        }, 700)
+
     } catch (error) {
         if (error.code === 438) {
             usernameRef.value.setTip("用户名已存在！🫢")
@@ -141,10 +141,6 @@ const register = async (vcode) => {
     }
 }
 
-// 关闭滑块验证码校验
-const handleCloseVerify = () => {
-    isShowSliderCaptcha.value = false
-}
 
 // 监听密码输入
 watch(() => registerFormData.password, (newValue) => {

@@ -148,7 +148,7 @@
                 padding: 15px 0 0;
                 display: flex;
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
 
                 .item-lable {
                     color: $theme-primary;
@@ -158,14 +158,13 @@
 
                 .item-value {
                     display: flex;
-                    align-items: center;
+                    padding: 5px 0 0 5px;
                     width: 100%;
                     height: 50px;
                     background-color: $theme-primary-hover;
-                    padding: 10px;
-                    border-radius: 5px;
 
                     p {
+                        font-size: 15px;
                         color: $theme-font-gray;
                     }
                 }

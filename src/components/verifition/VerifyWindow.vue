@@ -20,6 +20,7 @@ const emit = defineEmits(["on-success", "on-close"])
 //验证成功回调
 const success = (param) => {
     emit("on-success", param)
+    close()
 }
 
 //关闭验证窗口

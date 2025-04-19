@@ -93,9 +93,12 @@ const login = async (vcode) => {
     console.log("请求数据：", data);
     try {
         const resp = await apis.login(data)
+        messageRef.value.show("登录成功🥰")
         console.log("登录后返回的数据：", resp);
         //通知父组件
-        emit("user-login", resp)
+        setTimeout(() => {
+            emit("user-login", resp)
+        }, 600)
     } catch (error) {
         console.log(error);
         messageRef.value.show(error.message)

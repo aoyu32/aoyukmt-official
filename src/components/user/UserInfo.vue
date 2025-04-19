@@ -2,8 +2,7 @@
     <div class="user-info">
         <div class="user-info-header">
             <h3>🍰 我的资料卡</h3>
-            <button @click="displayUpdate" :tip="toolTipContent"><i class="iconfont"
-                    :class="isSetting ? 'icon-edit' : 'icon-setting'"></i></button>
+            <button @click="displaySetting" :tip="toolTipContent"><i class="iconfont" :class="settingIcon"></i></button>
         </div>
         <div class="user-info-body">
             <div class="info-body-left">
@@ -36,13 +35,15 @@
                             <div class="item-content"><label>📧 邮箱</label> <span>{{ email }}</span></div>
                         </div>
                         <div class="item">
-                            <div class="item-content"><label>🌐 IP 信息</label> <span>安徽阜阳</span></div>
+                            <div class="item-content"><label>🌐 IP 信息</label> <span>{{ ipAddr }}</span></div>
                         </div>
                         <div class="item">
-                            <div class="item-content"><label>🌍 上一次登录IP</label> <span>{{ userInfo.lastLoginIp }}</span></div>
+                            <div class="item-content"><label>🌍 上一次登录IP</label> <span>{{ userInfo.lastLoginIp }}</span>
+                            </div>
                         </div>
                         <div class="item">
-                            <div class="item-content"><label>🕒 上一次登录时间</label> <span>{{ userInfo.lastLoginTime }}</span></div>
+                            <div class="item-content"><label>🕒 上一次登录时间</label> <span>{{ userInfo.lastLoginTime
+                                    }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -89,8 +90,18 @@ const props = defineProps({
     }
 })
 
+const settingIcon = computed(() => {
+    if (!props.hasLogin) {
+        return 'icon-denglu12'
+    }
+    return props.isSetting ? 'icon-edit' : 'icon-setting'
+})
+
 const gender = computed(() => {
-    console.log("gender", props.userInfo.gender,typeof(props.userInfo.gender));
+
+    if (!props.hasLogin) {
+        return ""
+    }
 
     const userGender = props.userInfo.gender
     if (userGender === 3)
@@ -105,10 +116,16 @@ const gender = computed(() => {
 })
 
 const email = computed(() => {
+    if (!props.hasLogin) {
+        return ""
+    }
     return !props.userInfo.email ? '未绑定' : props.userInfo.email
 })
 
 const bio = computed(() => {
+    if (!props.hasLogin) {
+        return ""
+    }
     return !props.userInfo.bio ? "你还没有填写你的简介信息！😫" : props.userInfo.bio
 })
 
@@ -118,16 +135,33 @@ const userAvatar = computed(() => {
 
 const toolTipContent = computed(() => {
     if (!props.hasLogin)
-        return '您还未登录'
+        return '点击登录'
     return props.isSetting ? '点击退出用户设置' : '点击设置用户信息'
+})
+
+const ipAddr = computed(() => {
+    if (!props.hasLogin) {
+        return ""
+    }
+    const ipDetail = props.userInfo.ipInfo
+    if (ipDetail.err !== "noprovince") {
+        return ipDetail.pro + ipDetail.city
+    } else if (ipDetail.addr !== "") {
+        return ipDetail.addr
+    } else {
+        return "未知区域"
+    }
+
 })
 
 //显示修改用户信息组件
 const emit = defineEmits(["display-setting"])
-const displayUpdate = () => {
-    if (!props.hasLogin)
-        return
-    emit("display-setting")
+const displaySetting = () => {
+    if (!props.hasLogin) {
+        emit('display-login')
+    } else {
+        emit("display-setting")
+    }
 }
 
 </script>

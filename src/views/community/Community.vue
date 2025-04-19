@@ -1,5 +1,6 @@
 <template>
     <div class="community">
+        <Message :topOffset="'70px'" ref="messageRef" />
         <button class="sidebar-toggle" :class="{ 'rotated': isShowNav }" @click="toggleNav">
             <i class="iconfont icon-arrow-right-bold"></i>
         </button>
@@ -41,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted } from 'vue'
+import { ref, watchEffect, onMounted, nextTick } from 'vue'
 import CommunitySidebar from '@/components/community/CommunitySidebar.vue';
 import { useRoute } from 'vue-router';
 import UserIDCard from '@/components/user/UserIDCard.vue';
@@ -51,8 +52,10 @@ import UserLogin from '@/components/user/UserLogin.vue';
 import UserRegister from '@/components/user/UserRegister.vue';
 import UserReset from '@/components/user/UserReset.vue';
 import { apis } from '@/api/api';
-const userDataStore = userStore()
+import emitter from '@/utils/emitter';
 
+const userDataStore = userStore()
+const messageRef = ref(null)
 
 const loginDialog = {
     icon: '☺️',
@@ -112,12 +115,16 @@ const logout = () => {
 
 //监听用户登录
 const handleUserLogin = (resp) => {
-    //关闭登录窗口
-    isDisplayLogin.value = false
+
     //设置登录
     userDataStore.setToken(resp.token)
     //设置用户信息
     userDataStore.setUser(resp.userData)
+    nextTick(() => {
+        //关闭登录窗口
+        isDisplayLogin.value = false
+    })
+
 }
 
 onMounted(() => {
@@ -127,12 +134,17 @@ onMounted(() => {
     requestUserInfo()
 })
 
+
 //监听开始自动登录
 const handleAutoLogin = async (data) => {
     isDisplayLogin.value = false
     //持久化token
     userDataStore.setToken(data)
     requestUserInfo()
+    nextTick(() => {
+        //关闭注册窗口
+        isDisplayRegister.value = false
+    })
 }
 
 //请求获取用户信息
@@ -142,7 +154,11 @@ const requestUserInfo = async () => {
         //设置用户信息
         userDataStore.setUser(resp)
     } catch (error) {
-        console.log(error.message);
+        if (error.code === 441) {
+            messageRef.value.show("登录信息失效，请重新登录")
+            userDataStore.clearToken()
+            userDataStore.clearUserData()
+        }
     }
 }
 
@@ -176,6 +192,11 @@ const isShowNav = ref(false)
 const toggleNav = () => {
     isShowNav.value = !isShowNav.value
 }
+
+//监听显示登陆窗口事件
+emitter.on('display-login', () => {
+    isDisplayLogin.value = true
+})
 </script>
 
 <style lang="scss" scoped>

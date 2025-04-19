@@ -5,7 +5,8 @@
         <!-- 左侧用户信息卡片展示区域 -->
         <div class="user-left">
             <UserInfo :user-info="userData.user" @display-setting="handleSetting"
-                :is-setting="displaySetting || hasSettingItem" :has-login="userData.hasLogin" />
+                :is-setting="displaySetting || hasSettingItem" :has-login="userData.hasLogin"
+                @display-login="displayLogin" />
         </div>
         <Transition name="slide" mode="out-in">
             <!-- 邮箱提示组件 -->
@@ -48,6 +49,7 @@ const userData = userStore()
 const optionId = ref(100)
 const messageRef = ref(null)
 
+
 //是否显示没绑定邮箱提示
 const isShowEmailTip = ref(false)
 //控制是否显示设置选项
@@ -64,6 +66,11 @@ onMounted(() => {
     //刚进入用户信息页面时检查是否绑定邮箱，如果没绑定显示提示消息
     checkEmailBinding()
 })
+
+const displayLogin = () => {
+    //显示登陆窗口事件
+    emitter.emit('display-login')
+}
 
 
 //监听点击哪个设置选项
