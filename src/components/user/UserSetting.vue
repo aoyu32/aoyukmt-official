@@ -26,7 +26,7 @@ const options = ref([
     "设置🎗️简介",
     "绑定📧邮箱",
     "修改🔑密码",
-    "切换🍚账号"
+    "退出🍚登录"
 ]);
 
 const emit = defineEmits(["hide-setting", "select-option"])
@@ -38,6 +38,8 @@ const handleSelectOption = (index) => {
 const hideSetting = () => {
     emit("hide-setting")
 }
+
+
 </script>
 <style scoped lang="scss">
 @use "@/assets/styles/user/setting.scss" as *;

@@ -1,6 +1,6 @@
 <template>
     <div class="feedback-window" ref="feedbackWindowRef">
-        <Message message-position="absolute" ref="messageRef"/>
+        <Message message-position="absolute" ref="messageRef" />
 
         <!-- 反馈会话区域 -->
         <div v-for="session in feedbackStore.feedbackSessions" :key="session.id">
@@ -13,9 +13,10 @@
             <!-- 反馈表单组件，仅在有选择时显示 -->
             <div class="feedback-right" v-if="session.selectedOption">
                 <FeedbackForm :formData="session.formData" :feedbackType="session.selectedOption"
-                    :defaultUserName="userData.user.name" @update-form="(data) => updateFormData(session.id, data)"
-                    @reset-form="() => resetForm(session.id)" @submit-form="() => submitForm(session.id)"
-                    @show-tip="showTip" :isFormSubmit="session.isSubmit" />
+                    :defaultUsername="userData.hasLogin ? userData.user.username : ''"
+                    @update-form="(data) => updateFormData(session.id, data)" @reset-form="() => resetForm(session.id)"
+                    @submit-form="() => submitForm(session.id)" @show-tip="showTip" :isFormSubmit="session.isSubmit"
+                    @set-anonymous="handleSetAnonymous(session)" />
             </div>
             <!-- 反馈提交时间 -->
             <div class="feedback-time" v-if="session.submitTime">
@@ -32,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue';
+import { ref, onMounted, nextTick, watch, computed } from 'vue';
 import { useFeedbackStore } from '@/stores/feedback';
 import FeedbackSelect from './FeedbackSelect.vue';
 import FeedbackForm from './FeedbackForm.vue';
@@ -40,6 +41,7 @@ import { userStore } from '@/stores/user';
 import CurrentTime from '../common/CurrentTime.vue';
 import tools from '@/utils/tools';
 import { scrollTo } from '@/utils/scroll';
+import { apis } from '@/api/api';
 
 
 const feedbackWindowRef = ref(null)
@@ -52,13 +54,14 @@ onMounted(() => {
     // 页面加载时，如果没有会话，创建一个新会话
     if (feedbackStore.hasNoSessions) {
         feedbackStore.createSession();
-
     }
 
     nextTick(() => {
         scrollTo('bottom', 150, feedbackWindowRef.value)
     });
 });
+
+
 
 //监听窗口里的内容将窗口滚动到底部
 watch(() => feedbackStore.feedbackSessions, () => {
@@ -78,6 +81,14 @@ const handleSelectOption = (sessionId, option) => {
     feedbackStore.updateSessionOption(sessionId, option);
 };
 
+//监听设置匿名
+const handleSetAnonymous = (session) => {
+    if (!session.isSubmit) {
+        session.formData.username = 'anonymous'
+        return
+    }
+}
+
 // 更新表单数据
 const updateFormData = (sessionId, formData) => {
     feedbackStore.updateSessionForm(sessionId, formData);
@@ -91,11 +102,50 @@ const resetForm = (sessionId) => {
 // 提交表单
 const submitForm = (sessionId) => {
     feedbackStore.setFormSubmit(sessionId)
+    requestSubmitFeedback(sessionId)
     setTimeout(() => {
         feedbackStore.setFormSubmitTime(sessionId, tools.getFormatDate('yyyy-mm-dd HH:MM:SS'))
         feedbackStore.setAddButton(true)
     }, 1600)
 };
+
+//请求提交反馈
+const requestSubmitFeedback = async (sessionId) => {
+    const feedbackData = feedbackStore.getFeedbackSessionData(sessionId)
+    console.log("要提交的反馈会话数据：", feedbackData);
+    //构建请求数据
+    const requestFormData = new FormData()
+    console.log(switchFeedbackType(feedbackData.selectOption));
+    
+    requestFormData.append('type', switchFeedbackType(feedbackData.selectedOption))
+    requestFormData.append('content', feedbackData.formData.content)
+    requestFormData.append('responder', feedbackData.formData.username)
+    feedbackData.formData.attachments.forEach(element => {
+        requestFormData.append('files', element)
+    });
+    try {
+        console.log("请求的数据", requestFormData);
+        const resp = await apis.feedback(requestFormData)
+        console.log("服务端响应反馈结果：", resp);
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const switchFeedbackType = (selectOption) => {
+    if (selectOption === "有意见或建议") {
+        return 'suggestions'
+    }
+    if (selectOption === "提交应用 Bug") {
+        return "bug"
+    }
+    if (selectOption === "有功能需求") {
+        return 'feature'
+    }
+    if (selectOption === "其他") {
+        return 'other'
+    }
+}
 
 //添加一个反馈会话
 const addFeedbackSession = () => {

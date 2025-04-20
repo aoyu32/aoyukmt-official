@@ -43,7 +43,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
             isSubmit: false,
             submitTime: "",
             formData: {
-                userName: "",
+                username: "",
                 attachments: [],
                 content: ""
             }
@@ -78,11 +78,16 @@ export const useFeedbackStore = defineStore('feedback', () => {
         feedbackSessions.value[sessionId].submitTime = time
     }
 
+    //获取某个id的session数据
+    const getFeedbackSessionData = (sessionId) => {
+        return feedbackSessions.value[sessionId]
+    }
+
     // 重置会话
     const resetSession = (sessionId) => {
         if (sessionId >= 0 && sessionId < feedbackSessions.value.length) {
             feedbackSessions.value[sessionId].formData = {
-                userName: "",
+                username: "",
                 attachments: [],
                 content: ""
             };
@@ -101,7 +106,9 @@ export const useFeedbackStore = defineStore('feedback', () => {
         updateSessionForm,
         resetSession,
         setFormSubmitTime,
-        setAddButton
+        setAddButton,
+        getFeedbackSessionData
+
 
     };
 });

@@ -11,12 +11,15 @@
 
             <!-- 用户信息部分 -->
             <div class="user-info">
-                <label>{{ nameLabel }}</label>
+                <div class="user-info-label">
+                    <label>{{ nameLabel }}</label>
+                    <button @click="setAnonymous"><i class="iconfont icon-suiji-active"></i></button>
+                </div>
                 <div class="name-input">
-                    <input type="text" v-model="formData.userName" ref="inputRef" :disabled="isSubmitComplete"
+                    <input type="text" v-model="formData.username" ref="inputRef" :disabled="isSubmitComplete"
                         class="input" :class="{ 'submit': isSubmitComplete }">
-                    <div class="clear-username" v-show="formData.userName && !isSubmitComplete">
-                        <button @click="resetUserName">
+                    <div class="clear-username" v-show="formData.username && !isSubmitComplete">
+                        <button @click="resetUsername">
                             <i class="iconfont icon-close"></i>
                         </button>
                     </div>
@@ -91,7 +94,7 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    defaultUserName: {
+    defaultUsername: {
         type: String,
         default: "",
     },
@@ -102,7 +105,7 @@ const props = defineProps({
 });
 
 // 向父组件传递数据的事件
-const emit = defineEmits(['update-form', 'reset-form', 'submit-form', 'show-tip']);
+const emit = defineEmits(['update-form', 'reset-form', 'submit-form', 'show-tip', 'set-anonymous']);
 
 // 直接使用父组件传递的 formData
 const formData = props.formData;
@@ -117,8 +120,11 @@ const isArrived = ref(false);
 const isSubmitComplete = computed(() => props.isFormSubmit && isArrived.value);
 // 处理用户名
 onMounted(() => {
-    if (props.defaultUserName) {
-        formData.userName = props.defaultUserName;
+    console.log("默认用户名", props.defaultUsername);
+    if (props.defaultUsername) {
+
+
+        formData.username = props.defaultUsername;
     }
     if (props.isFormSubmit) {
         isArrived.value = true;
@@ -137,8 +143,8 @@ onUnmounted(() => {
 
 // 重置用户名
 const inputRef = ref(null);
-const resetUserName = () => {
-    formData.userName = '';
+const resetUsername = () => {
+    formData.username = '';
     inputRef.value.focus();
 };
 
@@ -172,6 +178,14 @@ const resetContent = () => {
     feedbackTextarea.value.focus();
     resetTextarea();
 };
+
+//填充匿名名称
+const setAnonymous = () => {
+    if (!formData.username) {
+        return
+    }
+    emit('set-anonymous')
+}
 
 // 自动设置textarea高度
 const autoResize = () => {
@@ -210,15 +224,15 @@ const submitForm = () => {
         emit('show-tip', "请您输入反馈内容或上传附件!🤨");
         return;
     }
-    if (!formData.userName) {
-        formData.userName = props.defaultUserName
+    if (!formData.username) {
+        formData.username = props.defaultUsername
     }
     emit('submit-form');
 };
 
 // 重置表单
 const resetForm = () => {
-    formData.userName = "";
+    formData.username = "";
     formData.attachments = [];
     formData.content = "";
     resetTextarea();

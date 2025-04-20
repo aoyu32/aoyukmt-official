@@ -76,6 +76,10 @@ const displayLogin = () => {
 //监听点击哪个设置选项
 const handleSelectOption = (index) => {
     displaySetting.value = false
+    if(index === 7){
+        userData.clearToken()
+        userData.clearUserData()
+    }
     optionId.value = index
     scrollToBottom()
 }

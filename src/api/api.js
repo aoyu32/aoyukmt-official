@@ -113,5 +113,16 @@ export const apis = {
         return instance.post('/auth/email', data, {
             needAuth: true
         })
+    },
+
+    //反馈
+    feedback: (data) => {
+        return instance.post('/feedback/submit', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            needAuth: true
+        })
     }
+
 };
