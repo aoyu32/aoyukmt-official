@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 // 接收当前选择的选项
 const props = defineProps({
@@ -55,15 +55,6 @@ const handleSelectOption = (item, index) => {
     emit('setSelectOption', item);
 };
 
-// // 当props.currentOption变化时，更新currentOptionIndex
-// watch(() => props.currentOption, (newOption) => {
-//     if (newOption) {
-//         const index = options.value.findIndex(option => option === newOption);
-//         if (index !== -1) {
-//             currentOptionIndex.value = index;
-//         }
-//     }
-// }, { immediate: true });
 </script>
 
 <style scoped lang="scss">

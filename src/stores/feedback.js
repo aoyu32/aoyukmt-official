@@ -94,6 +94,12 @@ export const useFeedbackStore = defineStore('feedback', () => {
         }
     };
 
+    //情况反馈会话
+    const clearFeedbackSessions = () => {
+        feedbackSessions.value = []
+        showAddButton.value = false
+    }
+
     return {
         feedbackSessions,
         sessionCount,
@@ -107,8 +113,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
         resetSession,
         setFormSubmitTime,
         setAddButton,
-        getFeedbackSessionData
-
-
+        getFeedbackSessionData,
+        clearFeedbackSessions
     };
 });

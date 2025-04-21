@@ -75,7 +75,7 @@
             </div>
             <div class="submit-success" v-else :style="{ 'padding': !isArrived ? '10px 0' : '0' }">
                 <span class="airplane" @animationend="handleAnimationEnd" v-if="!isArrived">{{ sendIcon }}</span>
-                <span class="success-text" v-else>你的反馈卡片已经成功送达✅</span>
+                <span class="success-text" v-else>{{ afterSubmit }}</span>
             </div>
         </div>
     </div>
@@ -101,6 +101,14 @@ const props = defineProps({
     isFormSubmit: {
         type: Boolean,
         default: false
+    },
+    hasLogin: {
+        type: Boolean,
+        default: false
+    },
+    afterSubmit:{
+        type:String,
+        default:""
     }
 });
 
@@ -120,12 +128,6 @@ const isArrived = ref(false);
 const isSubmitComplete = computed(() => props.isFormSubmit && isArrived.value);
 // 处理用户名
 onMounted(() => {
-    console.log("默认用户名", props.defaultUsername);
-    if (props.defaultUsername) {
-
-
-        formData.username = props.defaultUsername;
-    }
     if (props.isFormSubmit) {
         isArrived.value = true;
     }
@@ -181,9 +183,6 @@ const resetContent = () => {
 
 //填充匿名名称
 const setAnonymous = () => {
-    if (!formData.username) {
-        return
-    }
     emit('set-anonymous')
 }
 
@@ -219,13 +218,13 @@ const resetTextarea = () => {
 
 // 提交表单
 const submitForm = () => {
-
+    if (!props.hasLogin) {
+        emit('show-tip', "你还没有登录，请先登录！");
+        return
+    }
     if (!formData.content && formData.attachments.length === 0) {
         emit('show-tip', "请您输入反馈内容或上传附件!🤨");
         return;
-    }
-    if (!formData.username) {
-        formData.username = props.defaultUsername
     }
     emit('submit-form');
 };

@@ -56,7 +56,7 @@ instance.interceptors.response.use(
   },
   error => {
     // 对响应错误做点什么
-    let errorMessage = '网络错误，请稍后重试';
+    let errorMessage = '服务器无响应，请稍后重试';
     let statusCode = null;
     if (error.response) {
       // 请求已发出，但服务器响应的状态码不在 2xx 范围内
@@ -83,7 +83,7 @@ instance.interceptors.response.use(
           errorMessage = `请求错误 (${status})`;
       }
     } else if (error.request) {
-      errorMessage = '网络连接出错，请检测网络！';
+      errorMessage = '服务器无响应，请稍后重试！';
     }
 
     const enhancedError = {

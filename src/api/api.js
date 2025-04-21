@@ -123,6 +123,12 @@ export const apis = {
             },
             needAuth: true
         })
+    },
+    //获取反馈列表
+    feedbackList:()=>{
+        return instance.get('/feedback/query',{
+            needAuth:true
+        })
     }
 
 };
