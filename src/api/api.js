@@ -78,8 +78,8 @@ export const apis = {
     },
 
     //重置密码
-    reset: (data) => {
-        return instance.post('/auth/reset', data, {
+    modify: (data) => {
+        return instance.post('/auth/modify', data, {
             needAuth: true
         })
     },
@@ -125,10 +125,16 @@ export const apis = {
         })
     },
     //获取反馈列表
-    feedbackList:()=>{
-        return instance.get('/feedback/query',{
-            needAuth:true
+    feedbackList: () => {
+        return instance.get('/feedback/query', {
+            needAuth: true
         })
+    },
+    //重置密码
+    reset: (data) => {
+        return instance.post('/auth/reset', data)
     }
+
+
 
 };

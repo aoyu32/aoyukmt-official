@@ -231,7 +231,7 @@ const handleDestroyUser = async (eventData) => {
 const handleResetPassword = async (evnetData) => {
     console.log("用户重置密码的数据", evnetData);
     try {
-        const resp = await apis.reset(evnetData)
+        const resp = await apis.modify(evnetData)
         console.log("服务端响应结果：", resp);
         messageRef.value.show("重置密码成功")
         handleHideItem(6)

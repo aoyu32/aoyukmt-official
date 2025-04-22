@@ -41,6 +41,10 @@ export const useFeedbackStore = defineStore('feedback', () => {
             id: sessionId,
             selectedOption: "",
             isSubmit: false,
+            submitResult: {
+                result: false,
+                message: ""
+            },
             submitTime: "",
             formData: {
                 username: "",
@@ -69,8 +73,9 @@ export const useFeedbackStore = defineStore('feedback', () => {
     };
 
     //设置表单提交状态
-    const setFormSubmit = (sessionId) => {
+    const setFormSubmit = (sessionId, submitResult) => {
         feedbackSessions.value[sessionId].isSubmit = true
+        feedbackSessions.value[sessionId].submitResult = submitResult
     }
 
     //设置表单提交时间

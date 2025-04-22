@@ -69,13 +69,14 @@
 
         <!-- 提交部分 -->
         <div class="feedback-submit">
-            <div class="submit-btn" v-if="!isFormSubmit">
+            <div class="submit-btn" v-if="!isSubmit">
                 <button @click="submitForm">发送</button>
                 <button @click="resetForm">重置</button>
             </div>
-            <div class="submit-success" v-else :style="{ 'padding': !isArrived ? '10px 0' : '0' }">
+            <div class="submit-success" :style="{ 'padding': !isArrived ? '10px 0' : '0' }" v-else>
                 <span class="airplane" @animationend="handleAnimationEnd" v-if="!isArrived">{{ sendIcon }}</span>
-                <span class="success-text" v-else>{{ afterSubmit }}</span>
+                <span class="success-text" v-else>{{ submitResult.message }}</span>
+                <button @click="submitForm" v-if="isSubmitComplete">{{ submitResult.result ? "撤销" : "重新发送" }}</button>
             </div>
         </div>
     </div>
@@ -98,17 +99,22 @@ const props = defineProps({
         type: String,
         default: "",
     },
-    isFormSubmit: {
-        type: Boolean,
-        default: false
-    },
     hasLogin: {
         type: Boolean,
         default: false
     },
-    afterSubmit:{
-        type:String,
-        default:""
+    isSubmit: {
+        type: Boolean,
+        deault: false
+    },
+    submitResult: {
+        type: Object,
+        deault: () => {
+            return {
+                result: false,//提交反馈的结果
+                message: ""//提交反馈结果后的提示
+            }
+        }
     }
 });
 
@@ -122,13 +128,11 @@ const formData = props.formData;
 const hasAttachments = computed(() => formData.attachments.length !== 0);
 const shouldShowAttachments = computed(() => hasAttachments.value || !isSubmitComplete.value);
 const shouldShowContent = computed(() => formData.content || !isSubmitComplete.value);
-
-
 const isArrived = ref(false);
-const isSubmitComplete = computed(() => props.isFormSubmit && isArrived.value);
+const isSubmitComplete = computed(() => isArrived.value && props.submitResult.result);
 // 处理用户名
 onMounted(() => {
-    if (props.isFormSubmit) {
+    if (props.submitResult.result) {
         isArrived.value = true;
     }
     // 初始调整大小
@@ -227,6 +231,8 @@ const submitForm = () => {
         return;
     }
     emit('submit-form');
+    console.log("反馈数据是否提交成功", props.submitResult.result);
+
 };
 
 // 重置表单

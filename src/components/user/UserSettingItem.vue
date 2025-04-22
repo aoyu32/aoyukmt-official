@@ -418,9 +418,9 @@ const getCode = () => {
     if (!emailIsValid.value) return
     if (isDisable.value) return;
     updateRequest('handle-bind-email', {
-
         type: 'code',
         data: {
+            type: "binding",
             email: bindEmailInput.value,
         },
         callback: (resp) => {
@@ -433,8 +433,6 @@ const getCode = () => {
     })
 }
 const vcodeTimer = (text, initialCount) => {
-    console.log("开始倒计时了");
-
     isDisable.value = true;
     let count = initialCount;
     vcodeBtnContext.value = text ? `${text}(${count}s)` : `${count}s`;
@@ -451,7 +449,6 @@ const vcodeTimer = (text, initialCount) => {
             vcodeBtnContext.value = "获取验证码";
         }
     }, 1000);
-
 }
 
 //修改密码

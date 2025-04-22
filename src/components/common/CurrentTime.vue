@@ -1,9 +1,16 @@
 <template>
     <div class="time">
-        <p>📅 {{ currentTime }} 🔝</p>
+        <p>{{ time }} </p>
     </div>
 </template>
 <script setup>
+import { ref, computed } from 'vue'
+const time = computed(() => {
+    if (!props.currentTime) {
+        return ""
+    }
+    return `📅 ${props.currentTime} 🔝`
+})
 const props = defineProps({
     currentTime: {
         type: String,

@@ -17,236 +17,184 @@
                 </div>
                 <form class="reset-form">
                     <!-- 邮箱 -->
-                    <FormInput placeholder="📧 请输入您的邮箱" v-model="resetFormData.email"
-                        @icon-click="resetFormData.email = ''" :tip-content="validationTips.email"
-                        @blur="validateEmail" />
-
+                    <FormInput placeholder="📧 请输入您的邮箱" v-model="resetFormData.email" :pattern="emailPattern"
+                        :message="tipMessages.emailTipMessage" ref="emailRef" @validate="validResult.email = $event" />
                     <div class="form-verfiy-code">
-                        <!-- 六位验证码 -->
-                        <FormInput placeholder="🔑 请输入验证码" v-model="resetFormData.verifyCode"
-                            @icon-click="resetFormData.verifyCode = ''" :tip-content="validationTips.verifyCode"
-                            @blur="validateVerifyCode" />
-                        <button class="send-btn" @click.prevent="sendVerifyCode" :disabled="isSending">
-                            {{ sendButtonText }}
-                        </button>
+                        <FormInput placeholder="🔑 请输入验证码" v-model="resetFormData.emailVerifyCode"
+                            :pattern="vcodePattern" :message="tipMessages.vcodeTipMessage" ref="vcodeRef"
+                            @validate="validResult.emailVerifyCode = $event" />
+                        <button class="send-btn" @click="getCode" :disabled="isDisable">{{ vcodeBtnContext }}</button>
                     </div>
 
                     <!-- 新密码 -->
-                    <FormInput placeholder="🔐 请输入新密码" v-model="resetFormData.newPassword"
-                        :type="showNewPassword ? 'text' : 'password'" icon="icon-browse"
-                        autocomplete-text="new-password" @icon-click="showNewPassword = !showNewPassword"
-                        :icon-active="showNewPassword ? 'active' : ''" :tip-content="validationTips.newPassword"
-                        @blur="validateNewPassword" />
+                    <FormInput type="password" placeholder="🔒 新密码" icon="icon-browse"
+                        v-model="resetFormData.newPassword" :pattern="newPassowrdPattern"
+                        :message="tipMessages.newTipMessages" ref="newPasswordRef"
+                        @validate="validResult.newPassword = $event" />
 
                     <!-- 确认新密码 -->
-                    <FormInput placeholder="🔏 请确认新密码" v-model="resetFormData.confirmPassword"
-                        :type="showConfirmPassword ? 'text' : 'password'" icon="icon-browse"
-                        autocomplete-text="new-password" @icon-click="showConfirmPassword = !showConfirmPassword"
-                        :icon-active="showConfirmPassword ? 'active' : ''" :tip-content="validationTips.confirmPassword"
-                        @blur="validateConfirmPassword" />
+                    <FormInput type="password" placeholder="🔐 确认新密码" icon="icon-browse"
+                        v-model="resetFormData.confirmNewPassword" :validator="confirmValidator"
+                        :message="tipMessages.confirmTipMessage" ref="confirmPasswordRef"
+                        @validate="validResult.confirmNewPassword = $event" />
+
                 </form>
             </div>
             <div class="reset-footer">
                 <div class="footer-submit">
-                    <button @click="submitReset">{{ resetText }}</button>
+                    <button @click="submitReset">{{ resetButtonText }}</button>
                 </div>
             </div>
         </div>
     </div>
+    <VerifyWindow @on-success="handleVerifySuccess" @on-close="handleVerifyClose" v-if="isShowSliderCaptcha" />
 </template>
 
 <script setup>
 import { ref, reactive, watch } from 'vue'
 import FormInput from '../common/FormInput.vue'
+import VerifyWindow from '../verifition/VerifyWindow.vue'
+const isDisable = ref(false)
+const emit = defineEmits(["close-reset"])
 
-const showNewPassword = ref(false) // 是否显示新密码
-const showConfirmPassword = ref(false) // 是否显示确认密码
-const resetText = ref("重 置")//注册按钮文本
 
-// 验证码发送状态
-const isSending = ref(false)
-const countdown = ref(0)
-const sendButtonText = ref("获取验证码")
+const isShowSliderCaptcha = ref(false)
+const resetButtonText = ref("重置")
+const vcodeBtnContext = ref("获取验证码")
 
-// 重置密码表单数据
+
+//表单ref
+const emailRef = ref(null)
+const vcodeRef = ref(null)
+const newPasswordRef = ref(null)
+const confirmPasswordRef = ref(null)
+
+//重置密码表单数据
 const resetFormData = reactive({
     email: "",
-    verifyCode: "",
+    emailVerifyCode: "",
     newPassword: "",
-    confirmPassword: ""
+    confirmNewPassword: ""
 })
 
-// 验证结果和提示信息
-const validationResults = reactive({
+//表单校验规则
+const emailPattern = ref(new RegExp(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/))//邮箱校验规则
+const vcodePattern = ref(new RegExp(/^\d{6}$/))//验证码校验规则
+const newPassowrdPattern = ref(new RegExp(/^[a-zA-Z0-9_]{8,16}$/))
+const confirmValidator = () => {
+    return resetFormData.newPassword === resetFormData.confirmNewPassword
+}
+
+//表单校验提示消息
+const tipMessages = reactive({
+    emailTipMessage: {
+        prompt: "",
+        success: "邮箱格式正确✅",
+        error: "邮箱格式不正确❌"
+    },
+
+    vcodeTipMessage: {
+        prompt: "",
+        success: "",
+        error: "请输入6位数字验证码❌"
+    },
+    // 密码输入框提示文本
+    newTipMessages: {
+        prompt: "",
+        success: "密码符合要求啦✅",
+        error: "密码要是8~16位，数字字母下划线哦❌"
+    },
+    // 确认密码输入框提示文本
+    confirmTipMessage: {
+        prompt: "",
+        success: "密码确认成功✅",
+        error: "两次输入的密码不一致!❌"
+    }
+})
+
+//表单项校验结果
+const validResult = reactive({
     email: false,
-    verifyCode: false,
+    emailVerifyCode: false,
     newPassword: false,
-    confirmPassword: false
+    confirmNewPassword: false
 })
 
-const validationTips = reactive({
-    email: "",
-    verifyCode: "",
-    newPassword: "",
-    confirmPassword: ""
+//监听输入密码
+watch(() => resetFormData.newPassword, (newPassword) => {
+    if (!newPassword || !resetFormData.confirmNewPassword) return
+    confirmPasswordRef.value.validate()
 })
 
-// 关闭重置密码窗口
-const emit = defineEmits(["close-reset"])
 const closeReset = () => {
     emit("close-reset")
 }
 
-// 验证邮箱
-const validateEmail = () => {
-    if (!resetFormData.email) {
-        validationResults.email = false;
-        validationTips.email = "";
-        return;
-    }
+//滑块验证码验证成功事件
+const handleVerifySuccess = (param) => {
+    const code = param.captchaVerification
+    console.log(code);
 
-    const isValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(resetFormData.email);
-    validationResults.email = isValid;
-    validationTips.email = isValid ? "邮箱格式正确" : "邮箱格式不正确！";
 }
 
-// 验证验证码
-const validateVerifyCode = () => {
-    if (!resetFormData.verifyCode) {
-        validationResults.verifyCode = false;
-        validationTips.verifyCode = "";
-        return;
-    }
-
-    const isValid = /^\d{6}$/.test(resetFormData.verifyCode);
-    validationResults.verifyCode = isValid;
-    validationTips.verifyCode = isValid ? "验证码格式正确" : "验证码必须是6位数字！";
+//滑块验证关闭
+const handleVerifyClose = () => {
+    isShowSliderCaptcha.value = false
 }
 
-// 验证新密码
-const validateNewPassword = () => {
-    if (!resetFormData.newPassword) {
-        validationTips.newPassword = "";
-        validationResults.newPassword = false;
-        return;
-    }
-
-    const isValid = /^[a-zA-Z0-9_]{8,16}$/.test(resetFormData.newPassword);
-    validationResults.newPassword = isValid;
-    validationTips.newPassword = isValid ? "密码格式正确" : "密码不符合要求，需要8~16位数字、字母或下划线！";
-
-    // 如果确认密码已填写，重新验证确认密码
-    if (resetFormData.confirmPassword) {
-        validateConfirmPassword();
-    }
+//校验表单项是不是都通过校验
+const allValid = () => {
+    return Object.values(validResult).every(Boolean)
 }
 
-// 验证确认密码
-const validateConfirmPassword = () => {
-    if (!resetFormData.confirmPassword) {
-        validationTips.confirmPassword = "";
-        validationResults.confirmPassword = false;
-        return;
+//获取邮箱验证码
+const getCode = (e) => {
+    e.preventDefault()
+    if (!validResult.email) {
+        return
     }
-
-    const isValid = resetFormData.confirmPassword === resetFormData.newPassword;
-    validationResults.confirmPassword = isValid;
-    validationTips.confirmPassword = isValid ? "两次密码输入一致" : "两次输入的密码不一致";
+    vcodeTimer("已发送", 60)
 }
 
-// 监听值变化进行实时验证
-watch(() => resetFormData.email, (newVal) => {
-    if (!newVal)
-        validateEmail()
-    // 可以添加防抖处理
-    const debounceTimer = setTimeout(() => {
-        validateEmail();
-    }, 500);
-    return () => clearTimeout(debounceTimer);
-})
-
-watch(() => resetFormData.verifyCode, (newVal) => {
-    if (!newVal)
-        validateVerifyCode()
-    const debounceTimer = setTimeout(() => {
-        validateVerifyCode();
-    }, 500);
-    return () => clearTimeout(debounceTimer);
-})
-
-watch(() => resetFormData.newPassword, (newVal) => {
-    if (newVal) {
-        const debounceTimer = setTimeout(() => {
-            validateNewPassword();
-        }, 500);
-        return () => clearTimeout(debounceTimer);
+//提交表单
+const submitReset = () => {
+    if (!allValid()) {
+        resetButtonText.value = "请完善重置信息！"
+        setTimeout(() => {
+            resetButtonText.value = "重置"
+        }, 1500)
+        return
     }
-})
+    isShowSliderCaptcha.value = true
+}
 
-watch(() => resetFormData.confirmPassword, (newVal) => {
-    if (newVal) {
-        const debounceTimer = setTimeout(() => {
-            validateConfirmPassword();
-        }, 500);
-        return () => clearTimeout(debounceTimer);
-    }
-})
 
-// 发送验证码
-const sendVerifyCode = () => {
-    // 先验证邮箱
-    validateEmail();
-    if (!validationResults.email) {
-        return;
-    }
+//请求重置密码
+const requestReset = () => {
 
-    // 防止重复发送
-    if (isSending.value) return;
+}
 
-    // 实际应用中这里应该调用API发送验证码
-    isSending.value = true;
-    countdown.value = 60;
+//计时器
+let timer = null
+const vcodeTimer = (text, initialCount) => {
+    isDisable.value = true;
+    let count = initialCount;
+    vcodeBtnContext.value = text ? `${text}(${count}s)` : `${count}s`;
 
-    // 倒计时
-    const timer = setInterval(() => {
-        countdown.value--;
-        sendButtonText.value = `${countdown.value}秒后重发`;
+    if (timer) clearInterval(timer);
 
-        if (countdown.value <= 0) {
+    timer = setInterval(() => {
+        count--;
+        vcodeBtnContext.value = text ? `${text}(${count}s)` : `${count}s`;
+
+        if (count <= 0) {
             clearInterval(timer);
-            isSending.value = false;
-            sendButtonText.value = "获取验证码";
+            isDisable.value = false;
+            vcodeBtnContext.value = "获取验证码";
         }
     }, 1000);
-
-    // 模拟API调用
-    console.log(`向 ${resetFormData.email} 发送验证码`);
 }
 
-// 提交重置密码
-const submitReset = () => {
-    // 提交前验证所有字段
-    validateEmail();
-    validateVerifyCode();
-    validateNewPassword();
-    validateConfirmPassword();
-
-    // 检查是否所有验证都通过
-    const allValid = validationResults.email &&
-        validationResults.verifyCode &&
-        validationResults.newPassword &&
-        validationResults.confirmPassword;
-
-    if (allValid) {
-        // 显示滑块验证
-        console.log("验证通过，准备重置密码");
-    } else {
-        resetText.value = "请完善重置信息!😑"
-        setTimeout(()=>{
-            resetText.value = "重 置"
-        },1500)
-    }
-}
 </script>
 
 <style lang="scss" scoped>

@@ -70,6 +70,7 @@ const close = () => {
             button {
                 background-color: none;
                 border: none;
+                background-color: transparent;
                 color: $theme-font-gray;
                 transition: 0.3s ease-in-out;
 

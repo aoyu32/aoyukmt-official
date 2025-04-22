@@ -14,12 +14,12 @@
             <div class="feedback-right" v-if="session.selectedOption">
                 <FeedbackForm :formData="session.formData" :feedbackType="session.selectedOption"
                     @update-form="(data) => updateFormData(session.id, data)" @reset-form="() => resetForm(session.id)"
-                    @submit-form="() => submitForm(session.id)" @show-tip="showTip" :isFormSubmit="session.isSubmit"
+                    @submit-form="() => submitForm(session.id)" @show-tip="showTip"
                     @set-anonymous="handleSetAnonymous(session)" :hasLogin="userData.hasLogin"
-                    :after-submit="submitResultContext" />
+                    :is-submit="session.isSubmit" :submit-result="session.submitResult" />
             </div>
             <!-- 反馈提交时间 -->
-            <div class="feedback-time" v-if="session.submitTime">
+            <div class="feedback-time" v-if="session.submitResult.result">
                 <CurrentTime :currentTime="session.submitTime" />
             </div>
             <!-- 继续反馈 -->
@@ -49,7 +49,7 @@ const messageRef = ref(null)
 
 const feedbackStore = useFeedbackStore();
 const userData = userStore()
-const submitResultContext = ref("")
+
 
 onMounted(() => {
     nextTick(() => {
@@ -79,6 +79,10 @@ const requestFeedback = async () => {
                 const feedbackSession = feedbackStore.feedbackSessions[sessionId]
                 feedbackSession.id = index
                 feedbackSession.selectedOption = switchFeedbackType(el.type)
+                feedbackSession.submitResult = {
+                    result: true,
+                    message: "你的反馈卡片已经成功送达✅"
+                }
                 feedbackSession.isSubmit = true
                 feedbackSession.submitTime = el.createTime
                 //处理文件列表
@@ -123,7 +127,6 @@ const resetForm = (sessionId) => {
 
 // 提交表单
 const submitForm = (sessionId) => {
-
     requestSubmitFeedback(sessionId)
     setTimeout(() => {
         feedbackStore.setFormSubmitTime(sessionId, tools.getFormatDate('yyyy-mm-dd HH:MM:SS'))
@@ -138,7 +141,7 @@ const requestSubmitFeedback = async (sessionId) => {
     //构建请求数据
     const requestFormData = new FormData()
     requestFormData.append('type', switchFeedbackType(feedbackData.selectedOption))
-    requestFormData.append('content', feedbackData.formData.contentisFormSubmit)
+    requestFormData.append('content', feedbackData.formData.content)
     requestFormData.append('responder', feedbackData.formData.username)
     feedbackData.formData.attachments.forEach(element => {
         requestFormData.append('files', element)
@@ -147,12 +150,15 @@ const requestSubmitFeedback = async (sessionId) => {
         console.log("请求的数据", requestFormData);
         const resp = await apis.feedback(requestFormData)
         console.log("服务端响应反馈结果：", resp);
-        submitResultContext.value = "你的反馈卡片已经成功送达✅"
-        feedbackStore.setFormSubmit(sessionId)
+        feedbackStore.setFormSubmit(sessionId, {
+            result: true,
+            message: "你的反馈卡片已经成功送达✅"
+        })
     } catch (error) {
-        submitResultContext.value = error.message + "❌"
-        feedbackStore.feedbackSessions[sessionId].isFormSubmit = false
-
+        feedbackStore.setFormSubmit(sessionId, {
+            result: false,
+            message: error.message + "❌"
+        })
     }
 }
 
@@ -187,14 +193,17 @@ watch(() => feedbackStore.feedbackSessions, () => {
 
 //监听登录
 watch(() => userData.hasLogin, (newValue) => {
-    feedbackStore.clearFeedbackSessions()
+
     if (newValue) {
         if (feedbackStore.hasNoSessions) {
+            feedbackStore.clearFeedbackSessions()
             requestFeedback()
         }
     } else {
+        feedbackStore.clearFeedbackSessions()
         addFeedbackSession()
     }
+
 }, { immediate: true })
 
 </script>
