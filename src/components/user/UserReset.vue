@@ -1,6 +1,7 @@
 <template>
     <div class="modal-overlay">
         <div class="user-reset">
+            <Message :messagePosition="'absolute'" ref="messageRef" />
             <div class="reset-header">
                 <div class="header-left">
                     <h4>😉Hi,请重置密码</h4>
@@ -54,14 +55,14 @@
 import { ref, reactive, watch } from 'vue'
 import FormInput from '../common/FormInput.vue'
 import VerifyWindow from '../verifition/VerifyWindow.vue'
+import { apis } from '@/api/api'
 const isDisable = ref(false)
 const emit = defineEmits(["close-reset"])
-
 
 const isShowSliderCaptcha = ref(false)
 const resetButtonText = ref("重置")
 const vcodeBtnContext = ref("获取验证码")
-
+const messageRef = ref(null)
 
 //表单ref
 const emailRef = ref(null)
@@ -134,7 +135,8 @@ const closeReset = () => {
 const handleVerifySuccess = (param) => {
     const code = param.captchaVerification
     console.log(code);
-
+    //发送重置请求
+    requestReset(code)
 }
 
 //滑块验证关闭
@@ -154,6 +156,22 @@ const getCode = (e) => {
         return
     }
     vcodeTimer("已发送", 60)
+    //发送获取验证码请求
+    requestCode()
+}
+const requestCode = async () => {
+    const data = {
+        type: "reset",
+        email: resetFormData.email
+    }
+    try {
+        const resp = await apis.code("reset", data)
+        console.log("服务端响应的数据", resp);
+    } catch (error) {
+        console.log(error.message);
+
+    }
+
 }
 
 //提交表单
@@ -170,7 +188,30 @@ const submitReset = () => {
 
 
 //请求重置密码
-const requestReset = () => {
+const requestReset = async (vcode) => {
+    const data = {
+        verifyCode: vcode,
+        emailVerifyCode: resetFormData.emailVerifyCode,
+        email: resetFormData.email,
+        newPassword: resetFormData.newPassword
+    }
+    try {
+        const resp = await apis.reset(data)
+        console.log("服务端响应的重置结果：", resp);
+        //重置成功后的操作
+        afterResetSuccess()
+    } catch (error) {
+        messageRef.value.show(error.message)
+    }
+}
+
+//成功之后执行的操作
+const afterResetSuccess = () => {
+    //显示提示消息
+    messageRef.value.show("密码重置成功😀")
+    setTimeout(() => {
+        emit("close-reset")
+    }, 1500)
 
 }
 

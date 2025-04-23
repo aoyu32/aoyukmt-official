@@ -279,7 +279,7 @@ const handleBindEmail = async (eventData) => {
     console.log("用户请求数据：", eventData);
     try {
         if (eventData.type === 'code') {
-            const resp = await apis.code(eventData.data)
+            const resp = await apis.code("binding",eventData.data)
             console.log("服务端验证码接口响应结果", resp);
             // messageRef.value.show("验证码已发送")
             eventData.callback(true)

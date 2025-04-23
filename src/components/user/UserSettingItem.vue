@@ -420,7 +420,6 @@ const getCode = () => {
     updateRequest('handle-bind-email', {
         type: 'code',
         data: {
-            type: "binding",
             email: bindEmailInput.value,
         },
         callback: (resp) => {

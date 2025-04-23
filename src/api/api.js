@@ -103,8 +103,8 @@ export const apis = {
     },
 
     //获取验证码
-    code: (data) => {
-        return instance.post('/auth/code', data, {
+    code: (type,data) => {
+        return instance.post(`/auth/code/${type}`, data, {
             needAuth: true
         })
     },
@@ -134,7 +134,5 @@ export const apis = {
     reset: (data) => {
         return instance.post('/auth/reset', data)
     }
-
-
 
 };
