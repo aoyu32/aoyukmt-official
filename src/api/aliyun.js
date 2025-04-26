@@ -49,6 +49,8 @@ export const callDashScopeStream = (userMessage) => {
                     buffer = lines.pop(); // 可能存在不完整的行，保留到下次处理
 
                     for (const line of lines) {
+                        console.log("返回的sse数据：",line);
+                        
                         if (line.startsWith("data:")) {
                             try {
                                 const jsonStr = line.substring(5).trim(); // 去掉 "data:" 前缀

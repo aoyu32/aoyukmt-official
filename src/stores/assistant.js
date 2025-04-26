@@ -66,9 +66,6 @@ export const useAssistantStore = defineStore('assistant', () => {
 
     // 开始流式接收官方消息
     const startStreamingOfficialMessage = () => {
-        // const loadingGif = `<img src="${loadingGifSrc}" alt="思考中" style="width: 40px; height: 40px; display: block; margin: 0 auto;" />`;
-
-
         const officialMsg = { text: '', img: [], date: new Date().toLocaleString(), isUser: false };
         officialMessage.value.push(officialMsg);
         chatMessages.value.push(officialMsg);

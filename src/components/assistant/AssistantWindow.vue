@@ -1,6 +1,5 @@
 <template>
     <div class="assistant-window" id="chat-window" ref="chatWindow">
-
         <AssistantMessage v-for="(item, index) in assistantStore.chatMessages" :key="index" :messageData="item" />
     </div>
 </template>
@@ -36,6 +35,8 @@ const scrollToBottom = () => {
 
 </script>
 <style lang="scss" scoped>
+@use "@/assets/styles/common/_theme.scss" as *;
+
 .assistant-window {
     flex-grow: 1;
     padding: 1rem;
@@ -43,5 +44,7 @@ const scrollToBottom = () => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+
+
 }
 </style>

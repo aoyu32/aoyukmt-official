@@ -5,11 +5,16 @@
             <textarea id="chat-input" :placeholder="placeholderValue" rows="1" @focus="textareaFocus"
                 @blur="textareaBlur" @input="handleInput" @paste="handleImagePaste" ref="chatTextarea"
                 v-model="message"></textarea>
-            <div class="upload">
-                <input type="file" id="image-upload" multiple accept="image/*" hidden ref="imageUploadInput"
-                    @change="handleImageSelection" />
-                <label for="image-upload" class="upload-icon" @mouseenter="handleHover(1)"
-                    @mouseleave="handleHover(0)">{{ lableText }}</label>
+            <div class="input-bottom">
+                <div class="bottom-left">
+                    <button class="new" @mouseenter="handleHover(3)" @mouseleave="handleHover(0)">{{ newButtonText
+                        }}</button>
+                    <input type="file" id="image-upload" multiple accept="image/*" hidden ref="imageUploadInput"
+                        @change="handleImageSelection" />
+                    <label for="image-upload" class="upload-icon" @mouseenter="handleHover(1)"
+                        @mouseleave="handleHover(0)">{{ lableText }}</label>
+
+                </div>
                 <button id="send-button" @mouseenter="handleHover(2)" @mouseleave="handleHover(0)"
                     @click="assistantStore.replying ? stopReplyingMessage() : sendMessage()" ref="sendButton"
                     :class="{ 'breathing-border': assistantStore.replying }" :data-tooltip="tooltipText">
@@ -88,9 +93,11 @@ const resetHeight = () => {
 //鼠标悬浮改变上传图标或发送按钮的图标字体
 const lableText = ref("🔗")
 const buttonText = ref("🍥")
+const newButtonText = ref("🆕")
 //鼠标悬浮在上传图标或发送按钮改变图标
 const handleHover = (isHover) => {
     lableText.value = isHover === 1 ? "🖼️" : "🔗"
+    newButtonText.value = isHover === 3 ? "🆗" : "🆕"
     if (!assistantStore.replying) {
         buttonText.value = isHover === 2 ? "👻" : "🍥"
     }

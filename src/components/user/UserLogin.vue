@@ -46,6 +46,13 @@ const loginText = ref("登录")
 const isShowSliderCaptcha = ref(false)
 const showPassword = ref(false)
 
+const emit = defineEmits(["close-login", "display-register", "display-reset", "user-login"])
+
+//表单数据
+const loginFormData = reactive({
+    account: "",
+    password: ""
+})
 
 //校验成功
 const handleVerifySuccess = (param) => {
@@ -58,11 +65,6 @@ const handleCloseVerify = () => {
     isShowSliderCaptcha.value = false
 }
 
-//表单数据
-const loginFormData = reactive({
-    account: "",
-    password: ""
-})
 
 const submitLogin = () => {
 
@@ -114,7 +116,6 @@ const modifyLoginText = (value) => {
 }
 
 //关闭登录窗口
-const emit = defineEmits(["close-login", "display-register", "display-reset", "user-login"])
 const closeLogin = () => {
     emit("close-login")
 }

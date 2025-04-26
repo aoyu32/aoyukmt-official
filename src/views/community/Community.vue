@@ -173,7 +173,7 @@ watchEffect(() => {
         navBorderRadius.value = '10px'
     }
     if (currentRoute === "/community/assistant") {
-        navHeight.value = '95%'
+        navHeight.value = '97%'
         navBorderRadius.value = '12px'
     }
 

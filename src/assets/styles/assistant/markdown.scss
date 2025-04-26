@@ -173,6 +173,8 @@
         margin-top: 0.6rem; // 调整段落间距，使内容更紧凑
         color: $theme-font-light;
         color: $theme-font-dark;
+        word-wrap: break-word;
+        word-break: break-word;
         line-height: 2; // 调整行高，使内容更紧凑
     }
 

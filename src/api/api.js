@@ -2,31 +2,31 @@ import instance from "@/utils/request"; // 导入封装的 Axios 实例
 
 export const apis = {
     getFeatureList: () => {
-        return instance.get('feature\\list');
+        return instance.get('feature/list');
     },
 
     getDetailList: () => {
-        return instance.get('detail\\list');
+        return instance.get('detail/list');
     },
 
     getDocumentData: () => {
-        return instance.get('docs\\list');
+        return instance.get('docs/list');
     },
 
     getLatestUpdatelog: () => {
-        return instance.get('changelog\\latest');
+        return instance.get('changelog/latest');
     },
 
     getHistoryUpdatelog: () => {
-        return instance.get('changelog\\history');
+        return instance.get('changelog/history');
     },
 
     downloadLatest: (data) => {
-        return instance.post('download\\latest', data)
+        return instance.post('download/latest', data)
     },
 
     downloadHistory: (data) => {
-        return instance.post('download\\history', data)
+        return instance.post('download/history', data)
     },
 
     //获取验证图片  以及token
@@ -103,7 +103,7 @@ export const apis = {
     },
 
     //获取验证码
-    code: (type,data) => {
+    code: (type, data) => {
         return instance.post(`/auth/code/${type}`, data, {
             needAuth: true
         })
@@ -133,6 +133,12 @@ export const apis = {
     //重置密码
     reset: (data) => {
         return instance.post('/auth/reset', data)
+    },
+    //请求聊天
+    chat: (data) => {
+        return instance.post('/assistant/chat', data, {
+            needAuth: true
+        })
     }
 
 };
