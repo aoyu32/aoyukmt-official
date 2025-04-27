@@ -1,0 +1,40 @@
+@use "@/assets/styles/common/_theme.scss" as *;
+@use "@/assets/styles/common/_variable.scss" as *;
+@use "@/assets/styles/common/_animation.scss" as *;
+@use "@/assets/styles/mixins/_tooltip-mixins.scss" as *;
+
+.assistant-history-bar{
+
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+     
+
+    .history-bar-header{
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid $theme-primary;
+        h4{
+            color: $theme-primary;
+        }        
+        button{
+            border: none;
+            background-color: transparent;
+            color: $theme-primary;
+
+        }
+    }
+
+    .history-bar-body{
+        ul{
+            list-style: none;
+            padding: 10px;
+        }
+     
+        li{
+            padding: 10px;
+        }
+    }
+
+}

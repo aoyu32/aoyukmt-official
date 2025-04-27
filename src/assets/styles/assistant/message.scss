@@ -92,7 +92,7 @@
                 font-size: 15px;
                 color: $theme-font-light;
                 display: flex;
-                color: $theme-font-dark;
+                 color: $theme-font-dark;
                 white-space: pre-wrap;
                 word-break: break-word;
                 word-wrap: break-word;
@@ -121,7 +121,7 @@
     .message-wrapper {
         display: flex;
         flex-direction: column;
-        max-width: 65%;
+        width: 100%;
     }
 
     .message-content {

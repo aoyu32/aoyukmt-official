@@ -245,14 +245,13 @@ emitter.on('display-login', () => {
 
 
         }
-
-
         .community-content {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-grow: 1; // 占据剩余空间
             height: 100%;
+            width: 100%;
+            min-width: 0;
 
             .content {
                 width: 100%;
@@ -277,10 +276,11 @@ emitter.on('display-login', () => {
         }
 
         .main-content {
+            max-width: 100%;
+
             .community-nav {
                 display: none;
             }
-
             .show {
                 display: flex;
                 width: 55px;

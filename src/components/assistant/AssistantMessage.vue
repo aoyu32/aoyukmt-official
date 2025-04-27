@@ -1,8 +1,8 @@
 <template>
   <div class="assistant-message" :class="{ 'user': messageData.isUser, 'official': !messageData.isUser }">
-    <div class=" avatar" @click="ModifyUserInfo">
+    <!-- <div class=" avatar" @click="ModifyUserInfo">
       <img :src="messageData.isUser ? user.avatar : aoyukmtAvatar" alt="">
-    </div>
+    </div> -->
     <div class="message-wrapper">
       <div class="name">{{ messageData.isUser ? "🪶" + user.nickname : officialName }}</div>
       <div class="message-content">

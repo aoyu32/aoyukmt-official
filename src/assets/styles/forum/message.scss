@@ -86,6 +86,8 @@
                         height: 100%;
                         white-space: pre-wrap;
                         color: $theme-font-dark-gray;
+                        word-wrap: break-word;
+                        word-break: break-word;
                     }
 
                 }
@@ -96,11 +98,8 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width:768px) {
     .forum-message {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 16px;
-        width: 95%;
+        width: 100%;
     }
 }

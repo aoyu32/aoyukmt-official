@@ -1,6 +1,6 @@
 <template>
     <div class="assistant-input">
-        <FilePreview :imgList="assistantStore.images" @remove-file="handleRemoveFile" />
+        <FilePreview :imgList="assistantStore.images" @remove-file="handleRemoveFile" v-if="assistantStore.imagesCount !== 0"/>
         <div class="chat-input-area" id="chat-input-area" ref="chatInputBox">
             <textarea id="chat-input" :placeholder="placeholderValue" rows="1" @focus="textareaFocus"
                 @blur="textareaBlur" @input="handleInput" @paste="handleImagePaste" ref="chatTextarea"

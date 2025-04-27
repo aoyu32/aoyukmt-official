@@ -5,20 +5,17 @@
             <Message :messagePosition="'absolute'" :topOffset="'10px'" ref="messageRef" />
             <div class="chat-container active">
                 <div class="window-header">
-                    <button class="chat-histroy-btn"><i class="iconfont icon-direction-left"></i></button>
+                    <button class="chat-histroy-btn" @click="handleDisplayHistoryBar" v-show="displayBtn"><i
+                            class="iconfont icon-direction-left"></i></button>
                 </div>
-                <AssistantWindow />
-                <AssistantInput :files="files" @receiveUserMessage="handleUserMessage" v-aos="{
-                    duration: 400,
-                    once: true,
-                    animation: 'fade-up',
-                }" />
+                <AssistantWindow :display-histroy="!displayBtn" @display-histroy-btn="displayBtn = true" />
+                <AssistantInput :files="files" @receiveUserMessage="handleUserMessage" />
             </div>
         </div>
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, provide } from "vue"
 
 import AssistantWindow from '@/components/assistant/AssistantWindow.vue';
 import AssistantInput from '@/components/assistant/AssistantInput.vue';
@@ -34,6 +31,7 @@ import { assistant } from "@/api/assistant";
 import { useRoute } from "vue-router";
 const messageRef = ref(null)
 
+const displayBtn = ref(true)
 
 const assistantStore = useAssistantStore()
 const userData = userStore()
@@ -75,14 +73,14 @@ const handleUserMessage = async (msg) => {
     // 请求 coze 获取流式回复
     // const stream = fetchChatStream(msg);
     //阿里云百炼通义千问
-    const stream = callDashScopeStream(msg)
+    // const stream = callDashScopeStream(msg)
     //讯飞星火大模型
     // const stream = new SparkAIService().sendMessageStream(msg)
     // Gemini大模型
-    // const stream = await assistant({
-    //     id: "123456",
-    //     message: msg
-    // }, userData.token)
+    const stream = await assistant({
+        id: "123456",
+        message: msg
+    }, userData.token)
     console.log("stream流:", stream);
 
     const prompt = "你是一个aoyukmt官网的助手"
@@ -92,12 +90,19 @@ const handleUserMessage = async (msg) => {
     readStream(reader);
 };
 
+
+const handleDisplayHistoryBar = () => {
+    displayBtn.value = false
+}
+
 async function readStream(reader) {
     let fullMessage = '';
     assistantStore.isReplaying(true)
     while (true) {
         const { done, value } = await reader.read();
         console.log("数据流：", value);
+        console.log("是否完成：", done);
+
 
         if (done) {
             // 流式接收完成
@@ -126,7 +131,6 @@ async function readStream(reader) {
     width: 100%;
     height: 100%;
 
-
     .main-content {
         display: flex;
         width: 100%;
@@ -154,6 +158,7 @@ async function readStream(reader) {
                 justify-content: flex-end;
                 background-color: transparent;
                 z-index: 100;
+
                 .chat-histroy-btn {
                     border: none;
                     background-color: transparent;
@@ -164,12 +169,12 @@ async function readStream(reader) {
                     transition: all 0.3s ease-in-out;
                     color: $theme-primary;
                     cursor: pointer;
-                 
+
 
                     .iconfont {
                         font-size: 17px;
                         @include tooltip($assistant-hover-histroy-text, right, 20px, bottom, -15px, 20px, $theme-secondary-light);
-                      
+
                     }
 
                     &:hover {

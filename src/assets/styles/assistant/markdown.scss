@@ -53,6 +53,8 @@
     color: $theme-font-light;
     color: $theme-font-dark;
     line-height: 2; // 调整行高，使内容更紧凑
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Links */
@@ -77,6 +79,8 @@
 .content :deep(ol li) {
     margin-bottom: 0.5rem; // 调整列表项间距，使内容更紧凑
     line-height: 1.5;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Blockquotes */
@@ -88,6 +92,8 @@
     color: $theme-font-gray;
     color: $theme-font-dark;
     background-color: $theme-background-light;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Code Blocks */
@@ -99,6 +105,8 @@
     overflow-x: auto;
     margin-bottom: 0.75rem; // 调整代码块间距，使内容更紧凑
     box-shadow: inset 0 1px 3px $theme-shallow-shadow;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .content :deep(pre code) {
@@ -107,6 +115,7 @@
     color: $theme-font-light;
     color: $theme-font-dark;
     word-wrap: break-word;
+    word-break: break-word;
 
 }
 
@@ -118,6 +127,7 @@
     color: $theme-font-light;
     color: $theme-font-dark;
     word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Images */
@@ -184,21 +194,29 @@
     .content :deep(ol) {
         margin-bottom: 0.75rem; // 调整列表间距，使内容更紧凑
         padding-left: 1.25rem; // 调整列表内边距，使内容更紧凑
+        word-wrap: break-word;
+        word-break: break-word;
     }
 
     .content :deep(ul li),
     .content :deep(ol li) {
         margin-bottom: 0.5rem; // 调整列表项间距，使内容更紧凑
         line-height: 1.5;
+        word-wrap: break-word;
+        word-break: break-word;
     }
 
 
     .content :deep(code) {
         font-size: 0.8rem; // 调整移动端代码字体大小
+        word-wrap: break-word;
+        word-break: break-word;
     }
 
     .content :deep(pre) {
         font-size: 0.8rem; // 调整移动端代码块字体大小
         padding: 0.5rem; // 调整移动端代码块内边距
+        word-wrap: break-word;
+        word-break: break-word;
     }
 }
